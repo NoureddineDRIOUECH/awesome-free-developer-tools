@@ -7,6 +7,7 @@ import sitemap from '@astrojs/sitemap';
 export default defineConfig({
   site: 'https://webutil.tech',
   trailingSlash: 'never',
+  viewTransitions: true,
   vite: {
     plugins: [tailwindcss()]
   },

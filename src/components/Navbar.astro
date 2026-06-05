@@ -1,11 +1,13 @@
 ---
 import { tools, categories } from "../lib/tools";
+const nonEmptyCategories = categories.filter((c) => tools.some((t) => t.category === c.id));
+const catCounts = Object.fromEntries(nonEmptyCategories.map((c) => [c.id, tools.filter((t) => t.category === c.id).length]));
 ---
 
 <nav class="sticky top-0 z-50 border-b border-surface-container-highest bg-surface/80 backdrop-blur-xl">
   <div class="container-main flex h-16 items-center justify-between">
-    <a href="/" class="flex items-center gap-2.5 group">
-      <div class="size-8 rounded-lg bg-primary flex items-center justify-center">
+    <a href="/" class="flex items-center gap-2.5 group shrink-0">
+      <div class="size-8 rounded-lg bg-primary flex items-center justify-center group-hover:opacity-90 transition-opacity">
         <svg class="size-4 text-white" fill="currentColor" viewBox="0 0 24 24">
           <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
         </svg>
@@ -14,38 +16,164 @@ import { tools, categories } from "../lib/tools";
     </a>
 
     <div class="hidden md:flex items-center gap-1">
-      <a href="/tools" class="px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface rounded-md transition-colors">
-        All Tools
-      </a>
+      <a href="/tools" class="nav-link">All Tools</a>
       <div class="relative group">
-        <button class="px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface rounded-md transition-colors flex items-center gap-1">
+        <button class="nav-link flex items-center gap-1 cursor-default">
           Categories
-          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <svg class="size-3.5 transition-transform group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
           </svg>
         </button>
-        <div class="absolute top-full left-0 mt-1 w-64 rounded-lg border border-surface-container-highest bg-surface-container p-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl">
-          {categories.map((cat) => (
+        <div class="absolute top-full left-0 mt-1 w-56 rounded-lg border border-surface-container-highest bg-surface-container p-1.5 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 shadow-xl">
+          {nonEmptyCategories.map((cat) => (
             <a
-              href={`/tools?category=${cat.id}`}
+              href={`/tools/category/${cat.id}`}
               class="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
             >
-              <span class="material-symbols-outlined text-base">{cat.icon}</span>
               <span>{cat.name}</span>
-              <span class="ml-auto text-xs text-on-surface-variant/50">{tools.filter(t => t.category === cat.id).length}</span>
+              <span class="ml-auto text-xs text-on-surface-variant/50">{catCounts[cat.id]}</span>
             </a>
           ))}
         </div>
       </div>
-      <a href="/blog" class="px-3 py-2 text-sm text-on-surface-variant hover:text-on-surface rounded-md transition-colors">
-        Blog
-      </a>
+      <a href="/blog" class="nav-link">Blog</a>
+      <a href="/about" class="nav-link">About</a>
     </div>
 
-    <button class="md:hidden p-2 rounded-lg hover:bg-surface-container-high transition-colors" aria-label="Menu">
+    <button id="nav-toggle" class="md:hidden p-2 rounded-lg hover:bg-surface-container-high transition-colors" aria-label="Open menu">
       <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
       </svg>
     </button>
   </div>
+
+  <div id="mobile-menu" class="md:hidden fixed inset-0 z-50 hidden">
+    <div id="nav-overlay" class="absolute inset-0 bg-black/60 backdrop-blur-sm"></div>
+    <div class="absolute right-0 top-0 h-full w-72 max-w-[80vw] bg-surface-container border-l border-surface-container-highest shadow-2xl flex flex-col">
+      <div class="flex items-center justify-between px-5 h-16 border-b border-surface-container-highest">
+        <span class="font-semibold text-sm">Menu</span>
+        <button id="nav-close" class="p-2 rounded-lg hover:bg-surface-container-high transition-colors" aria-label="Close menu">
+          <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/>
+          </svg>
+        </button>
+      </div>
+      <nav class="flex-1 overflow-y-auto p-5 space-y-1">
+        <a href="/tools" class="mobile-nav-link" data-close>
+          <svg class="size-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+          </svg>
+          All Tools
+        </a>
+        <div>
+          <button id="cat-toggle-mobile" class="mobile-nav-link w-full flex items-center justify-between">
+            <span class="flex items-center gap-3">
+              <svg class="size-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+              </svg>
+              Categories
+            </span>
+            <svg id="cat-chevron" class="size-4 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+            </svg>
+          </button>
+          <div id="cat-sub-mobile" class="hidden mt-1 ml-2 pl-3 border-l border-surface-container-highest space-y-0.5">
+            {nonEmptyCategories.map((cat) => (
+              <a
+                href={`/tools/category/${cat.id}`}
+                class="flex items-center gap-3 px-3 py-2 rounded-md text-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-high transition-colors"
+                data-close
+              >
+                <span>{cat.name}</span>
+                <span class="ml-auto text-xs text-on-surface-variant/50">{catCounts[cat.id]}</span>
+              </a>
+            ))}
+          </div>
+        </div>
+        <a href="/blog" class="mobile-nav-link" data-close>
+          <svg class="size-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+          </svg>
+          Blog
+        </a>
+        <a href="/about" class="mobile-nav-link" data-close>
+          <svg class="size-4 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          About
+        </a>
+      </nav>
+      <div class="p-5 border-t border-surface-container-highest">
+        <a href="/tools" class="btn-primary w-full justify-center text-sm" data-close>
+          Browse All Tools
+        </a>
+      </div>
+    </div>
+  </div>
 </nav>
+
+<style>
+  .nav-link {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-on-surface-variant);
+    border-radius: 0.5rem;
+    transition: color 0.15s, background-color 0.15s;
+  }
+  .nav-link:hover {
+    color: var(--color-on-surface);
+    background-color: rgba(255, 255, 255, 0.04);
+  }
+  .mobile-nav-link {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    padding: 0.625rem 0.75rem;
+    font-size: 0.875rem;
+    color: var(--color-on-surface-variant);
+    border-radius: 0.5rem;
+    transition: color 0.15s, background-color 0.15s;
+  }
+  .mobile-nav-link:hover {
+    color: var(--color-on-surface);
+    background-color: var(--color-surface-container-high);
+  }
+</style>
+
+<script>
+  const toggle = document.getElementById("nav-toggle");
+  const menu = document.getElementById("mobile-menu");
+  const overlay = document.getElementById("nav-overlay");
+  const close = document.getElementById("nav-close");
+  const catToggle = document.getElementById("cat-toggle-mobile");
+  const catSub = document.getElementById("cat-sub-mobile");
+  const catChevron = document.getElementById("cat-chevron");
+
+  function openMenu() {
+    menu.classList.remove("hidden");
+    document.body.style.overflow = "hidden";
+  }
+  function closeMenu() {
+    menu.classList.add("hidden");
+    document.body.style.overflow = "";
+  }
+
+  if (toggle) toggle.addEventListener("click", openMenu);
+  if (close) close.addEventListener("click", closeMenu);
+  if (overlay) overlay.addEventListener("click", closeMenu);
+
+  if (catToggle && catSub && catChevron) {
+    catToggle.addEventListener("click", () => {
+      catSub.classList.toggle("hidden");
+      catChevron.classList.toggle("rotate-180");
+    });
+  }
+
+  document.querySelectorAll("[data-close]").forEach((el) => {
+    el.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape") closeMenu();
+  });
+</script>
