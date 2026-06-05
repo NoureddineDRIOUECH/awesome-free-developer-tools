@@ -1,6 +1,6 @@
 # WebUtil — Free Online Developer Tools
 
-**https://webutil.io**
+**https://webutil.tech**
 
 17 free online developer tools built with Astro, TailwindCSS v4, and TypeScript.  
 100% client-side — no server uploads, no tracking.

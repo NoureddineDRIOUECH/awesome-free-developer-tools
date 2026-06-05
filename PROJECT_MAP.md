@@ -1,6 +1,6 @@
 # WebUtil — Project Map
 
-**URL:** https://webutil.io  
+**URL:** https://webutil.tech  
 **Stack:** Astro v6 + TailwindCSS v4 + TypeScript  
 **Deploy:** Static site to Vercel  
 **Build:** 33 pages, `pnpm build`
@@ -123,7 +123,7 @@
 
 ### Vercel
 - Vercel Analytics + Speed Insights scripts in BaseLayout (no-op on non-Vercel hosts)
-- Custom domain: `webutil.io`
+- Custom domain: `webutil.tech`
 - Build command: `astro build` (33 pages)
 
 ### AdSense
@@ -149,7 +149,7 @@
 - [x] Custom 404 page
 - [x] Blog cross-linked to tools
 - [ ] **Replace `ca-pub-XXXXXXXXX`** with real AdSense client ID (AdSlot + tool pages)
-- [ ] **Set custom domain** `webutil.io` DNS on Vercel
+- [ ] **Set custom domain** `webutil.tech` DNS on Vercel
 - [ ] **Submit sitemap** to Google Search Console
 - [ ] **Submit sitemap** to Bing Webmaster Tools
 - [ ] **Write 10+ more blog posts** covering uncovered tools

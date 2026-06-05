@@ -1,4 +1,4 @@
 User-agent: *
 Allow: /
-Sitemap: https://webutil.io/sitemap-index.xml
+Sitemap: https://webutil.tech/sitemap-index.xml
 

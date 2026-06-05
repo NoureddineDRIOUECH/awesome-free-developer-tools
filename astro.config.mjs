@@ -5,7 +5,7 @@ import mdx from '@astrojs/mdx';
 import sitemap from '@astrojs/sitemap';
 
 export default defineConfig({
-  site: 'https://webutil.io',
+  site: 'https://webutil.tech',
   trailingSlash: 'never',
   vite: {
     plugins: [tailwindcss()]
