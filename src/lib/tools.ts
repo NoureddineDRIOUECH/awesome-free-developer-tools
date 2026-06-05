@@ -79,6 +79,16 @@ export const categories: ToolCategoryInfo[] = [
 
 export const tools: ToolDefinition[] = [
   {
+    id: "jwt-decoder",
+    title: "JWT Decoder",
+    description: "Decode and inspect JWT tokens — view header, payload, and signature information instantly.",
+    category: "security",
+    icon: "lock",
+    metaDescription: "Free online JWT decoder. Decode JSON Web Tokens and inspect header, payload, and signature. 100% client-side, no token data sent to any server.",
+    keywords: ["jwt decoder", "jwt token decoder", "decode jwt", "jwt payload viewer", "jwt inspector"],
+    relatedTools: ["base64-encoder", "json-formatter", "uuid-generator"],
+  },
+  {
     id: "json-formatter",
     title: "JSON Formatter",
     description: "Format, validate, and beautify your JSON data with syntax highlighting and error detection.",
