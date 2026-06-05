@@ -4,7 +4,7 @@ import { getToolById, getRelatedTools, getCategoryInfo, tools } from "../../lib/
 import type { ToolDefinition } from "../../lib/tools";
 
 export function getStaticPaths() {
-  return tools.filter((t) => t.id !== "json-formatter").map((tool) => ({
+  return tools.filter((t) => t.id !== "json-formatter" && t.id !== "base64-encoder").map((tool) => ({
     params: { tool: tool.id },
     props: { tool },
   }));

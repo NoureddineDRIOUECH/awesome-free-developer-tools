@@ -86,7 +86,7 @@ export const tools: ToolDefinition[] = [
     icon: "data_object",
     metaDescription: "Free online JSON formatter and validator. Beautify, minify, and validate JSON data with syntax highlighting and detailed error messages. No server uploads, 100% client-side.",
     keywords: ["json formatter", "json validator", "json beautifier", "format json", "json pretty print"],
-    relatedTools: ["yaml-converter", "xml-formatter", "sql-formatter"],
+    relatedTools: ["base64-encoder", "yaml-converter", "xml-formatter"],
   },
   {
     id: "base64-encoder",
@@ -96,7 +96,7 @@ export const tools: ToolDefinition[] = [
     icon: "lock",
     metaDescription: "Free online Base64 encoder and decoder. Convert text and files to/from Base64 encoding. 100% client-side, no server uploads, privacy guaranteed.",
     keywords: ["base64 encoder", "base64 decoder", "base64 encode", "base64 decode", "base64 converter"],
-    relatedTools: ["url-encoder", "html-entities", "uuid-generator"],
+    relatedTools: ["json-formatter", "url-encoder", "html-entities"],
   },
   {
     id: "url-encoder",
