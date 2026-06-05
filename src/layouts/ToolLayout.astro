@@ -10,7 +10,7 @@ export interface Props {
   tool: ToolDefinition;
   relatedTools: ToolDefinition[];
   canonical?: string;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const { title, description, tool, relatedTools, canonical, jsonLd } = Astro.props;

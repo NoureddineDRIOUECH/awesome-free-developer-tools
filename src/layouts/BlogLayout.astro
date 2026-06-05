@@ -6,7 +6,7 @@ export interface Props {
   description: string;
   canonical?: string;
   ogImage?: string;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   publishDate?: Date;
   author?: string;
   category?: string;

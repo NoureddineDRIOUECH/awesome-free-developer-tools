@@ -11,7 +11,7 @@ export interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {

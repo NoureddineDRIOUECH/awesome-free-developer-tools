@@ -6,7 +6,7 @@ export interface Props {
   ogImage?: string;
   ogType?: string;
   noindex?: boolean;
-  jsonLd?: Record<string, unknown>;
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
 const {
@@ -52,7 +52,11 @@ const fullTitle = title.includes("WebUtil") ? title : `${title} | WebUtil`;
 {noindex && <meta name="robots" content="noindex, nofollow" />}
 
 {
-  jsonLd && (
+  jsonLd && (Array.isArray(jsonLd) ? (
+    jsonLd.map((item) => (
+      <script type="application/ld+json" set:html={JSON.stringify(item)} />
+    ))
+  ) : (
     <script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />
-  )
+  ))
 }
