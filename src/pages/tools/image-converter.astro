@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/image-converter`;
@@ -67,6 +68,12 @@ const faqSchema = {
   description="Free online image converter. Convert images between PNG, JPEG, WebP, and GIF formats using your browser's Canvas API. 100% client-side, no uploads."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Image Tools", href: "/tools/category/images" },
+    { label: "Image Converter" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -227,6 +234,13 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
 
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">

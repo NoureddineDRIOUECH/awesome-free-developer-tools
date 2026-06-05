@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/markdown-preview`;
@@ -67,6 +68,12 @@ const faqSchema = {
   description="Free online Markdown previewer and editor. Write Markdown with live HTML preview, syntax highlighting, and copy output. Perfect for developers and writers."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Text Tools", href: "/tools/category/text" },
+    { label: "Markdown Preview" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -236,6 +243,13 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
 
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">

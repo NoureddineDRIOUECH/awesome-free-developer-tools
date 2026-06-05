@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/url-encoder`;
@@ -67,6 +68,12 @@ const faqSchema = {
   description="Encode and decode URLs instantly online. Free URL encoder and decoder for developers. Convert text to percent-encoded URLs and back with no login required."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Encoders & Decoders", href: "/tools/category/encoders" },
+    { label: "URL Encoder & Decoder" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -222,6 +229,13 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
 
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">

@@ -67,6 +67,110 @@ const blogPosts = [
     category: "Security",
     readTime: "6 min read",
   },
+  {
+    slug: "json-vs-xml",
+    title: "JSON vs XML: Which Data Format Should You Use in 2026?",
+    description: "Compare JSON and XML data formats for APIs, configuration, and data exchange. Learn when to use JSON vs XML and why JSON dominates modern web development.",
+    date: new Date("2026-03-01"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "json-schema-guide",
+    title: "JSON Schema Guide: Validate Your JSON Data Structure",
+    description: "Learn JSON Schema fundamentals — how to define validation rules, enforce data types, and ensure your JSON data meets structural requirements.",
+    date: new Date("2026-02-15"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "how-apis-use-json",
+    title: "How APIs Use JSON: REST, GraphQL, and WebSocket Data Formats",
+    description: "A developer-focused guide to how modern APIs use JSON for request/response payloads, error handling, pagination, and real-time communication.",
+    date: new Date("2026-01-20"),
+    category: "Formatters",
+    readTime: "7 min read",
+  },
+  {
+    slug: "hash-generator-guide",
+    title: "Hash Generator Guide: MD5, SHA-1, SHA-256, and SHA-512 Explained",
+    description: "Learn how cryptographic hash functions work, the differences between MD5, SHA-1, SHA-256, and SHA-512, and when to use each.",
+    date: new Date("2026-04-01"),
+    category: "Security",
+    readTime: "6 min read",
+  },
+  {
+    slug: "sql-formatting-guide",
+    title: "SQL Formatter Guide: Write Clean, Readable SQL Queries",
+    description: "Learn how to format SQL queries for better readability, maintainability, and team collaboration.",
+    date: new Date("2026-04-05"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "xml-formatting-guide",
+    title: "XML Formatter Guide: How to Format, Validate, and Beautify XML",
+    description: "Master XML formatting with best practices for indentation, validation, and comparing XML vs JSON.",
+    date: new Date("2026-04-10"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "yaml-converter-guide",
+    title: "YAML Converter Guide: Convert Between YAML and JSON",
+    description: "Learn how to convert YAML to JSON and JSON to YAML, understand YAML syntax, and when to use each format.",
+    date: new Date("2026-04-15"),
+    category: "Converters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "html-entities-guide",
+    title: "HTML Entities Guide: Encode Special Characters for Safe Web Rendering",
+    description: "Learn how HTML entities work, why they matter for security, and how to encode and decode special characters.",
+    date: new Date("2026-04-20"),
+    category: "Encoders",
+    readTime: "5 min read",
+  },
+  {
+    slug: "case-converter-guide",
+    title: "Case Converter Guide: camelCase, snake_case, kebab-case and More",
+    description: "Master text case conversion between camelCase, PascalCase, snake_case, kebab-case, and other naming conventions.",
+    date: new Date("2026-04-25"),
+    category: "Text",
+    readTime: "5 min read",
+  },
+  {
+    slug: "markdown-guide",
+    title: "Markdown Preview Guide: Write and Preview Markdown Like a Pro",
+    description: "Learn Markdown syntax from basics to advanced — headings, lists, tables, code blocks, and more.",
+    date: new Date("2026-05-01"),
+    category: "Text",
+    readTime: "6 min read",
+  },
+  {
+    slug: "text-diff-guide",
+    title: "Text Diff Guide: Compare Texts and Find Differences Like a Developer",
+    description: "Learn how text diff checkers work for comparing code and documents, and how to interpret diff output.",
+    date: new Date("2026-05-05"),
+    category: "Text",
+    readTime: "5 min read",
+  },
+  {
+    slug: "image-converter-guide",
+    title: "Image Converter Guide: Convert Between PNG, JPEG, WebP, and GIF",
+    description: "Learn how to convert images between formats in your browser, and compare PNG vs JPEG vs WebP.",
+    date: new Date("2026-05-10"),
+    category: "Images",
+    readTime: "5 min read",
+  },
+  {
+    slug: "lorem-ipsum-guide",
+    title: "Lorem Ipsum Generator Guide: Generate Placeholder Text for Designs",
+    description: "Learn how to use Lorem Ipsum placeholder text in web design, print layout, and UI mockups.",
+    date: new Date("2026-05-15"),
+    category: "Generators",
+    readTime: "4 min read",
+  },
 ];
 
 const blogSchema = {
@@ -82,6 +186,10 @@ const blogSchema = {
   title="Developer Blog - Web Development Guides & Tutorials"
   description="Expert guides on JSON formatting, Base64 encoding, URL encoding, password security, color conversion, and more. Learn best practices for online developer tools."
   jsonLd={blogSchema}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Blog" },
+  ]}
 >
   <div class="container-main py-10">
     <div class="max-w-4xl mx-auto">

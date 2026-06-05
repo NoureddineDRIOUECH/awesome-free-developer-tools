@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/html-entities`;
@@ -67,6 +68,12 @@ const faqSchema = {
   description="Free online HTML entities encoder and decoder. Escape or unescape HTML special characters to prevent XSS and ensure proper rendering. 100% client-side."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Encoders & Decoders", href: "/tools/category/encoders" },
+    { label: "HTML Entities Encoder" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -244,6 +251,13 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
 
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">

@@ -1,9 +1,12 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/jwt-decoder`;
+const jwtHeaderExample = `{"alg":"HS256","typ":"JWT"}`;
+const jwtPayloadExample = `{"sub":"1234567890","name":"John Doe","iat":1516239022}`;
 
 const softwareSchema = {
   "@context": "https://schema.org",
@@ -58,6 +61,38 @@ const faqSchema = {
         text: "Yes. This JWT decoder runs entirely in your browser with no server communication. Your token data never leaves your device. However, never paste production secrets or sensitive tokens into any online tool.",
       },
     },
+    {
+      "@type": "Question",
+      name: "What is the difference between JWT and JWE?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "JWT (JSON Web Token) is signed but not encrypted — anyone can read the contents. JWE (JSON Web Encryption) encrypts the payload so only the intended recipient can read it. Use JWT for tamper-proof data, and JWE for confidential data.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How does JWT expiration work?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "JWTs include an exp (expiration) claim in the payload. This tool checks the exp claim and shows whether the token is valid or expired. Expired tokens should be rejected by servers and replaced with fresh tokens.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I trust the data in a JWT?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The signature verifies that the JWT hasn't been modified since it was signed, but the header and payload are Base64Url-encoded, not encrypted. Anyone with the token can decode and read its contents. Never store sensitive data in a JWT payload.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What signing algorithms can JWT use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "JWT supports multiple signing algorithms: HS256 (HMAC with SHA-256), RS256 (RSA with SHA-256), and ES256 (ECDSA with SHA-256) are the most common. HS256 uses a shared secret, while RS256 and ES256 use a public/private key pair.",
+      },
+    },
   ],
 };
 ---
@@ -67,6 +102,12 @@ const faqSchema = {
   description="Decode JWT tokens instantly online. View header, payload, and signature. Free, fast, browser-based JWT decoder for developers. 100% client-side, no data upload."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Security", href: "/tools/category/security" },
+    { label: "JWT Decoder" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -229,27 +270,114 @@ const faqSchema = {
         not protect the contents from being viewed. Our <strong>JWT token decoder</strong> shows
         exactly what data is visible in any JWT.
       </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">JWT Token Example</h3>
+      <div class="space-y-4 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">Encoded JWT</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto break-all">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</pre>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">Decoded Header</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{jwtHeaderExample}</pre>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">Decoded Payload</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{jwtPayloadExample}</pre>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">JWT Decoder FAQ</h3>
+      <div class="space-y-2 mb-6">
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is a JWT?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">JWT (JSON Web Token) is an open standard for securely transmitting information between parties as a JSON object. It consists of three parts: a header, a payload, and a signature, separated by dots. JWTs are widely used for authentication and authorization in modern web applications.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is it safe to decode JWT tokens online?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes. This JWT decoder runs entirely in your browser with no server communication. Your token data never leaves your device. However, never paste production secrets or sensitive tokens into any online tool.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is the difference between JWT and JWE?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">JWT (JSON Web Token) is signed but not encrypted — anyone can read the contents. JWE (JSON Web Encryption) encrypts the payload so only the intended recipient can read it. Use JWT for tamper-proof data, and JWE for confidential data.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            How does JWT expiration work?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">JWTs include an exp (expiration) claim in the payload. This tool checks the exp claim and shows whether the token is valid or expired. Expired tokens should be rejected by servers and replaced with fresh tokens from the authentication provider.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Can I trust the data in a JWT?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">The signature verifies that the JWT hasn't been modified since it was signed, but the header and payload are Base64Url-encoded, not encrypted. Anyone with the token can decode and read its contents. Never store sensitive data in a JWT payload.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What signing algorithms can JWT use?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">JWT supports multiple signing algorithms: HS256 (HMAC with SHA-256), RS256 (RSA with SHA-256), and ES256 (ECDSA with SHA-256) are the most common. HS256 uses a shared secret, while RS256 and ES256 use a public/private key pair for asymmetric signing.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            How do I decode a JWT token?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Paste your JWT token into the input field and click Decode. The tool will instantly decode the header and payload, display them as formatted JSON, and show the signature. All processing happens in your browser.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is Base64Url encoding?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Base64Url is a URL-safe variant of Base64. It uses - instead of + and _ instead of /, and omits padding = characters. JWT uses Base64Url encoding for all three parts of the token to ensure safe transmission in URLs and HTTP headers.</p>
+        </details>
+      </div>
     </div>
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
 
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
+
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">
     <div class="max-w-3xl mx-auto">
       <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/base64-encoder" class="tool-card block">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="/tools/base64-encoder" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">Base64 Encoder</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data — the foundation of JWT.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">JWT uses Base64Url encoding — understand the foundation of every JWT token.</p>
         </a>
-        <a href="/tools/json-formatter" class="tool-card block">
+        <a href="/tools/json-formatter" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">JSON Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Format and validate JSON from JWT payloads.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Format and validate JSON from decoded JWT header and payload data.</p>
         </a>
-        <a href="/tools/uuid-generator" class="tool-card block">
+        <a href="/tools/uuid-generator" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">UUID Generator</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Generate unique identifiers for JWT subjects.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate unique identifiers for JWT subjects and token IDs.</p>
+        </a>
+        <a href="/tools/hash-generator" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">Hash Generator</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate HMAC-SHA256 hashes — the signing algorithm used by HS256 JWTs.</p>
         </a>
       </div>
     </div>

@@ -1,0 +1,29 @@
+---
+const popular = [
+  { title: "JSON Formatter", href: "/tools/json-formatter", desc: "Format, validate, and beautify JSON data" },
+  { title: "Base64 Encoder", href: "/tools/base64-encoder", desc: "Encode and decode Base64 instantly" },
+  { title: "JWT Decoder", href: "/tools/jwt-decoder", desc: "Decode and inspect JWT tokens" },
+  { title: "Regex Tester", href: "/tools/regex-tester", desc: "Test regular expressions in real-time" },
+  { title: "Hash Generator", href: "/tools/hash-generator", desc: "Generate MD5, SHA-1, SHA-256 hashes" },
+];
+---
+
+<div class="tool-card p-4 sm:p-5">
+  <h3 class="text-sm font-semibold mb-3 tracking-tight">Popular Developer Tools</h3>
+  <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+    {popular.map((tool) => (
+      <a
+        href={tool.href}
+        class="flex items-center gap-2 p-2.5 rounded-lg hover:bg-surface-container-higher transition-colors group"
+      >
+        <svg class="size-3.5 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+        </svg>
+        <div>
+          <span class="text-sm font-medium group-hover:text-primary transition-colors">{tool.title}</span>
+          <p class="text-xs text-on-surface-variant leading-tight">{tool.desc}</p>
+        </div>
+      </a>
+    ))}
+  </div>
+</div>

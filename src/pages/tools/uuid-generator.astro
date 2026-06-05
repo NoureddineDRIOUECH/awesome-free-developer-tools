@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/uuid-generator`;
@@ -67,6 +68,12 @@ const faqSchema = {
   description="Generate UUID v4 instantly online. Free, fast, and secure UUID generator for developers. Batch generate 1-50 UUIDs with one click. 100% client-side, no server uploads."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Generators", href: "/tools/category/generators" },
+    { label: "UUID Generator" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -203,6 +210,13 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
 
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">

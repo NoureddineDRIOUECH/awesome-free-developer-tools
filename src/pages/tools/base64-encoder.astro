@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/base64-encoder`;
@@ -58,8 +59,42 @@ const faqSchema = {
         text: "Paste your Base64 encoded string into the input field and click the Decode button. The tool will convert it back to the original text. If the input is not valid Base64, an error message will be displayed.",
       },
     },
+    {
+      "@type": "Question",
+      name: "Is Base64 encryption?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No, Base64 is not encryption. It is an encoding scheme that transforms binary data into text format. Anyone can decode Base64 instantly. Never use Base64 to protect sensitive data — use proper encryption algorithms like AES instead.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why does Base64 end with = ?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The = character at the end of a Base64 string is padding. Base64 processes data in 3-byte groups, and when the input length is not a multiple of 3, one or two = characters are added to make the output length a multiple of 4.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I encode files with this tool?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, this tool supports file encoding. You can select a file from your device and the tool will read it and convert its contents to Base64. The entire process happens client-side in your browser.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my data safe when using this Base64 tool?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All encoding and decoding happens entirely in your browser using JavaScript. Your data never leaves your device — no uploads, no server requests, no logs.",
+      },
+    },
   ],
 };
+
+const base64JsonExample = `{"key": "value"}`;
 ---
 
 <BaseLayout
@@ -67,6 +102,12 @@ const faqSchema = {
   description="Encode and decode Base64 instantly online. Free Base64 encoder and decoder that runs in your browser with no login required. Convert text to Base64 and back."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Encoders & Decoders", href: "/tools/category/encoders" },
+    { label: "Base64 Encoder & Decoder" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -211,27 +252,107 @@ const faqSchema = {
         correctly, so emoji, non-Latin scripts, and special characters are all supported. Use the
         <strong>Copy</strong> button to copy the result to your clipboard.
       </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">Base64 Encoding Examples</h3>
+      <div class="space-y-4 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">Text → Base64</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">"Hello World" → SGVsbG8gV29ybGQ=</pre>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">JSON → Base64</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{base64JsonExample} → eyJrZXkiOiAidmFsdWUifQ==</pre>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">Base64 Encoding FAQ</h3>
+      <div class="space-y-2 mb-6">
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is Base64 encoding?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format. It is commonly used to transmit data over media designed to handle textual data, such as email or HTTP. Each Base64 digit represents exactly 6 bits of data.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is Base64 encryption?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">No, Base64 is not encryption. It is an encoding scheme that transforms binary data into text format. Anyone can decode Base64 instantly. Never use Base64 to protect sensitive data — use proper encryption algorithms like AES instead.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            How do I encode text to Base64?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Type or paste your text into the input field and click the Encode button. The tool will instantly convert your text to a Base64 encoded string. You can then copy the result.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Why does Base64 end with = ?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">The = character at the end of a Base64 string is padding. Base64 processes data in 3-byte groups, and when the input length is not a multiple of 3, one or two = characters are added to make the output length a multiple of 4.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Can I encode files with this tool?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes, this tool supports file encoding. You can select a file from your device and the tool will read it and convert its contents to Base64. The entire process happens client-side in your browser.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is Base64 safe for sensitive data?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">No. Base64 is encoding, not encryption. It can be decoded by anyone without a key. Never use Base64 for sensitive data — it offers no security whatsoever. Use encryption algorithms such as AES for real data protection.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is my data safe when using this tool?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes. All encoding and decoding happens entirely in your browser. Your data never leaves your device — no uploads, no server requests, no logs.</p>
+        </details>
+      </div>
     </div>
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
 
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
+
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">
     <div class="max-w-3xl mx-auto">
       <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/json-formatter" class="tool-card block">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="/tools/json-formatter" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">JSON Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Base64 is commonly used to encode binary data within JSON payloads and API responses.</p>
         </a>
-        <a href="/tools/url-encoder" class="tool-card block">
+        <a href="/tools/url-encoder" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">URL Encoder</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode URLs and query parameters.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Base64 strings often need URL encoding for safe transmission in query parameters.</p>
         </a>
-        <a href="/tools/html-entities" class="tool-card block">
+        <a href="/tools/html-entities" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">HTML Entities</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Escape and unescape HTML special characters.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Escape and unescape HTML special characters alongside Base64 processing.</p>
+        </a>
+        <a href="/tools/jwt-decoder" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">JWT Decoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">JWT tokens use Base64url encoding — decode and inspect their contents.</p>
+        </a>
+        <a href="/tools/hash-generator" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">Hash Generator</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate MD5, SHA-1, and SHA-256 hashes — often used alongside Base64 for security.</p>
         </a>
       </div>
     </div>

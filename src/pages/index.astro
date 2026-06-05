@@ -1,6 +1,7 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import CategoryGrid from "../components/CategoryGrid.astro";
+import PopularTools from "../components/PopularTools.astro";
 import AdSlot from "../components/AdSlot.astro";
 import { getToolCategoryPairs } from "../lib/tools";
 
@@ -131,13 +132,15 @@ const homeSchema = {
             In-depth guides on JSON formatting, Base64 encoding, password security, and more.
           </p>
         </a>
-        <a href="/faq" class="tool-card block">
-          <h3 class="font-semibold text-sm">Frequently Asked Questions</h3>
+        <a href="/tools" class="tool-card block">
+          <h3 class="font-semibold text-sm">Browse All Tools</h3>
           <p class="mt-1 text-sm text-on-surface-variant">
-            Answers to common questions about our tools, privacy, and how things work.
+            View all {totalTools} free developer tools organized by category.
           </p>
         </a>
       </div>
+
+      <PopularTools />
     </div>
   </section>
 </BaseLayout>

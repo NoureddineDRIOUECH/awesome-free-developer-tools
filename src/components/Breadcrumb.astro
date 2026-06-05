@@ -1,0 +1,24 @@
+---
+export interface BreadcrumbItem {
+  label: string;
+  href?: string;
+}
+
+const { items, class: className = "" } = Astro.props as {
+  items: BreadcrumbItem[];
+  class?: string;
+};
+---
+
+<nav class={`text-xs text-on-surface-variant flex items-center gap-2 ${className}`} aria-label="Breadcrumb">
+  {items.map((item, i) => (
+    <>
+      {i > 0 && <span class="text-on-surface-variant/40">/</span>}
+      {item.href ? (
+        <a href={item.href} class="hover:text-primary transition-colors">{item.label}</a>
+      ) : (
+        <span class="text-on-surface">{item.label}</span>
+      )}
+    </>
+  ))}
+</nav>

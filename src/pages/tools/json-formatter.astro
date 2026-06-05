@@ -1,9 +1,12 @@
 ---
 import BaseLayout from "../../layouts/BaseLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
 
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/json-formatter`;
+const minifiedExample = `{"name":"WebUtil","type":"tool","features":["formatter","validator","minifier"],"version":1.0}`;
+const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "features": [\n    "formatter",\n    "validator",\n    "minifier"\n  ],\n  "version": 1.0\n}`;
 
 const softwareSchema = {
   "@context": "https://schema.org",
@@ -58,6 +61,30 @@ const faqSchema = {
         text: "Paste your JSON into the input field and click the Validate button. The tool will check if the JSON is valid and show any syntax errors with line numbers.",
       },
     },
+    {
+      "@type": "Question",
+      name: "What is the difference between format and minify?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Formatting adds indentation and line breaks for readability. Minifying removes all optional whitespace to produce the smallest possible JSON string, useful for reducing file size in production.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my JSON data safe?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All processing happens entirely in your browser. Your JSON data never leaves your device — no uploads, no server requests, no logs.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Can I use this tool offline?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Once the page is loaded, the JSON formatter works fully offline. Since all processing is client-side, no internet connection is needed to format, validate, or minify JSON data.",
+      },
+    },
   ],
 };
 ---
@@ -67,6 +94,12 @@ const faqSchema = {
   description="Format, validate, and minify JSON instantly online. Free JSON beautifier that runs in your browser with no login required. Validate JSON syntax and identify errors."
   canonical={pageUrl}
   ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Formatters", href: "/tools/category/formatters" },
+    { label: "JSON Formatter" },
+  ]},
   jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
 >
   <!-- Hero -->
@@ -219,27 +252,118 @@ const faqSchema = {
         If your JSON is invalid, the error message will show you exactly where the problem is.
         You can then copy the formatted result with the <strong>Copy</strong> button.
       </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">JSON Formatting Examples</h3>
+      <div class="space-y-4 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">Before (Minified)</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{minifiedExample}</pre>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm mb-2">After (Formatted)</h4>
+          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{formattedExample}</pre>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">JSON Formatter FAQ</h3>
+      <div class="space-y-2 mb-6">
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is a JSON formatter?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">A JSON formatter takes raw, minified, or poorly formatted JSON data and reformats it with proper indentation, line breaks, and spacing to make it human-readable. This is also called JSON beautification or JSON pretty-printing.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is JSON Formatter free?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes, it is completely free with no limits, no sign-up required, and no data sent to any server. Everything runs in your browser using client-side JavaScript.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            How do I validate JSON?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Paste your JSON into the input field and click Validate. The tool checks if the JSON is valid and shows syntax errors with line numbers so you can fix them quickly.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Can I format large JSON files?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">The tool can handle most common JSON files. Since it runs entirely in your browser, performance depends on your device's memory and processing power. For extremely large files, try splitting the data into smaller chunks.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is the difference between format and minify?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Formatting adds indentation and line breaks for readability. Minifying removes all optional whitespace to produce the smallest possible JSON string, which is useful for reducing file size in production.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is my JSON data safe?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes. All processing happens entirely in your browser. Your JSON data never leaves your device — no uploads, no server requests, no logs.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Can I use this tool offline?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Once the page is loaded, the JSON formatter works fully offline. Since all processing is client-side, no internet connection is needed to format, validate, or minify JSON data.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Does the tool support JSON5?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">This tool uses the standard JSON.parse method, which only accepts strict JSON. JSON5 (which allows comments, trailing commas, and single quotes) is not supported. For JSON5 formatting, consider using a specialized JSON5 tool.</p>
+        </details>
+      </div>
     </div>
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
 
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
+
   <!-- Related Tools -->
   <section class="container-main py-8 pb-16">
     <div class="max-w-3xl mx-auto">
       <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/base64-encoder" class="tool-card block">
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="/tools/base64-encoder" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">Base64 Encoder</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data instantly.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data instantly — JSON Web Tokens and payloads often use Base64.</p>
         </a>
-        <a href="/tools/yaml-converter" class="tool-card block">
+        <a href="/tools/yaml-converter" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">YAML Converter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Convert between JSON and YAML formats.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert between JSON and YAML, the two most popular data serialisation formats.</p>
         </a>
-        <a href="/tools/xml-formatter" class="tool-card block">
+        <a href="/tools/xml-formatter" class="tool-card block p-4">
           <h3 class="font-semibold text-sm">XML Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Format and validate XML documents.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Compare JSON with XML — format and validate XML documents side by side.</p>
+        </a>
+        <a href="/tools/jwt-decoder" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">JWT Decoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Decode and inspect JSON Web Tokens — your JSON knowledge applies directly to JWT.</p>
+        </a>
+        <a href="/tools/url-encoder" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">URL Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode URLs — JSON data often needs URL encoding for web transmission.</p>
+        </a>
+        <a href="/tools/regex-tester" class="tool-card block p-4">
+          <h3 class="font-semibold text-sm">Regex Tester</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Test patterns for JSON parsing and validation with real-time regex matching.</p>
         </a>
       </div>
     </div>
@@ -253,12 +377,27 @@ const faqSchema = {
         <a href="/blog/json-formatting-guide" class="tool-card block p-4">
           <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
           <h3 class="font-semibold text-sm">JSON Formatting Guide</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Read our comprehensive guide to learn more.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Master JSON formatting with best practices, common patterns, and troubleshooting tips for developers.</p>
         </a>
         <a href="/blog/common-json-errors" class="tool-card block p-4">
           <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
           <h3 class="font-semibold text-sm">Common JSON Errors</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Read our comprehensive guide to learn more.</p>
+          <p class="mt-1 text-xs text-on-surface-variant">Fix the most frequent JSON errors with step-by-step solutions and real-world examples.</p>
+        </a>
+        <a href="/blog/json-vs-xml" class="tool-card block p-4">
+          <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
+          <h3 class="font-semibold text-sm">JSON vs XML: Which Format Wins?</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Compare JSON and XML for APIs, configuration, and data exchange in modern web development.</p>
+        </a>
+        <a href="/blog/json-schema-guide" class="tool-card block p-4">
+          <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
+          <h3 class="font-semibold text-sm">JSON Schema Guide</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Learn JSON Schema fundamentals to validate your data structures against defined rules.</p>
+        </a>
+        <a href="/blog/how-apis-use-json" class="tool-card block p-4">
+          <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
+          <h3 class="font-semibold text-sm">How APIs Use JSON</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Explore JSON usage in REST, GraphQL, and WebSocket APIs with real-world patterns and examples.</p>
         </a>
       </div>
     </div>

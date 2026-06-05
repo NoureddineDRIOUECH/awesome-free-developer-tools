@@ -1,0 +1,135 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+import AdSlot from "../../../components/AdSlot.astro";
+import { categories, getToolsByCategory, getCategoryInfo, tools, type ToolCategory } from "../../../lib/tools";
+
+export function getStaticPaths() {
+  const catsWithTools = categories.filter((c) => getToolsByCategory(c.id).length > 0);
+  return catsWithTools.map((cat) => ({
+    params: { cat: cat.id },
+    props: { cat },
+  }));
+}
+
+const { cat } = Astro.props;
+const category = getCategoryInfo(cat.id)!;
+const categoryTools = getToolsByCategory(cat.id);
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/category/${cat.id}`;
+
+const blogLinks: Record<string, { title: string; slug: string }[]> = {
+  formatters: [
+    { title: "JSON Formatting Guide", slug: "json-formatting-guide" },
+    { title: "Common JSON Errors", slug: "common-json-errors" },
+    { title: "JSON vs XML", slug: "json-vs-xml" },
+    { title: "JSON Schema Guide", slug: "json-schema-guide" },
+    { title: "How APIs Use JSON", slug: "how-apis-use-json" },
+    { title: "SQL Formatting Guide", slug: "sql-formatting-guide" },
+    { title: "XML Formatting Guide", slug: "xml-formatting-guide" },
+  ],
+  encoders: [
+    { title: "URL Encoding Guide", slug: "url-encoding-decoding" },
+    { title: "Base64 Encoding Guide", slug: "base64-encoding-methods" },
+    { title: "HTML Entities Guide", slug: "html-entities-guide" },
+  ],
+  security: [
+    { title: "Password Security Best Practices", slug: "password-security-best-practices" },
+    { title: "Online Tool Security", slug: "online-tools-security" },
+    { title: "Hash Generator Guide", slug: "hash-generator-guide" },
+  ],
+  converters: [
+    { title: "Color Converter Guide", slug: "color-converter-guide" },
+    { title: "YAML Converter Guide", slug: "yaml-converter-guide" },
+  ],
+  generators: [
+    { title: "UUID Guide", slug: "uuid-guide" },
+    { title: "Lorem Ipsum Guide", slug: "lorem-ipsum-guide" },
+  ],
+  text: [
+    { title: "Case Converter Guide", slug: "case-converter-guide" },
+    { title: "Markdown Preview Guide", slug: "markdown-guide" },
+    { title: "Text Diff Guide", slug: "text-diff-guide" },
+  ],
+  images: [
+    { title: "Image Converter Guide", slug: "image-converter-guide" },
+  ],
+};
+
+const categoryGuides = blogLinks[cat.id] || [];
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: category.name, item: pageUrl },
+  ],
+};
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `${category.name} - Free Online Developer Tools`,
+  description: `Browse free online ${cat.id} tools. ${category.description}. All tools run 100% in your browser with no server uploads.`,
+  url: pageUrl,
+};
+---
+
+<BaseLayout
+  title={`${category.name} Tools - Free Online Developer Tools`}
+  description={`Free online ${cat.id} tools: ${categoryTools.map(t => t.title).join(", ")}. ${category.description}. 100% client-side, no data upload.`}
+  canonical={pageUrl}
+  jsonLd={[breadcrumbSchema, collectionSchema]}
+>
+  <div class="container-main py-10">
+    <div class="max-w-4xl mx-auto">
+      <nav class="text-xs text-on-surface-variant mb-6 flex items-center gap-2">
+        <a href="/" class="hover:text-primary transition-colors">Home</a>
+        <span>/</span>
+        <a href="/tools" class="hover:text-primary transition-colors">Tools</a>
+        <span>/</span>
+        <span class="text-on-surface">{category.name}</span>
+      </nav>
+
+      <div class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">{category.name} Tools</h1>
+        <p class="mt-3 text-base text-on-surface-variant max-w-2xl leading-relaxed">
+          {category.description}. All tools run entirely in your browser —
+          nothing is uploaded, nothing is stored.
+        </p>
+      </div>
+
+      <div class="grid gap-4">
+        {categoryTools.map((tool) => (
+          <a
+            href={`/tools/${tool.id}`}
+            class="tool-card block p-5 hover:border-primary/30 transition-colors"
+          >
+            <h2 class="text-lg font-semibold group-hover:text-primary transition-colors">{tool.title}</h2>
+            <p class="mt-1.5 text-sm text-on-surface-variant leading-relaxed">{tool.description}</p>
+          </a>
+        ))}
+      </div>
+
+      {categoryGuides.length > 0 && (
+        <>
+          <h2 class="text-2xl font-semibold tracking-tight mt-12 mb-4">Related Guides</h2>
+          <div class="grid gap-3">
+            {categoryGuides.map((guide) => (
+              <a
+                href={`/blog/${guide.slug}`}
+                class="tool-card block p-4"
+              >
+                <p class="text-xs text-on-surface-variant mb-1">Blog Post</p>
+                <h3 class="font-semibold text-sm">{guide.title}</h3>
+              </a>
+            ))}
+          </div>
+        </>
+      )}
+
+      <AdSlot format="in-article" class="mt-8" />
+    </div>
+  </div>
+</BaseLayout>

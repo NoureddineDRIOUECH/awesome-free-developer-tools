@@ -21,6 +21,7 @@ const {
   publishDate,
   author = "WebUtil Team",
   category,
+  breadcrumbs,
 } = Astro.props;
 ---
 
@@ -31,6 +32,7 @@ const {
   ogImage={ogImage}
   jsonLd={jsonLd}
   ogType="article"
+  breadcrumbs={breadcrumbs}
 >
   <article class="container-main py-12 max-w-3xl mx-auto" slot="default">
     <header class="mb-10">

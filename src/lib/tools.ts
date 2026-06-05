@@ -239,6 +239,16 @@ export const tools: ToolDefinition[] = [
     relatedTools: ["json-formatter", "yaml-converter", "xml-formatter"],
   },
   {
+    id: "regex-tester",
+    title: "Regex Tester",
+    description: "Test regular expressions in real-time with match highlighting, group capture, and flag controls.",
+    category: "text",
+    icon: "manage_search",
+    metaDescription: "Free online regex tester. Test regular expressions in real-time with match highlighting, group capture, and replace functionality. 100% client-side, no data sent to servers.",
+    keywords: ["regex tester", "regular expression tester", "regex checker", "regex playground", "regex match test"],
+    relatedTools: ["json-formatter", "case-converter", "text-diff"],
+  },
+  {
     id: "xml-formatter",
     title: "XML Formatter",
     description: "Format, validate, and beautify XML data with syntax highlighting.",

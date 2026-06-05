@@ -36,6 +36,10 @@ const allSchema = {
   title={`All Developer Tools${selectedCategory ? ` - ${categories.find(c => c.id === selectedCategory)?.name}` : ""}`}
   description={`Browse all ${filteredTools.length} free online developer tools. ${selectedCategory ? `${categories.find(c => c.id === selectedCategory)?.name}: ` : ""}Format, encode, generate, and convert data entirely in your browser.`}
   jsonLd={allSchema}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools" },
+  ]}
 >
   <div class="container-main py-10">
     <div class="mb-8">

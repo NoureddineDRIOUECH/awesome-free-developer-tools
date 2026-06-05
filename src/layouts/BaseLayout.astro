@@ -1,6 +1,8 @@
 ---
 import "../styles/global.css";
 import SEOHead from "../components/SEOHead.astro";
+import Breadcrumb from "../components/Breadcrumb.astro";
+import type { BreadcrumbItem } from "../components/Breadcrumb.astro";
 import Navbar from "../components/Navbar.astro";
 import Footer from "../components/Footer.astro";
 
@@ -12,6 +14,7 @@ export interface Props {
   ogType?: string;
   noindex?: boolean;
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  breadcrumbs?: BreadcrumbItem[];
 }
 
 const {
@@ -22,6 +25,7 @@ const {
   ogType,
   noindex,
   jsonLd,
+  breadcrumbs,
 } = Astro.props;
 ---
 
@@ -43,6 +47,7 @@ const {
   <body class="min-h-screen bg-background text-on-surface antialiased">
     <Navbar />
     <main>
+      {breadcrumbs && <div class="container-main pt-6"><Breadcrumb items={breadcrumbs} /></div>}
       <slot />
     </main>
     <Footer />

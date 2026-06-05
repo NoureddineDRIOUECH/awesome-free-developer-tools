@@ -1,0 +1,577 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import PopularTools from "../../components/PopularTools.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/regex-tester`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Regex Tester Online",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online regex tester and debugger. Test regular expressions in real-time with match highlighting, group capture display, and multiple flag support.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "Regex Tester Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is a regex tester?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A regex tester is a tool that lets you write and test regular expression patterns against sample text in real-time. It shows which parts of your text match the pattern and displays captured groups.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is this regex tester free?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes, this regex tester is completely free with no limits, no sign-up required, and no data sent to any server. Everything runs in your browser.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What regex flags are supported?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "This tool supports the g (global), i (case-insensitive), m (multiline), s (dotall), and u (unicode) flags. You can enable any combination by toggling the flag buttons.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is a capturing group?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A capturing group is a part of a regex pattern enclosed in parentheses () that captures the matched text for later use. Groups are numbered starting from 1 based on the position of the opening parenthesis.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What regex engine does this tool use?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "This tool uses JavaScript's built-in RegExp engine, which is based on the ECMAScript specification. It supports most common regex features including groups, quantifiers, character classes, and lookaheads.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my data safe when testing regex patterns?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. All regex matching happens entirely in your browser. Your patterns and test data never leave your device — no uploads, no server requests, no logs.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What are common regex use cases?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Regex is commonly used for form validation (email, phone, URLs), search and replace operations, log file parsing, data extraction from text, syntax highlighting in code editors, and input sanitization.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the difference between greedy and lazy matching?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Greedy quantifiers (like .*) match as much as possible, while lazy quantifiers (like .*?) match as little as possible. Adding a ? after a quantifier makes it lazy. This tool shows both behaviors in real-time.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Regex Tester Online - Free Regular Expression Tester & Debugger"
+  description="Test and debug regular expressions in real-time. Free regex tester with match highlighting, group capture, and multiple flag support. 100% client-side, no data upload."
+  canonical={pageUrl}
+  ogType="website"
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    { label: "Text Tools", href: "/tools/category/text" },
+    { label: "Regex Tester" },
+  ]},
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          Regex Tester Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Test and debug regular expressions in real-time. See matches highlighted instantly
+          with group capture display — no server upload, fully private.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <!-- Regex Pattern -->
+          <div>
+            <label for="regex-pattern" class="text-sm font-medium mb-1.5 block">Regular Expression</label>
+            <div class="flex items-center gap-1 rounded-lg border border-surface-container-highest bg-surface-container px-3 has-[input:focus]:border-primary/50 transition-colors">
+              <span class="text-on-surface-variant font-mono text-sm">/</span>
+              <input
+                id="regex-pattern"
+                type="text"
+                class="flex-1 bg-transparent py-2.5 text-sm font-mono outline-none"
+                placeholder="[a-z]+"
+                value="\w+@\w+\.\w+"
+              />
+              <span class="text-on-surface-variant font-mono text-sm">/</span>
+              <input
+                id="regex-flags"
+                type="text"
+                class="w-12 bg-transparent py-2.5 text-sm font-mono outline-none uppercase"
+                placeholder="gi"
+                value="gi"
+              />
+            </div>
+            <div class="flex gap-1.5 mt-2">
+              {["g", "i", "m", "s", "u"].map((flag) => (
+                <button
+                  type="button"
+                  class={`flag-btn size-7 rounded text-xs font-mono font-medium transition-colors ${flag === "g" || flag === "i" ? "bg-primary/20 text-primary border border-primary/30" : "bg-surface-container-higher text-on-surface-variant border border-surface-container-highest"}`}
+                  data-flag={flag}
+                >
+                  {flag}
+                </button>
+              ))}
+            </div>
+          </div>
+
+          <!-- Test String -->
+          <div>
+            <label for="test-string" class="text-sm font-medium mb-1.5 block">Test String</label>
+            <textarea
+              id="test-string"
+              class="input-field font-mono text-sm min-h-[160px] resize-y scrollbar-thin"
+              placeholder="Enter text to test your regex against..."
+              spellcheck="false"
+            >Contact us at support@webutil.io or hello@example.com for more info. Call (555) 123-4567.</textarea>
+          </div>
+
+          <div class="flex items-center justify-between">
+            <div class="text-xs text-on-surface-variant">
+              <span id="match-count">2 matches</span>
+            </div>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <!-- Matches Output -->
+          <div id="matches-output">
+            <div class="tool-card p-4 bg-surface-container/50">
+              <h3 class="text-sm font-semibold mb-2">Matches</h3>
+              <pre id="matches-text" class="font-mono text-sm whitespace-pre-wrap overflow-auto scrollbar-thin min-h-[80px] leading-relaxed"></pre>
+            </div>
+          </div>
+
+          <!-- Groups Output -->
+          <div id="groups-output" class="hidden">
+            <div class="tool-card p-4 bg-surface-container/50">
+              <h3 class="text-sm font-semibold mb-2">Capturing Groups</h3>
+              <div id="groups-table" class="space-y-1"></div>
+            </div>
+          </div>
+
+          <!-- Error Output -->
+          <div id="regex-error" class="hidden">
+            <div class="rounded-lg border border-red-500/50 bg-red-500/5 p-4">
+              <p id="regex-error-msg" class="text-sm text-red-400 font-mono"></p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto prose-custom">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Regex Tester?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>regex tester</strong> is an interactive tool that helps developers write, test, and debug
+        regular expressions (regex) in real-time. It shows exactly which parts of your input text match
+        your pattern, making it invaluable for building and troubleshooting regex patterns for validation,
+        search, parsing, and text transformation tasks.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common Regex Patterns</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Email</h4>
+          <code class="mt-1 block text-xs font-mono text-on-surface-variant">\w+@\w+\.\w+</code>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Phone (US)</h4>
+          <code class="mt-1 block text-xs font-mono text-on-surface-variant">\(\d{3}\)\s\d{3}-\d{4}</code>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">URL</h4>
+          <code class="mt-1 block text-xs font-mono text-on-surface-variant">https?://\S+</code>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">IP Address</h4>
+          <code class="mt-1 block text-xs font-mono text-on-surface-variant">\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}</code>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Understanding Regex Flags</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">g — Global</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Find all matches, not just the first one.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">i — Case-Insensitive</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Ignore case when matching letters.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">m — Multiline</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">^ and $ match line boundaries, not string boundaries.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">s — Dotall</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">The . metacharacter matches newlines too.</p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Use Cases for Regex Testing</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Form Validation</strong> — Validate email addresses, phone numbers, URLs, and postal codes in web forms.</li>
+        <li><strong>Log Parsing</strong> — Extract structured data from server logs, application logs, and error reports.</li>
+        <li><strong>Data Extraction</strong> — Pull specific patterns from large text documents, API responses, or configuration files.</li>
+        <li><strong>Search & Replace</strong> — Find and transform text patterns across files with regex-based substitution.</li>
+        <li><strong>Input Sanitization</strong> — Filter and clean user input by matching allowed or disallowed patterns.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Regex Tester</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Enter your regex pattern between the forward slashes in the pattern input field. Add flags (g, i, m, s, u)
+        using the flag buttons or the flags input. Type or paste your test string in the text area below.
+        Matches are highlighted in real-time with colored backgrounds, and capturing groups are displayed
+        in the groups section below the matches. If your regex is invalid, an error message will show
+        the syntax problem.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- FAQ -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Regex Tester FAQ</h2>
+      <div class="space-y-2">
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is a regex tester used for?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">A regex tester helps developers write, test, and debug regular expression patterns interactively. It shows real-time match results, captured groups, and highlights matches in the test string, making regex development much faster than trial-and-error coding.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is this regex tester free?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes, completely free with no limits, no sign-up required, and no server uploads. All regex matching runs locally in your browser.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What regex flags does this tool support?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">The tool supports g (global match), i (case-insensitive), m (multiline), s (dotall — . matches newlines), and u (unicode) flags. Click the flag buttons or type flags directly in the flags input.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is a capturing group in regex?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">A capturing group is a portion of a regex pattern enclosed in parentheses () that captures the matched substring for later use. Groups are numbered by the position of their opening parenthesis. This tool displays all captured groups for each match.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What regex engine does this use?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">This tool uses JavaScript's built-in RegExp engine (ECMAScript specification). It supports most common features including quantifiers, character classes, groups, backreferences, lookaheads, and lookbehinds.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            Is my data safe when testing regex?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Yes. Everything runs in your browser with no server communication. Your patterns and test data never leave your device.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            What is the difference between greedy and lazy matching?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Greedy quantifiers (like .* or .+) match as much text as possible while still allowing the overall pattern to match. Lazy quantifiers (like .*? or .+?) match as little as possible. Adding a ? after a quantifier makes it lazy.</p>
+        </details>
+        <details class="tool-card p-4 group open:border-primary/30">
+          <summary class="text-sm font-medium cursor-pointer list-none flex items-center justify-between">
+            How do I use lookaheads and lookbehinds?
+            <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
+          </summary>
+          <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">Lookaheads (?=pattern) assert what follows, while lookbehinds (?&lt;=pattern) assert what precedes. Negative lookaheads (?!pattern) and lookbehinds (?&lt;!pattern) assert the absence of a pattern. This tester supports all four types.</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format and validate JSON data.</p>
+        </a>
+        <a href="/tools/case-converter" class="tool-card block">
+          <h3 class="font-semibold text-sm">Case Converter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert text between naming conventions.</p>
+        </a>
+        <a href="/tools/text-diff" class="tool-card block">
+          <h3 class="font-semibold text-sm">Text Diff Checker</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Compare two texts side by side.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const patternInput = document.getElementById("regex-pattern");
+  const flagsInput = document.getElementById("regex-flags");
+  const testString = document.getElementById("test-string");
+  const matchesText = document.getElementById("matches-text");
+  const groupsOutput = document.getElementById("groups-output");
+  const groupsTable = document.getElementById("groups-table");
+  const matchCount = document.getElementById("match-count");
+  const error = document.getElementById("regex-error");
+  const errorMsg = document.getElementById("regex-error-msg");
+  const btnClear = document.getElementById("btn-clear");
+
+  const COLORS = [
+    "bg-yellow-500/30 text-yellow-200",
+    "bg-green-500/30 text-green-200",
+    "bg-blue-500/30 text-blue-200",
+    "bg-pink-500/30 text-pink-200",
+    "bg-purple-500/30 text-purple-200",
+    "bg-orange-500/30 text-orange-200",
+    "bg-cyan-500/30 text-cyan-200",
+  ];
+
+  function testRegex() {
+    const pattern = patternInput.value;
+    const flags = flagsInput.value;
+    const text = testString.value;
+
+    error.classList.add("hidden");
+
+    if (!pattern || !text) {
+      matchesText.textContent = text || "Enter a regex pattern and test string to see matches.";
+      groupsOutput.classList.add("hidden");
+      matchCount.textContent = "0 matches";
+      return;
+    }
+
+    try {
+      const regex = new RegExp(pattern, flags);
+      const matches = [];
+      let match;
+      let lastIndex = 0;
+      const global = flags.includes("g");
+
+      if (global) {
+        let m;
+        while ((m = regex.exec(text)) !== null) {
+          matches.push({ full: m[0], groups: Array.from(m).slice(1), index: m.index });
+          if (m.index === regex.lastIndex) regex.lastIndex++;
+        }
+      } else {
+        match = regex.exec(text);
+        if (match) {
+          matches.push({ full: match[0], groups: Array.from(match).slice(1), index: match.index });
+        }
+      }
+
+      // Render highlighted text
+      if (matches.length === 0) {
+        matchesText.textContent = text;
+        groupsOutput.classList.add("hidden");
+        matchCount.textContent = "0 matches";
+        return;
+      }
+
+      let html = "";
+      let pos = 0;
+      matches.forEach((m, i) => {
+        const color = COLORS[i % COLORS.length];
+        if (m.index > pos) {
+          html += escapeHtml(text.slice(pos, m.index));
+        }
+        html += `<span class="${color} rounded px-0.5">${escapeHtml(m.full)}</span>`;
+        pos = m.index + m.full.length;
+      });
+      if (pos < text.length) {
+        html += escapeHtml(text.slice(pos));
+      }
+      matchesText.innerHTML = html;
+
+      // Render groups
+      const hasGroups = matches.some((m) => m.groups.length > 0);
+      if (hasGroups) {
+        groupsOutput.classList.remove("hidden");
+        groupsTable.innerHTML = matches
+          .map(
+            (m, i) => `
+            <div class="text-xs p-2 rounded bg-surface-container">
+              <span class="text-on-surface-variant">Match ${i + 1}:</span>
+              <span class="text-primary font-medium">${escapeHtml(m.full)}</span>
+              ${m.groups
+                .map(
+                  (g, j) =>
+                    g !== undefined
+                      ? `<div class="ml-4 mt-1"><span class="text-on-surface-variant">Group ${j + 1}:</span> <span class="text-primary font-mono">${escapeHtml(String(g))}</span></div>`
+                      : ""
+                )
+                .join("")}
+            </div>`
+          )
+          .join("");
+      } else {
+        groupsOutput.classList.add("hidden");
+      }
+
+      const word = matches.length === 1 ? "match" : "matches";
+      matchCount.textContent = `${matches.length} ${word}`;
+    } catch (e) {
+      error.classList.remove("hidden");
+      errorMsg.textContent = e.message;
+      matchesText.textContent = "";
+      groupsOutput.classList.add("hidden");
+    }
+  }
+
+  function escapeHtml(str) {
+    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  }
+
+  // Flag toggle buttons
+  document.querySelectorAll(".flag-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      const flag = btn.dataset.flag;
+      const current = flagsInput.value;
+      if (current.includes(flag)) {
+        flagsInput.value = current.replace(flag, "");
+        btn.className =
+          "flag-btn size-7 rounded text-xs font-mono font-medium transition-colors bg-surface-container-higher text-on-surface-variant border border-surface-container-highest";
+      } else {
+        flagsInput.value = (current + flag)
+          .split("")
+          .sort()
+          .join("");
+        btn.className =
+          "flag-btn size-7 rounded text-xs font-mono font-medium transition-colors bg-primary/20 text-primary border border-primary/30";
+      }
+      testRegex();
+    });
+  });
+
+  // Sync flag buttons with flags input
+  function syncFlagButtons() {
+    const flags = flagsInput.value;
+    document.querySelectorAll(".flag-btn").forEach((btn) => {
+      const flag = btn.dataset.flag;
+      if (flags.includes(flag)) {
+        btn.className =
+          "flag-btn size-7 rounded text-xs font-mono font-medium transition-colors bg-primary/20 text-primary border border-primary/30";
+      } else {
+        btn.className =
+          "flag-btn size-7 rounded text-xs font-mono font-medium transition-colors bg-surface-container-higher text-on-surface-variant border border-surface-container-highest";
+      }
+    });
+  }
+
+  patternInput.addEventListener("input", testRegex);
+  flagsInput.addEventListener("input", () => {
+    syncFlagButtons();
+    testRegex();
+  });
+  testString.addEventListener("input", testRegex);
+
+  btnClear.onclick = () => {
+    patternInput.value = "";
+    flagsInput.value = "gi";
+    testString.value = "";
+    syncFlagButtons();
+    matchesText.textContent = "";
+    groupsOutput.classList.add("hidden");
+    matchCount.textContent = "0 matches";
+    error.classList.add("hidden");
+    patternInput.focus();
+  };
+
+  // Initial test
+  testRegex();
+</script>
