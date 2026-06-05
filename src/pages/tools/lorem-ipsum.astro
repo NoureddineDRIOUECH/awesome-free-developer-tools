@@ -1,0 +1,328 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/lorem-ipsum`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Lorem Ipsum Generator Online",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free Lorem Ipsum generator. Create placeholder text in paragraphs, sentences, or words for your designs, mockups, and wireframes. Instant generation, no sign-up required.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "Lorem Ipsum Generator Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is Lorem Ipsum?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Lorem Ipsum is dummy text used in the printing and typesetting industry. It has been the standard placeholder text since the 1500s and is used by designers to demonstrate visual form before content is ready.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I generate Lorem Ipsum text?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Select whether you want paragraphs, sentences, or words, enter the amount you need, and click Generate. The tool will instantly create the requested amount of placeholder text.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why use Lorem Ipsum instead of real text?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Using Lorem Ipsum keeps the focus on design elements rather than readable content. It prevents reviewers from getting distracted by meaningful text during layout reviews and wireframe presentations.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Lorem Ipsum Generator Online - Free Placeholder Text Tool"
+  description="Free Lorem Ipsum generator. Create placeholder text in paragraphs, sentences, or words for your designs, mockups, and wireframes. Instant generation, no sign-up required."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          Lorem Ipsum Generator Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Generate classic placeholder text instantly. Choose paragraphs, sentences, or words —
+          no sign-up, no ads, just dummy text.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="lorem-amount" class="text-sm font-medium mb-1.5 block">
+              Amount
+            </label>
+            <input
+              id="lorem-amount"
+              type="number"
+              class="input-field text-sm"
+              value="3"
+              min="1"
+              max="100"
+            />
+          </div>
+
+          <div>
+            <label for="lorem-type" class="text-sm font-medium mb-1.5 block">
+              Type
+            </label>
+            <select id="lorem-type" class="input-field text-sm">
+              <option value="paragraphs">Paragraphs</option>
+              <option value="sentences">Sentences</option>
+              <option value="words">Words</option>
+            </select>
+          </div>
+
+          <button id="lorem-generate" class="btn-primary text-sm">
+            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+            </svg>
+            Generate
+          </button>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="lorem-output" class="text-sm font-medium">Output</label>
+              <button id="lorem-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre
+              id="lorem-output"
+              class="input-field font-mono text-sm min-h-[200px] whitespace-pre-wrap overflow-auto scrollbar-thin"
+            ></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is Lorem Ipsum?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>Lorem Ipsum</strong> is dummy text used in the printing and typesetting industry.
+        It has been the industry's standard dummy text ever since the 1500s, when an unknown printer
+        scrambled a galley of type and made a type specimen book. A <strong>Lorem Ipsum generator</strong>
+        creates placeholder text that approximates the natural distribution of letters in English,
+        making it ideal for demonstrating visual form before content is ready.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How Designers Use Placeholder Text</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Designers and developers use <strong>Lorem Ipsum</strong> to fill layouts, mockups, and
+        wireframes with realistic-looking text. It helps clients and stakeholders visualize the final
+        product without being distracted by readable content. Common use cases include website templates,
+        app prototypes, print layouts, email designs, and presentation decks.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Customizing Your Output</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        This <strong>Lorem Ipsum generator</strong> gives you three output modes. Choose
+        <strong>Paragraphs</strong> to get blocks of 3-7 sentences separated by blank lines.
+        Choose <strong>Sentences</strong> to generate individual lines of placeholder text.
+        Choose <strong>Words</strong> to get a raw list of Lorem Ipsum words. Adjust the
+        amount value from 1 to 100 to control how many of each type you need.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">The History of Lorem Ipsum</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece
+        of classical Latin literature from 45 BC, making it over 2,000 years old. The standard
+        <strong>Lorem Ipsum</strong> passage, "Lorem ipsum dolor sit amet...", is derived from
+        sections 1.10.32 and 1.10.33 of Cicero's <em>de Finibus Bonorum et Malorum</em> (The Extremes
+        of Good and Evil). It has survived not only five centuries but also the leap into electronic
+        typesetting, remaining essentially unchanged.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/password-generator" class="tool-card block">
+          <h3 class="font-semibold text-sm">Password Generator</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate strong, secure passwords instantly.</p>
+        </a>
+        <a href="/tools/uuid-generator" class="tool-card block">
+          <h3 class="font-semibold text-sm">UUID Generator</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate random UUIDs and GUIDs.</p>
+        </a>
+        <a href="/tools/case-converter" class="tool-card block">
+          <h3 class="font-semibold text-sm">Case Converter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert text between upper, lower, title, and more.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const amountInput = document.getElementById("lorem-amount");
+  const typeSelect = document.getElementById("lorem-type");
+  const generateBtn = document.getElementById("lorem-generate");
+  const outputPre = document.getElementById("lorem-output");
+  const copyBtn = document.getElementById("lorem-copy");
+
+  const words = [
+    "lorem", "ipsum", "dolor", "sit", "amet", "consectetur",
+    "adipiscing", "elit", "sed", "do", "eiusmod", "tempor",
+    "incididunt", "ut", "labore", "et", "dolore", "magna",
+    "aliqua", "enim", "ad", "minim", "veniam", "quis",
+    "nostrud", "exercitation", "ullamco", "laboris", "nisi",
+    "aliquip", "ex", "ea", "commodo", "consequat", "duis",
+    "aute", "irure", "dolor", "in", "reprehenderit", "voluptate",
+    "velit", "esse", "cillum", "eu", "fugiat", "nulla",
+    "pariatur", "excepteur", "sint", "occaecat", "cupidatat",
+    "non", "proident", "sunt", "culpa", "qui", "officia",
+    "deserunt", "mollit", "anim", "id", "est", "laborum",
+  ];
+
+  function randomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+  }
+
+  function pickWord() {
+    return words[Math.floor(Math.random() * words.length)];
+  }
+
+  function generateSentence() {
+    const count = randomInt(5, 15);
+    const parts = [];
+    for (let i = 0; i < count; i++) {
+      parts.push(pickWord());
+    }
+    const sentence = parts[0].charAt(0).toUpperCase() + parts[0].slice(1) + " " + parts.slice(1).join(" ") + ".";
+    return sentence;
+  }
+
+  function generateParagraph() {
+    const count = randomInt(3, 7);
+    const sentences = [];
+    for (let i = 0; i < count; i++) {
+      sentences.push(generateSentence());
+    }
+    return sentences.join(" ");
+  }
+
+  generateBtn.onclick = () => {
+    const amount = parseInt(amountInput.value, 10);
+    if (isNaN(amount) || amount < 1 || amount > 100) {
+      outputPre.textContent = "Please enter a valid amount between 1 and 100.";
+      return;
+    }
+
+    const type = typeSelect.value;
+    let result = "";
+
+    if (type === "paragraphs") {
+      const paras = [];
+      for (let i = 0; i < amount; i++) {
+        paras.push(generateParagraph());
+      }
+      result = paras.join("\n\n");
+    } else if (type === "sentences") {
+      const sentences = [];
+      for (let i = 0; i < amount; i++) {
+        sentences.push(generateSentence());
+      }
+      result = sentences.join("\n");
+    } else if (type === "words") {
+      const picked = [];
+      for (let i = 0; i < amount; i++) {
+        picked.push(pickWord());
+      }
+      result = picked.join(" ");
+    }
+
+    outputPre.textContent = result;
+  };
+
+  copyBtn.onclick = async () => {
+    const text = outputPre.textContent;
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      copyBtn.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        copyBtn.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      copyBtn.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        copyBtn.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    }
+  };
+</script>

@@ -1,0 +1,332 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/image-converter`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Image Converter Online - Convert PNG, JPEG, WebP",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online image converter. Convert images between PNG, JPEG, WebP, and GIF formats using your browser's Canvas API. 100% client-side, no uploads.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "Image Converter Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "How do I convert an image format?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Click or drag an image onto the upload zone, select the target format from the dropdown (PNG, JPEG, WebP, or BMP), then click Convert. The converted image will appear and you can download it.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is my image uploaded to a server?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "No. The entire conversion process happens in your browser using the Canvas API. Your image never leaves your computer, ensuring complete privacy and security.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What image formats are supported?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "This tool supports PNG, JPEG, WebP, and BMP output formats. Input can be any image format that your browser supports, including JPG, PNG, GIF, WebP, SVG, and BMP.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Image Converter Online - Convert PNG, JPEG, WebP"
+  description="Free online image converter. Convert images between PNG, JPEG, WebP, and GIF formats using your browser's Canvas API. 100% client-side, no uploads."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          Image Converter Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Convert images between PNG, JPEG, WebP, and BMP formats instantly in your browser.
+          Your image never leaves your computer.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <!-- Drop Zone -->
+          <div
+            id="drop-zone"
+            class="border-2 border-dashed border-primary/30 rounded-xl p-8 text-center cursor-pointer hover:border-primary/60 transition-colors bg-primary/[0.02]"
+          >
+            <svg class="size-12 mx-auto text-primary/50 mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+            <p class="text-sm text-on-surface-variant" id="drop-text">Drop image or click to browse</p>
+            <input id="image-file" type="file" accept="image/*" class="hidden" />
+          </div>
+
+          <!-- Controls -->
+          <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+            <div class="flex-1">
+              <label for="image-format" class="text-sm font-medium mb-1.5 block">Output Format</label>
+              <select id="image-format" class="input-field text-sm">
+                <option value="image/png">PNG</option>
+                <option value="image/jpeg">JPEG</option>
+                <option value="image/webp">WebP</option>
+                <option value="image/bmp">BMP</option>
+              </select>
+            </div>
+            <div class="flex items-end">
+              <button id="image-convert" class="btn-primary text-sm" disabled>
+                <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Convert
+              </button>
+            </div>
+          </div>
+
+          <!-- Original Preview -->
+          <div id="image-preview" class="hidden">
+            <label class="text-sm font-medium mb-1.5 block">Original</label>
+            <div class="tool-card p-3 flex items-center justify-center bg-surface-dim/30">
+              <img id="image-preview-img" class="max-w-full max-h-64 object-contain" />
+            </div>
+          </div>
+
+          <!-- Converted Result -->
+          <div id="image-result" class="hidden">
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-sm font-medium">Converted</label>
+              <a id="image-download" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+                </svg>
+                Download
+              </a>
+            </div>
+            <div class="tool-card p-3 flex items-center justify-center bg-surface-dim/30">
+              <img id="image-result-img" class="max-w-full max-h-64 object-contain" />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is an Image Converter?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        An <strong>image converter</strong> is a tool that transforms an image from one file format to
+        another. Whether you need a <strong>PNG to JPEG converter</strong>, a <strong>WebP to PNG converter</strong>,
+        or a <strong>free image format converter</strong> for bulk work, our browser-based tool handles it
+        instantly. Unlike desktop software or online services that require uploads, this <strong>image
+        converter online</strong> runs entirely on your device using the HTML5 Canvas API for fast,
+        private conversions.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">When to Use Each Image Format</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">PNG — Lossless &amp; Transparency</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Best for screenshots, logos, graphics with text, and images requiring a transparent background.
+            PNG uses lossless compression, preserving every pixel, but produces larger files than JPEG or WebP.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">JPEG — Photos &amp; Small File Size</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Ideal for photographs and complex images where small file size matters more than perfect fidelity.
+            JPEG uses lossy compression, which can introduce artifacts but dramatically reduces file size.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">WebP — Modern &amp; Efficient</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Google's modern format that delivers superior compression — smaller files than JPEG with
+            comparable quality, and supports transparency like PNG. Supported in all modern browsers.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">BMP — Uncompressed</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            A raw, uncompressed bitmap format that preserves every pixel exactly. Files are very large,
+            making BMP impractical for web use but useful when absolute pixel fidelity is required.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Benefits of Browser-Based Conversion</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>100% Private</strong> — Your images never leave your browser. No uploads, no servers, no third-party access.</li>
+        <li><strong>No Upload Limits</strong> — Convert files of any size. Since nothing is uploaded, there are no file size caps.</li>
+        <li><strong>Fast Conversion</strong> — Canvas API processing happens locally on your device with no network latency.</li>
+        <li><strong>Completely Free</strong> — No registration, no watermarks, no hidden costs. Use it as many times as you need.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Image Converter</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Using this <strong>free online image converter</strong> is simple. Click the upload zone or drag
+        and drop an image onto it. Select your desired output format from the dropdown — PNG, JPEG, WebP,
+        or BMP. Click <strong>Convert</strong> and the tool will instantly process your image using the
+        Canvas API. Once complete, preview the result and click <strong>Download</strong> to save your
+        converted image. The entire process is client-side, so your files stay private and secure.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/color-converter" class="tool-card block">
+          <h3 class="font-semibold text-sm">Color Converter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert colors between HEX, RGB, HSL, and more.</p>
+        </a>
+        <a href="/tools/base64-encoder" class="tool-card block">
+          <h3 class="font-semibold text-sm">Base64 Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 strings instantly.</p>
+        </a>
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const dropZone = document.getElementById("drop-zone");
+  const fileInput = document.getElementById("image-file");
+  const dropText = document.getElementById("drop-text");
+  const formatSelect = document.getElementById("image-format");
+  const convertBtn = document.getElementById("image-convert");
+  const previewDiv = document.getElementById("image-preview");
+  const previewImg = document.getElementById("image-preview-img");
+  const resultDiv = document.getElementById("image-result");
+  const resultImg = document.getElementById("image-result-img");
+  const downloadLink = document.getElementById("image-download");
+
+  let currentFile = null;
+  let currentDataUrl = null;
+
+  dropZone.onclick = () => fileInput.click();
+
+  fileInput.onchange = () => {
+    if (fileInput.files && fileInput.files[0]) {
+      loadImage(fileInput.files[0]);
+    }
+  };
+
+  dropZone.ondragover = (e) => {
+    e.preventDefault();
+    dropZone.className = "border-2 border-dashed border-primary rounded-xl p-8 text-center cursor-pointer transition-colors bg-primary/10";
+  };
+
+  dropZone.ondragleave = () => {
+    dropZone.className = "border-2 border-dashed border-primary/30 rounded-xl p-8 text-center cursor-pointer hover:border-primary/60 transition-colors bg-primary/[0.02]";
+  };
+
+  dropZone.ondrop = (e) => {
+    e.preventDefault();
+    dropZone.className = "border-2 border-dashed border-primary/30 rounded-xl p-8 text-center cursor-pointer hover:border-primary/60 transition-colors bg-primary/[0.02]";
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      loadImage(e.dataTransfer.files[0]);
+    }
+  };
+
+  function loadImage(file) {
+    currentFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      currentDataUrl = e.target.result;
+      previewImg.src = currentDataUrl;
+      previewDiv.classList.remove("hidden");
+      resultDiv.classList.add("hidden");
+      dropText.textContent = file.name;
+      convertBtn.disabled = false;
+    };
+    reader.readAsDataURL(file);
+  }
+
+  convertBtn.onclick = () => {
+    if (!currentDataUrl) return;
+
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      const format = formatSelect.value;
+      const ext = format.split("/").pop();
+
+      canvas.toBlob((blob) => {
+        const url = URL.createObjectURL(blob);
+        resultImg.src = url;
+        resultDiv.classList.remove("hidden");
+
+        downloadLink.href = url;
+        downloadLink.download = `converted.${ext}`;
+      }, format);
+    };
+    img.src = currentDataUrl;
+  };
+</script>

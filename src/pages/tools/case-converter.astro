@@ -1,0 +1,354 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/case-converter`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Case Converter Online - camelCase, snake_case, kebab-case",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online case converter. Convert text between camelCase, PascalCase, snake_case, kebab-case, UPPER CASE, lower case, and Title Case instantly. 100% client-side.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "Case Converter Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is camelCase?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "camelCase is a naming convention where the first word is lowercase and each subsequent word starts with an uppercase letter, with no spaces or punctuation. For example, \"myVariableName\" or \"getUserData\".",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "When should I use snake_case?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "snake_case is commonly used in Python programming, database column names, and configuration files. Words are separated by underscores and all letters are typically lowercase.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the difference between camelCase and PascalCase?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "In camelCase, the first letter is lowercase (e.g., \"myFunction\"), while in PascalCase, every word starts with an uppercase letter (e.g., \"MyClass\"). PascalCase is typically used for class names and constructors.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Case Converter Online - camelCase, snake_case, kebab-case"
+  description="Free online case converter. Convert text between camelCase, PascalCase, snake_case, kebab-case, UPPER CASE, lower case, and Title Case instantly. 100% client-side."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          Case Converter Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Convert text between camelCase, PascalCase, snake_case, kebab-case, UPPER CASE,
+          lower case, and Title Case instantly. Your data stays in your browser —
+          nothing is uploaded, nothing is stored.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="case-input" class="text-sm font-medium mb-1.5 block">
+              Input
+              <span id="case-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="case-input"
+              class="input-field font-mono text-sm min-h-[200px] resize-y scrollbar-thin"
+              placeholder="Type or paste text to convert..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button data-fn="camel" class="btn-primary text-sm">camelCase</button>
+            <button data-fn="pascal" class="btn-secondary text-sm">PascalCase</button>
+            <button data-fn="snake" class="btn-secondary text-sm">snake_case</button>
+            <button data-fn="kebab" class="btn-secondary text-sm">kebab-case</button>
+            <button data-fn="upper" class="btn-secondary text-sm">UPPER CASE</button>
+            <button data-fn="lower" class="btn-secondary text-sm">lower case</button>
+            <button data-fn="title" class="btn-secondary text-sm">Title Case</button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="case-output" class="text-sm font-medium">Output</label>
+              <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre
+              id="case-output"
+              class="input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all"
+            ></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Case Converter?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>case converter</strong> is a tool that transforms text between different naming
+        conventions and letter casings. Developers, writers, and data professionals use a
+        <strong>text case converter</strong> to switch between formats like <strong>camelCase</strong>,
+        <strong>snake_case</strong>, <strong>kebab-case</strong>, and others. Our free
+        <strong>online case converter</strong> runs entirely in your browser, ensuring your text
+        never leaves your device.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common Naming Conventions</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">camelCase</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            First word lowercase, subsequent words capitalized, no separators. Example:
+            <code class="text-primary">myVariableName</code>. Used in JavaScript, Java, and C#.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">PascalCase</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Every word starts with an uppercase letter, no separators. Example:
+            <code class="text-primary">MyClassName</code>. Used for classes, constructors, and types.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">snake_case</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Words separated by underscores, all lowercase. Example:
+            <code class="text-primary">user_first_name</code>. Standard in Python and Ruby.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">kebab-case</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Words separated by hyphens, all lowercase. Example:
+            <code class="text-primary">css-class-name</code>. Common in URLs, HTML attributes, and CSS.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">When to Use Each Case Type</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>camelCase</strong> — JavaScript, TypeScript, Java, C# for variables and function names.</li>
+        <li><strong>PascalCase</strong> — Class names, constructors, type definitions, and React component names.</li>
+        <li><strong>snake_case</strong> — Python variables, database column names, configuration keys, and environment variables.</li>
+        <li><strong>kebab-case</strong> — URL slugs, CSS class names, HTML data attributes, and file names.</li>
+        <li><strong>UPPER CASE</strong> — Constants, environment variables, and preprocessor macros.</li>
+        <li><strong>lower case</strong> — General text normalization, slugs, and domain names.</li>
+        <li><strong>Title Case</strong> — Headings, titles, labels, and display names in user interfaces.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Case Converter</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        To <strong>convert text case</strong>, type or paste your text into the input field and click
+        any case button — <strong>camelCase</strong>, <strong>PascalCase</strong>,
+        <strong>snake_case</strong>, <strong>kebab-case</strong>, <strong>UPPER CASE</strong>,
+        <strong>lower case</strong>, or <strong>Title Case</strong>. The converted result appears
+        instantly in the output area. Use the <strong>Copy</strong> button to copy the result to your
+        clipboard. All conversion happens on your device — nothing is sent to a server.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+        </a>
+        <a href="/tools/markdown-preview" class="tool-card block">
+          <h3 class="font-semibold text-sm">Markdown Preview</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Preview and edit Markdown in real time.</p>
+        </a>
+        <a href="/tools/text-diff" class="tool-card block">
+          <h3 class="font-semibold text-sm">Text Diff</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Compare two texts and highlight differences.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById("case-input");
+  const output = document.getElementById("case-output");
+  const stats = document.getElementById("case-stats");
+  const btnClear = document.getElementById("btn-clear");
+  const btnCopy = document.getElementById("btn-copy");
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  function toCamelCase(str) {
+    const words = str.match(/[a-zA-Z0-9]+/g) || [];
+    if (!words.length) return "";
+    const [first, ...rest] = words;
+    return first.toLowerCase() + rest.map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join("");
+  }
+
+  function toPascalCase(str) {
+    const words = str.match(/[a-zA-Z0-9]+/g) || [];
+    return words.map(w => w[0].toUpperCase() + w.slice(1).toLowerCase()).join("");
+  }
+
+  function toSnakeCase(str) {
+    return str.replace(/[^a-zA-Z0-9]+/g, "_").toLowerCase();
+  }
+
+  function toKebabCase(str) {
+    return str.replace(/[^a-zA-Z0-9]+/g, "-").toLowerCase();
+  }
+
+  function toUpperCase(str) {
+    return str.toUpperCase();
+  }
+
+  function toLowerCase(str) {
+    return str.toLowerCase();
+  }
+
+  function toTitleCase(str) {
+    return str.replace(/\w\S*/g, w => w[0].toUpperCase() + w.slice(1).toLowerCase());
+  }
+
+  const fns = {
+    camel: toCamelCase,
+    pascal: toPascalCase,
+    snake: toSnakeCase,
+    kebab: toKebabCase,
+    upper: toUpperCase,
+    lower: toLowerCase,
+    title: toTitleCase,
+  };
+
+  document.querySelectorAll("[data-fn]").forEach(btn => {
+    btn.onclick = () => {
+      const raw = input.value;
+      if (!raw) {
+        output.textContent = "Enter text to convert.";
+        return;
+      }
+      const fn = fns[btn.dataset.fn];
+      if (fn) {
+        output.textContent = fn(raw);
+        output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      }
+    };
+  });
+
+  btnClear.onclick = () => {
+    input.value = "";
+    output.textContent = "";
+    output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    updateStats();
+    input.focus();
+  };
+
+  btnCopy.onclick = async () => {
+    const text = output.textContent;
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    }
+  };
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>

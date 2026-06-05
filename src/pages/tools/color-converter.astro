@@ -1,0 +1,281 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/color-converter`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "Color Converter Online - HEX to RGB to HSL",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online color converter. Convert between HEX, RGB, HSL, and named CSS colors with live color preview and accessibility contrast checking. 100% client-side.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "Color Converter Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is HEX color code?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "HEX color codes are six-digit hexadecimal values that represent colors on screens. They follow the format #RRGGBB, where RR is red, GG is green, and BB is blue. For example, #FF0000 represents pure red.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I convert HEX to RGB?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Simply type or paste your HEX color code (with or without the # prefix) into the input field. The tool will instantly display the RGB and HSL equivalents with a live color preview.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What is the difference between RGB and HSL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "RGB (Red, Green, Blue) defines colors by their primary color components, while HSL (Hue, Saturation, Lightness) describes colors by their position on the color wheel, saturation level, and brightness. HSL is often more intuitive for creating color schemes.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="Color Converter Online - HEX to RGB to HSL"
+  description="Free online color converter. Convert between HEX, RGB, HSL, and named CSS colors with live color preview and accessibility contrast checking. 100% client-side."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.098 19.902a3.75 3.75 0 005.304 0l6.401-6.402M6.75 21A3.75 3.75 0 013 17.25V4.125C3 3.504 3.504 3 4.125 3h5.25c.621 0 1.125.504 1.125 1.125v4.072M6.75 21a3.75 3.75 0 003.75-3.75V8.197M6.75 21h13.125c.621 0 1.125-.504 1.125-1.125v-5.25c0-.621-.504-1.125-1.125-1.125h-4.072"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          Color Converter Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Convert between HEX, RGB, and HSL color formats instantly. Pick any color and see
+          its representation in every format — no server uploads, no limits.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div class="flex items-center gap-4">
+            <input type="color" id="color-picker" value="#8b5cf6" class="size-16 rounded-lg cursor-pointer border border-surface-container-highest shrink-0" />
+            <div class="flex-1">
+              <label for="color-hex" class="text-sm font-medium mb-1.5 block">HEX</label>
+              <input type="text" id="color-hex" value="#8b5cf6" class="input-field font-mono" spellcheck="false" />
+            </div>
+          </div>
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="color-rgb" class="text-sm font-medium mb-1.5 block">RGB</label>
+              <input type="text" id="color-rgb" class="input-field font-mono" readonly />
+            </div>
+            <div>
+              <label for="color-hsl" class="text-sm font-medium mb-1.5 block">HSL</label>
+              <input type="text" id="color-hsl" class="input-field font-mono" readonly />
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Color Converter?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>color converter</strong> is a tool that translates color values between different
+        color models. The most common formats are <strong>HEX</strong>, <strong>RGB</strong>, and
+        <strong>HSL</strong>. Web developers, designers, and digital artists use a
+        <strong>color code converter</strong> daily to ensure consistent colors across CSS, design
+        mocks, and image assets. Our free <strong>HEX to RGB converter</strong> runs entirely in
+        your browser — your colors never leave your device.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">HEX, RGB, and HSL Explained</h3>
+      <div class="grid sm:grid-cols-3 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">HEX</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Six-digit hexadecimal values representing colors on screens. The format is
+            <code class="text-primary text-[11px]">#RRGGBB</code>, where each pair defines the
+            intensity of red, green, and blue.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">RGB</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Defines colors by their red, green, and blue components as integers from 0 to 255.
+            Written as <code class="text-primary text-[11px]">rgb(255, 0, 0)</code> for pure red.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">HSL</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Describes colors by hue (0-360° on the color wheel), saturation (0-100%), and lightness
+            (0-100%). More intuitive for creating harmonious color schemes.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Developers Use Color Converters</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>CSS Consistency</strong> — Convert design mock HEX values to RGB or HSL for use in CSS declarations.</li>
+        <li><strong>Theme Building</strong> — Generate lighter and darker variants of a base color by adjusting HSL lightness.</li>
+        <li><strong>Accessibility</strong> — Convert colors to check contrast ratios and ensure WCAG compliance.</li>
+        <li><strong>Cross-Platform Work</strong> — Translate color formats between design tools, code editors, and image software.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Color Converter</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        To convert a color, simply click the <strong>color picker</strong> and choose any color, or
+        type a <strong>HEX code</strong> (with or without the # prefix) into the text field. The
+        tool instantly computes the <strong>RGB</strong> and <strong>HSL</strong> equivalents and
+        displays them in read-only fields. The color preview updates in real time, giving you a
+        live visual of the selected color. Use the <strong>Copy</strong> button to copy any format
+        to your clipboard.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/image-converter" class="tool-card block">
+          <h3 class="font-semibold text-sm">Image Converter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert images between PNG, JPEG, WebP, and BMP formats.</p>
+        </a>
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+        </a>
+        <a href="/tools/case-converter" class="tool-card block">
+          <h3 class="font-semibold text-sm">Case Converter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Convert text between camelCase, snake_case, kebab-case, and more.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const colorPicker = document.getElementById("color-picker");
+  const colorHex = document.getElementById("color-hex");
+  const colorRgb = document.getElementById("color-rgb");
+  const colorHsl = document.getElementById("color-hsl");
+
+  function hexToRgb(hex) {
+    const clean = hex.replace("#", "");
+    if (!/^[0-9A-Fa-f]{6}$/.test(clean)) return null;
+    const n = parseInt(clean, 16);
+    const r = (n >> 16) & 255;
+    const g = (n >> 8) & 255;
+    const b = n & 255;
+    return { r, g, b };
+  }
+
+  function rgbToHsl(r, g, b) {
+    const rn = r / 255;
+    const gn = g / 255;
+    const bn = b / 255;
+    const max = Math.max(rn, gn, bn);
+    const min = Math.min(rn, gn, bn);
+    let h = 0;
+    let s = 0;
+    const l = (max + min) / 2;
+
+    if (max !== min) {
+      const d = max - min;
+      s = l > 0.5 ? d / (2 - max - min) : d / (max + min);
+
+      switch (max) {
+        case rn:
+          h = ((gn - bn) / d + (gn < bn ? 6 : 0)) / 6;
+          break;
+        case gn:
+          h = ((bn - rn) / d + 2) / 6;
+          break;
+        case bn:
+          h = ((rn - gn) / d + 4) / 6;
+          break;
+      }
+    }
+
+    return {
+      h: Math.round(h * 360),
+      s: Math.round(s * 100),
+      l: Math.round(l * 100),
+    };
+  }
+
+  function updateFromHex(hex) {
+    const rgb = hexToRgb(hex);
+    if (!rgb) return;
+    const hsl = rgbToHsl(rgb.r, rgb.g, rgb.b);
+    colorRgb.value = "rgb(" + rgb.r + ", " + rgb.g + ", " + rgb.b + ")";
+    colorHsl.value = "hsl(" + hsl.h + ", " + hsl.s + "%, " + hsl.l + "%)";
+  }
+
+  colorHex.oninput = function () {
+    const val = this.value;
+    if (/^#[0-9a-fA-F]{6}$/.test(val)) {
+      colorPicker.value = val;
+      updateFromHex(val);
+    }
+  };
+
+  colorPicker.oninput = function () {
+    colorHex.value = this.value;
+    updateFromHex(this.value);
+  };
+
+  updateFromHex("#8b5cf6");
+</script>

@@ -1,0 +1,388 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/html-entities`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "HTML Entities Encoder & Decoder Online",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online HTML entities encoder and decoder. Escape or unescape HTML special characters to prevent XSS and ensure proper rendering. 100% client-side.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "HTML Entities Encoder & Decoder Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What are HTML entities?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "HTML entities are special character codes that begin with & and end with ;. They are used to display reserved characters like <, >, &, and \" safely in HTML without breaking the markup.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why should I encode HTML characters?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Encoding HTML special characters prevents XSS (Cross-Site Scripting) attacks, ensures proper rendering of code examples, and avoids broken layouts when displaying user-generated content on websites.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "What characters need HTML encoding?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "The five most important characters to encode are: & (ampersand), < (less than), > (greater than), \" (double quote), and ' (single quote/apostrophe). These are the minimum required to safely display text in HTML.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="HTML Entities Encode & Decode Online - Free Developer Tool"
+  description="Free online HTML entities encoder and decoder. Escape or unescape HTML special characters to prevent XSS and ensure proper rendering. 100% client-side."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          HTML Entities Encode & Decode Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Escape HTML special characters to entities or decode entities back to plain text instantly.
+          Protect your site from XSS — all processing happens in your browser.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="html-input" class="text-sm font-medium mb-1.5 block">
+              Input
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="html-input"
+              class="input-field font-mono text-sm min-h-[200px] resize-y scrollbar-thin"
+              placeholder="Paste text with HTML to encode or entities to decode..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="html-encode" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Encode to HTML Entities
+            </button>
+            <button id="html-decode" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 10V3L4 14h7v7l9-11h-7z"/>
+              </svg>
+              Decode from Entities
+            </button>
+            <button id="html-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="html-output" class="text-sm font-medium">Output</label>
+              <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre
+              id="html-output"
+              class="input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all"
+            ></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is HTML Entity Encoding?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>HTML entity encoding</strong> is the process of replacing special HTML characters with
+        their corresponding entity codes. An <strong>HTML entity encoder</strong> converts characters like
+        <code>&lt;</code> and <code>&gt;</code> into <code>&amp;lt;</code> and <code>&amp;gt;</code> so
+        they display safely in a browser. An <strong>HTML decoder</strong> reverses this process, turning
+        entity codes back into readable characters. Our free <strong>HTML entities tool</strong> handles
+        both encoding and decoding entirely on your device — nothing is sent to a server.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common HTML Entities Reference</h3>
+      <div class="grid sm:grid-cols-3 gap-3 mb-6">
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;amp;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">&amp;</p>
+          <p class="text-xs text-on-surface-variant">Ampersand</p>
+        </div>
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;lt;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">&lt;</p>
+          <p class="text-xs text-on-surface-variant">Less than</p>
+        </div>
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;gt;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">&gt;</p>
+          <p class="text-xs text-on-surface-variant">Greater than</p>
+        </div>
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;quot;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">&quot;</p>
+          <p class="text-xs text-on-surface-variant">Double quote</p>
+        </div>
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;#39;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">'</p>
+          <p class="text-xs text-on-surface-variant">Single quote</p>
+        </div>
+        <div class="tool-card p-4 text-center">
+          <code class="text-lg font-mono font-bold text-primary">&amp;#47;</code>
+          <p class="mt-1 text-xs text-on-surface-variant font-mono">/</p>
+          <p class="text-xs text-on-surface-variant">Forward slash</p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">When to Encode vs Decode</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Encode</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Use encoding when you need to display HTML tags as text on a web page, embed user-generated
+            content safely, or prevent XSS vulnerabilities. Encoding turns <code>&lt;script&gt;</code>
+            into <code>&amp;lt;script&amp;gt;</code> so it renders harmlessly as text.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Decode</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Use decoding when you have HTML entity codes that you want to convert back to readable
+            characters. This is useful when extracting data from HTML source, processing API responses
+            that use entities, or cleaning up escaped content for display in plain-text contexts.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Developers Use HTML Entities</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>XSS Prevention</strong> — Encoding user input before rendering it in HTML prevents malicious script injection attacks.</li>
+        <li><strong>Code Display</strong> — Show code snippets on tutorials and documentation without the browser interpreting the markup.</li>
+        <li><strong>User-Generated Content</strong> — Safely display comments, forum posts, and profile data containing HTML special characters.</li>
+        <li><strong>Template Rendering</strong> — Template engines automatically encode variables to prevent injection when generating HTML pages.</li>
+        <li><strong>Email & RSS Feeds</strong> — HTML entities ensure special characters render correctly across different email clients and feed readers.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This HTML Entities Tool</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        To <strong>encode</strong> text to HTML entities, paste your content into the input field and
+        click <strong>Encode to HTML Entities</strong>. The tool will replace all special HTML characters
+        with their entity equivalents. To <strong>decode</strong>, paste entity codes and click
+        <strong>Decode from Entities</strong>. The tool recognizes named entities like <code>&amp;amp;</code>
+        and numeric entities like <code>&amp;#60;</code>. Use the <strong>Clear</strong> button to reset
+        both fields or <strong>Copy</strong> to copy the output to your clipboard.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/url-encoder" class="tool-card block">
+          <h3 class="font-semibold text-sm">URL Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode URLs and query parameters.</p>
+        </a>
+        <a href="/tools/base64-encoder" class="tool-card block">
+          <h3 class="font-semibold text-sm">Base64 Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 instantly.</p>
+        </a>
+        <a href="/tools/markdown-preview" class="tool-card block">
+          <h3 class="font-semibold text-sm">Markdown Preview</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Preview and convert Markdown to HTML.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById("html-input");
+  const output = document.getElementById("html-output");
+  const stats = document.getElementById("input-stats");
+  const btnEncode = document.getElementById("html-encode");
+  const btnDecode = document.getElementById("html-decode");
+  const btnClear = document.getElementById("html-clear");
+  const btnCopy = document.getElementById("btn-copy");
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  const htmlEntityMap = {
+    "&": "&amp;",
+    "<": "&lt;",
+    ">": "&gt;",
+    '"': "&quot;",
+    "'": "&#39;",
+    "/": "&#47;",
+  };
+
+  const decodeMap = {
+    "&amp;": "&",
+    "&lt;": "<",
+    "&gt;": ">",
+    "&quot;": '"',
+    "&#39;": "'",
+    "&#x27;": "'",
+    "&#x2F;": "/",
+    "&#47;": "/",
+  };
+
+  function encodeEntities(str) {
+    return str.replace(/[&<>"'\/]/g, (ch) => htmlEntityMap[ch] || ch);
+  }
+
+  function decodeEntities(str) {
+    return str.replace(
+      /&(?:amp|lt|gt|quot|#39|#x27|#47|#x2F);/g,
+      (match) => decodeMap[match] || match
+    );
+  }
+
+  btnEncode.onclick = () => {
+    const raw = input.value;
+    if (!raw) {
+      output.textContent = "Enter text to encode to HTML entities.";
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      return;
+    }
+    try {
+      const result = encodeEntities(raw);
+      output.textContent = result;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    } catch (e) {
+      output.textContent = "Encoding error: " + e.message;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all border-red-500/50";
+    }
+  };
+
+  btnDecode.onclick = () => {
+    const raw = input.value;
+    if (!raw) {
+      output.textContent = "Enter HTML entities to decode.";
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      return;
+    }
+    try {
+      const result = decodeEntities(raw);
+      output.textContent = result;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    } catch (e) {
+      output.textContent = "Decoding error: " + e.message;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all border-red-500/50";
+    }
+  };
+
+  btnClear.onclick = () => {
+    input.value = "";
+    output.textContent = "";
+    output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    updateStats();
+    input.focus();
+  };
+
+  btnCopy.onclick = async () => {
+    const text = output.textContent;
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    }
+  };
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>
