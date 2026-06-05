@@ -1,0 +1,359 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/url-encoder`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "URL Encoder & Decoder Online",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online URL encoder and decoder. Encode or decode URLs, query parameters, and URI components instantly in your browser with no server upload.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "URL Encoder & Decoder Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is URL encoding?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "URL encoding, also known as percent encoding, is a mechanism for encoding information in a Uniform Resource Identifier (URI). It converts characters that are not allowed in URLs into a format that can be safely transmitted over the internet.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I encode a URL?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Type or paste your URL or text into the input field and click the Encode button. The tool will convert special characters like spaces, &, ?, and = into their percent-encoded equivalents. You can then copy the result.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Why do we need URL encoding?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "URL encoding is necessary because URLs can only contain a limited set of ASCII characters. Characters like spaces, &, ?, =, and non-ASCII characters must be encoded to ensure proper transmission and interpretation by web servers and browsers.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="URL Encoder & Decoder Online - Free Percent Encoding Tool"
+  description="Encode and decode URLs instantly online. Free URL encoder and decoder for developers. Convert text to percent-encoded URLs and back with no login required."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          URL Encoder & Decoder Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Encode or decode URLs and query parameters instantly. Your data stays in your browser —
+          nothing is uploaded, nothing is stored.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="url-input" class="text-sm font-medium mb-1.5 block">
+              Input
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="url-input"
+              class="input-field font-mono text-sm min-h-[200px] resize-y scrollbar-thin"
+              placeholder="Paste a URL, query string, or text to encode/decode..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button id="btn-encode" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 19V5m0 0l-7 7m7-7l7 7"/>
+              </svg>
+              Encode URI
+            </button>
+            <button id="btn-decode" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v14m0 0l7-7m-7 7l-7-7"/>
+              </svg>
+              Decode URI
+            </button>
+            <button id="btn-query-decode" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+              </svg>
+              Parse Query String
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="url-output" class="text-sm font-medium">Output</label>
+              <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <pre
+              id="url-output"
+              class="input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all"
+            ></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is URL Encoding?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>URL encoding</strong>, also known as <strong>percent encoding</strong>, is a mechanism
+        for encoding information in a Uniform Resource Identifier (URI). It converts characters that
+        are not allowed in URLs into a format that can be safely transmitted over the internet.
+        Our free <strong>URL encoder online</strong> runs entirely in your browser for instant, private conversions.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why URLs Need Encoding</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        URLs can only contain a limited set of ASCII characters — letters, digits, and a few special
+        characters like <code class="text-primary">- _ . ~</code>. Characters outside this set must be
+        encoded to ensure proper transmission. A <strong>URL decoder</strong> reverses this process,
+        converting percent-encoded sequences back to their original characters.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common Characters That Break URLs</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">Spaces</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Spaces in URLs are encoded as <code class="text-primary">%20</code>. They should never appear raw in a URL.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">Ampersand (&amp;)</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Used to separate query parameters. Must be encoded as <code class="text-primary">%26</code> when part of parameter values.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">Question Mark (?)</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Reserved for the query string separator. Encoded as <code class="text-primary">%3F</code> in path segments.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm">Equals Sign (=)</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Used for key-value pairs in query strings. Encoded as <code class="text-primary">%3D</code> in values.</p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Real-World Usage</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>API Requests</strong> — Encode special characters in GET request query parameters to ensure correct server-side parsing.</li>
+        <li><strong>Query Parameters</strong> — Build URLs with properly encoded parameter names and values for web applications.</li>
+        <li><strong>Web Forms</strong> — Form data submitted via GET is URL-encoded automatically — decode it to inspect submissions.</li>
+        <li><strong>OAuth & Authentication</strong> — Encode callback URLs and state parameters in authentication flows.</li>
+        <li><strong>International URLs</strong> — Encode non-ASCII characters (UTF-8) for URLs containing non-Latin scripts or symbols.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Encode & Decode URLs</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        To <strong>encode a URL</strong>, paste your text into the input field and click
+        <strong>Encode URI</strong>. The tool will convert special characters to their percent-encoded
+        equivalents. To <strong>decode a URL</strong>, paste an encoded string and click
+        <strong>Decode URI</strong>. You can also use <strong>Parse Query String</strong> to extract
+        and display key-value pairs from a query string. Use the <strong>Copy</strong> button to
+        copy the result to your clipboard.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/base64-encoder" class="tool-card block">
+          <h3 class="font-semibold text-sm">Base64 Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data instantly.</p>
+        </a>
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+        </a>
+        <a href="/tools/html-entities" class="tool-card block">
+          <h3 class="font-semibold text-sm">HTML Entities</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Escape and unescape HTML special characters.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  const input = document.getElementById("url-input");
+  const output = document.getElementById("url-output");
+  const stats = document.getElementById("input-stats");
+  const btnEncode = document.getElementById("btn-encode");
+  const btnDecode = document.getElementById("btn-decode");
+  const btnQueryDecode = document.getElementById("btn-query-decode");
+  const btnClear = document.getElementById("btn-clear");
+  const btnCopy = document.getElementById("btn-copy");
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  btnEncode.onclick = () => {
+    const raw = input.value;
+    if (!raw) {
+      output.textContent = "Enter text to encode.";
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      return;
+    }
+    try {
+      output.textContent = encodeURIComponent(raw);
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    } catch (e) {
+      output.textContent = "Encoding error: " + e.message;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all border-red-500/50";
+    }
+  };
+
+  btnDecode.onclick = () => {
+    const raw = input.value.trim();
+    if (!raw) {
+      output.textContent = "Enter an encoded string to decode.";
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      return;
+    }
+    try {
+      output.textContent = decodeURIComponent(raw.replace(/\+/g, " "));
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    } catch (e) {
+      output.textContent = "Invalid encoded string. Make sure it uses valid percent encoding.\n\n" + e.message;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all border-red-500/50";
+    }
+  };
+
+  btnQueryDecode.onclick = () => {
+    const raw = input.value.trim();
+    if (!raw) {
+      output.textContent = "Enter a query string to parse (e.g., name=hello&q=test).";
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+      return;
+    }
+    try {
+      const qs = raw.includes("?") ? raw.split("?")[1] : raw;
+      const params = new URLSearchParams(qs);
+      const obj = {};
+      let hasEntries = false;
+      params.forEach((v, k) => { obj[k] = v; hasEntries = true; });
+      if (!hasEntries) {
+        output.textContent = "No query parameters found.";
+      } else {
+        output.textContent = JSON.stringify(obj, null, 2);
+      }
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    } catch (e) {
+      output.textContent = "Error parsing query string: " + e.message;
+      output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all border-red-500/50";
+    }
+  };
+
+  btnClear.onclick = () => {
+    input.value = "";
+    output.textContent = "";
+    output.className = "input-field font-mono text-sm min-h-[140px] whitespace-pre-wrap overflow-auto scrollbar-thin break-all";
+    updateStats();
+    input.focus();
+  };
+
+  btnCopy.onclick = async () => {
+    const text = output.textContent;
+    if (!text) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    }
+  };
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>
