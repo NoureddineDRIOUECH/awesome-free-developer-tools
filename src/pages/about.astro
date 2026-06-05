@@ -1,0 +1,178 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const aboutSchema = {
+  "@context": "https://schema.org",
+  "@type": "AboutPage",
+  name: "About WebUtil",
+  description: "WebUtil is a free online developer tools platform focused on privacy, speed, and simplicity. All tools run 100% in your browser.",
+  url: String(Astro.site).replace(/\/$/, "") + "/about",
+  mainEntity: {
+    "@type": "Organization",
+    name: "WebUtil",
+    description: "Privacy-first, browser-based developer tools. Nothing uploaded. Nothing tracked.",
+    foundingDate: "2026",
+    url: String(Astro.site).replace(/\/$/, ""),
+  },
+};
+---
+
+<BaseLayout
+  title="About WebUtil - Free Online Developer Tools"
+  description="WebUtil offers free, privacy-first developer tools that run entirely in your browser. No uploads, no tracking, no servers."
+  jsonLd={aboutSchema}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "About" },
+  ]}
+>
+  <div class="container-main py-10 max-w-3xl mx-auto">
+    <div class="text-center mb-12">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">About WebUtil</h1>
+      <p class="mt-2 text-lg text-on-surface-variant">Free developer tools — private, fast, and built for the web.</p>
+    </div>
+
+    <div class="space-y-10">
+      <section>
+        <h2 class="text-xl font-semibold tracking-tight mb-3">What WebUtil Is</h2>
+        <p class="text-on-surface-variant leading-relaxed">
+          WebUtil is a collection of free online developer tools designed to handle everyday tasks — formatting JSON,
+          encoding Base64, generating passwords, testing regular expressions, converting colors, and more.
+          Every tool is self-contained, runs client-side, and requires no installation or account.
+        </p>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold tracking-tight mb-3">Why It Exists</h2>
+        <p class="text-on-surface-variant leading-relaxed">
+          Developers constantly need quick utilities — a JSON formatter, a URL encoder, a password generator.
+          Most existing solutions are either bloated, require sign-up, send data to servers, or are littered with ads.
+          WebUtil exists to provide a clean, fast, and reliable alternative that respects your time and your privacy.
+        </p>
+      </section>
+
+      <section class="rounded-xl border border-surface-container-highest bg-surface-container-low p-6">
+        <h2 class="text-xl font-semibold tracking-tight mb-4">Privacy-First Processing</h2>
+        <div class="grid sm:grid-cols-2 gap-4">
+          <div class="flex items-start gap-3">
+            <svg class="size-5 text-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <div>
+              <p class="font-medium text-sm">No Server Uploads</p>
+              <p class="text-sm text-on-surface-variant mt-0.5">Your data never leaves your browser. Every tool processes entirely on your device.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="size-5 text-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <div>
+              <p class="font-medium text-sm">No Tracking</p>
+              <p class="text-sm text-on-surface-variant mt-0.5">We don't use tracking cookies or analytics that identify you personally.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="size-5 text-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <div>
+              <p class="font-medium text-sm">No Storage</p>
+              <p class="text-sm text-on-surface-variant mt-0.5">We don't store or log your input data. Once you leave, nothing remains.</p>
+            </div>
+          </div>
+          <div class="flex items-start gap-3">
+            <svg class="size-5 text-primary shrink-0 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+            </svg>
+            <div>
+              <p class="font-medium text-sm">Open Source</p>
+              <p class="text-sm text-on-surface-variant mt-0.5">Our code is public on <a href="https://github.com/NoureddineDRIOUECH/WebUtil" class="text-primary hover:underline">GitHub</a> — anyone can audit it.</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <h2 class="text-xl font-semibold tracking-tight mb-3">Browser-Based Tools</h2>
+        <p class="text-on-surface-variant leading-relaxed">
+          Every tool on WebUtil uses only standard web technologies — HTML, CSS, and JavaScript. There are no
+          backend servers, no API calls, and no database queries. This means:
+        </p>
+        <ul class="mt-3 space-y-2 text-on-surface-variant">
+          <li class="flex items-start gap-2">
+            <span class="text-primary shrink-0">&bull;</span>
+            <span><strong class="text-on-surface">Instant load</strong> — No server round-trips means tools are ready immediately.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-primary shrink-0">&bull;</span>
+            <span><strong class="text-on-surface">Offline capable</strong> — Many tools work even without an internet connection after the initial visit.</span>
+          </li>
+          <li class="flex items-start gap-2">
+            <span class="text-primary shrink-0">&bull;</span>
+            <span><strong class="text-on-surface">Zero data leaks</strong> — Sensitive data (passwords, tokens, API keys) never reaches a network.</span>
+          </li>
+        </ul>
+      </section>
+
+      <section class="rounded-xl border border-surface-container-highest bg-surface-container-low p-6">
+        <h2 class="text-xl font-semibold tracking-tight mb-2">Who Maintains It</h2>
+        <p class="text-on-surface-variant leading-relaxed">
+          WebUtil is maintained by <strong class="text-on-surface">Noureddine Driouech</strong>, an independent developer
+          passionate about building useful, privacy-respecting web tools. The entire project is open source and
+          contributions, feedback, and suggestions are welcome.
+        </p>
+        <a
+          href="https://github.com/NoureddineDRIOUECH/WebUtil"
+          class="inline-flex items-center gap-2 mt-4 text-sm text-primary hover:underline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <svg class="size-4" fill="currentColor" viewBox="0 0 24 24">
+            <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
+          </svg>
+          View on GitHub
+        </a>
+      </section>
+
+      <div class="flex flex-wrap gap-4 justify-center pt-4">
+        <a href="/tools" class="btn-primary">Browse All Tools</a>
+        <a href="/contact" class="btn-secondary">Get in Touch</a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  .btn-primary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.5rem;
+    background: #7e51e0;
+    color: #fff;
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: background 0.15s;
+  }
+  .btn-primary:hover {
+    background: #6b3fc7;
+  }
+  .btn-secondary {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.625rem 1.5rem;
+    border-radius: 0.5rem;
+    background: transparent;
+    color: #dce2f3;
+    font-size: 0.875rem;
+    font-weight: 600;
+    border: 1px solid #2e3541;
+    transition: border-color 0.15s;
+  }
+  .btn-secondary:hover {
+    border-color: #7e51e0;
+  }
+</style>
