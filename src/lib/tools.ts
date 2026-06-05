@@ -89,6 +89,16 @@ export const tools: ToolDefinition[] = [
     relatedTools: ["base64-encoder", "json-formatter", "uuid-generator"],
   },
   {
+    id: "hash-generator",
+    title: "Hash Generator",
+    description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input. Fast, secure, and browser-based.",
+    category: "security",
+    icon: "fingerprint",
+    metaDescription: "Free online hash generator. Generate MD5, SHA-1, SHA-256, and SHA-512 cryptographic hashes instantly in your browser. 100% client-side, no data upload.",
+    keywords: ["hash generator", "md5 generator", "sha256 generator", "sha1 generator", "sha512 hash"],
+    relatedTools: ["jwt-decoder", "base64-encoder", "uuid-generator"],
+  },
+  {
     id: "json-formatter",
     title: "JSON Formatter",
     description: "Format, validate, and beautify your JSON data with syntax highlighting and error detection.",
