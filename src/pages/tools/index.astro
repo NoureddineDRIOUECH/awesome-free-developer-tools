@@ -132,38 +132,41 @@ const allSchema = {
       </section>
     )}
   </div>
-</BaseLayout>
 
-<script is:inline>
-(function () {
-  const tools = JSON.parse(document.getElementById("tools-data").textContent);
-  const searchInput = document.getElementById("tool-search");
-  const categoryChips = document.querySelectorAll("#category-filters .chip");
-  const wrappers = document.querySelectorAll(".tool-card-wrapper");
-  const noResults = document.getElementById("no-results");
-  const countEl = document.getElementById("visible-count");
+  <script is:inline>
+document.addEventListener("astro:page-load", function () {
+  var dataEl = document.getElementById("tools-data");
+  if (!dataEl) return;
+  var tools = JSON.parse(dataEl.textContent);
+  var searchInput = document.getElementById("tool-search");
+  var categoryChips = document.querySelectorAll("#category-filters .chip");
+  var wrappers = document.querySelectorAll(".tool-card-wrapper");
+  var noResults = document.getElementById("no-results");
+  var countEl = document.getElementById("visible-count");
+  if (!searchInput || !countEl) return;
 
-  let activeCategory = new URLSearchParams(location.search).get("category") || "";
-  let searchQuery = new URLSearchParams(location.search).get("q") || "";
+  var activeCategory = new URLSearchParams(location.search).get("category") || "";
+  var searchQuery = new URLSearchParams(location.search).get("q") || "";
 
   function updateActiveChip() {
-    categoryChips.forEach((chip) => {
+    categoryChips.forEach(function (chip) {
       chip.classList.toggle("active", chip.dataset.category === activeCategory);
     });
   }
 
   function filter() {
-    const q = searchQuery.toLowerCase().trim();
-    let visible = 0;
+    var q = searchQuery.toLowerCase().trim();
+    var visible = 0;
 
-    tools.forEach((tool, i) => {
-      const wrapper = wrappers[i];
-      const matchesSearch =
+    tools.forEach(function (tool, i) {
+      var wrapper = wrappers[i];
+      if (!wrapper) return;
+      var matchesSearch =
         !q ||
         tool.title.toLowerCase().includes(q) ||
         tool.description.toLowerCase().includes(q) ||
-        tool.keywords.some((k) => k.toLowerCase().includes(q));
-      const matchesCategory = !activeCategory || tool.category === activeCategory;
+        tool.keywords.some(function (k) { return k.toLowerCase().includes(q); });
+      var matchesCategory = !activeCategory || tool.category === activeCategory;
       wrapper.style.display = matchesSearch && matchesCategory ? "" : "none";
       if (matchesSearch && matchesCategory) visible++;
     });
@@ -177,7 +180,7 @@ const allSchema = {
     filter();
   });
 
-  categoryChips.forEach((chip) => {
+  categoryChips.forEach(function (chip) {
     chip.addEventListener("click", function () {
       activeCategory = this.dataset.category;
       updateActiveChip();
@@ -190,13 +193,14 @@ const allSchema = {
     searchInput.value = searchQuery;
     filter();
   }
-})();
+});
 </script>
 
-<script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
-  title: t.title,
-  description: t.description,
-  category: t.category,
-  keywords: t.keywords
-})))
-}</script>
+  <script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
+    title: t.title,
+    description: t.description,
+    category: t.category,
+    keywords: t.keywords
+  })))
+  }</script>
+</BaseLayout>
