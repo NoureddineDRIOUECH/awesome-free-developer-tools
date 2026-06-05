@@ -28,7 +28,7 @@ const allSchema = {
   "@type": "CollectionPage",
   name: "All Free Online Developer Tools",
   description: `Browse all ${tools.length} free online developer tools. Format JSON, encode Base64, generate passwords, and more.`,
-  url: `${Astro.site}/tools`,
+  url: `${String(Astro.site).replace(/\/$/, "")}/tools`,
 };
 ---
 

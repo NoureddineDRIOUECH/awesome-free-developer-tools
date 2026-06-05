@@ -20,7 +20,7 @@ export async function getStaticPaths() {
 }
 
 const { slug, category } = Astro.props;
-const canonical = `${Astro.site}/blog/${slug}`;
+const canonical = `${String(Astro.site).replace(/\/$/, "")}/blog/${slug}`;
 
 const content: Record<string, { title: string; description: string; date: Date; sections: { heading: string; body: string }[] }> = {
   "json-formatting-guide": {

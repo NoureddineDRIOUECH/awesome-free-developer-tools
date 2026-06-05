@@ -74,7 +74,7 @@ const blogSchema = {
   "@type": "Blog",
   name: "WebUtil Developer Blog",
   description: "Developer guides and tutorials on JSON formatting, Base64 encoding, password security, color conversion, and more.",
-  url: `${Astro.site}/blog`,
+  url: `${String(Astro.site).replace(/\/$/, "")}/blog`,
 };
 ---
 

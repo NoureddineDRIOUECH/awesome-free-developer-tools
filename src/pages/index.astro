@@ -12,7 +12,7 @@ const homeSchema = {
   "@type": "WebApplication",
   name: "WebUtil - Free Online Web Tools",
   description: "Free online developer tools including JSON formatter, Base64 encoder, password generator, color converter, and more. All tools run client-side.",
-  url: Astro.site,
+  url: String(Astro.site).replace(/\/$/, "") + "/",
   applicationCategory: "UtilitiesApplication",
   operatingSystem: "All",
   browserRequirements: "Requires JavaScript",

@@ -9,10 +9,12 @@ export interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
 }
 
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+
 const {
   title,
   description,
-  canonical = `${Astro.site}${Astro.url.pathname}`,
+  canonical = `${siteUrl}${Astro.url.pathname}`,
   ogImage = "/og-image.svg",
   ogType = "website",
   noindex = false,
@@ -37,13 +39,13 @@ const fullTitle = title.includes("WebUtil") ? title : `${title} | WebUtil`;
 <meta property="og:url" content={canonical} />
 <meta property="og:type" content={ogType} />
 <meta property="og:site_name" content={siteName} />
-<meta property="og:image" content={new URL(ogImage, Astro.site).toString()} />
+<meta property="og:image" content={new URL(ogImage, siteUrl).toString()} />
 <meta property="og:locale" content="en_US" />
 
 <meta name="twitter:card" content="summary_large_image" />
 <meta name="twitter:title" content={fullTitle} />
 <meta name="twitter:description" content={description} />
-<meta name="twitter:image" content={new URL(ogImage, Astro.site).toString()} />
+<meta name="twitter:image" content={new URL(ogImage, siteUrl).toString()} />
 
 <meta name="application-name" content={siteName} />
 <meta name="apple-mobile-web-app-title" content={siteName} />
