@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <rect width="1200" height="630" fill="#0c141f"/>
+  <rect x="50" y="50" width="1100" height="530" rx="16" fill="none" stroke="#2e3541" stroke-width="1"/>
+  <rect x="80" y="240" width="80" height="80" rx="16" fill="#8b5cf6"/>
+  <path d="M100 280l10-6 10 6-10 6-10-6z" fill="white" opacity="0.9"/>
+  <path d="M110 280l10-6 10 6-10 6-10-6z" fill="white" opacity="0.6"/>
+  <text x="180" y="275" font-family="system-ui, sans-serif" font-size="36" font-weight="700" fill="#dce2f3">WebUtil</text>
+  <text x="180" y="315" font-family="system-ui, sans-serif" font-size="20" fill="#cbc3d7">Free Online Developer Tools</text>
+  <text x="180" y="350" font-family="system-ui, sans-serif" font-size="16" fill="#958ea0">JSON · Base64 · Passwords · Colors · UUID & More</text>
+  <text x="80" y="430" font-family="system-ui, sans-serif" font-size="14" fill="#6b7280">All tools run 100% in your browser · Nothing uploaded · Nothing tracked</text>
+  <rect x="80" y="460" width="200" height="40" rx="8" fill="#8b5cf6"/>
+  <text x="130" y="487" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="white">Browse All Tools</text>
+  <text x="920" y="520" font-family="system-ui, sans-serif" font-size="12" fill="#6b7280">webutil.io</text>
+</svg>

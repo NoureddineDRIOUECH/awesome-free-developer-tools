@@ -1,17 +1,143 @@
 ---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import CategoryGrid from "../components/CategoryGrid.astro";
+import AdSlot from "../components/AdSlot.astro";
+import { getToolCategoryPairs } from "../lib/tools";
 
+const allPairs = getToolCategoryPairs();
+const totalTools = allPairs.reduce((sum, p) => sum + p.tools.length, 0);
+
+const homeSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "WebUtil - Free Online Web Tools",
+  description: "Free online developer tools including JSON formatter, Base64 encoder, password generator, color converter, and more. All tools run client-side.",
+  url: Astro.site,
+  applicationCategory: "UtilitiesApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  offers: {
+    "@type": "Offer",
+    price: "0",
+    priceCurrency: "USD",
+  },
+};
 ---
 
-<html lang="en">
-	<head>
-		<meta charset="utf-8" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-		<link rel="icon" href="/favicon.ico" />
-		<meta name="viewport" content="width=device-width" />
-		<meta name="generator" content={Astro.generator} />
-		<title>Astro</title>
-	</head>
-	<body>
-		<h1>Astro</h1>
-	</body>
-</html>
+<BaseLayout
+  title="Free Online Developer Tools - JSON, Base64, Password Generator & More"
+  description="WebUtil offers free online developer tools that run entirely in your browser. Format JSON, encode Base64, generate passwords, convert colors, and more — no server uploads, 100% private."
+  jsonLd={homeSchema}
+>
+  <!-- Hero Section -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-16 sm:py-24">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <span class="size-1.5 rounded-full bg-primary animate-pulse"></span>
+          {totalTools}+ Free Tools — 100% Client-Side
+        </div>
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-bold tracking-tight leading-[1.1]">
+          Developer Tools That
+          <span class="text-primary">Respect Your Privacy</span>
+        </h1>
+        <p class="mt-5 text-lg sm:text-xl text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Free online utility tools for developers. Everything runs in your browser —
+          nothing is uploaded, nothing is tracked, nothing is stored.
+        </p>
+        <div class="mt-8 flex flex-wrap items-center justify-center gap-3">
+          <a href="/tools" class="btn-primary text-base px-6 py-3">
+            Browse All Tools
+            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+            </svg>
+          </a>
+          <a href="/tools/json-formatter" class="btn-secondary text-base px-6 py-3">
+            Try JSON Formatter
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-8" />
+
+  <!-- Features Grid -->
+  <section class="container-main py-8">
+    <div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      {[
+        { title: "100% Private", desc: "All tools run client-side. Nothing leaves your browser.", icon: "shield" },
+        { title: "No Sign Up", desc: "Free to use. No accounts, no emails, no nonsense.", icon: "person" },
+        { title: "Blazing Fast", desc: "Zero server latency. Results appear instantly in your browser.", icon: "bolt" },
+        { title: "Always Free", desc: "No hidden fees, no usage limits, no premium tiers.", icon: "money" },
+      ].map((feat) => (
+        <div class="tool-card">
+          <div class="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center mb-3">
+            {feat.icon === "shield" && <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.503-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.771.833.192 2.5 1.732 2.5z"/></svg>}
+            {feat.icon === "person" && <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/></svg>}
+            {feat.icon === "bolt" && <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 10V3L4 14h7v7l9-11h-7z"/></svg>}
+            {feat.icon === "money" && <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>}
+          </div>
+          <h3 class="font-semibold text-sm">{feat.title}</h3>
+          <p class="mt-1 text-sm text-on-surface-variant">{feat.desc}</p>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Tools by Category -->
+  <section class="container-main py-8">
+    <div class="text-center mb-12">
+      <h2 class="section-title">All Developer Tools</h2>
+      <p class="section-subtitle mx-auto">
+        {totalTools} free tools across {allPairs.length} categories. Every tool runs 100% in your browser.
+      </p>
+    </div>
+    <CategoryGrid />
+  </section>
+
+  <AdSlot format="banner" class="container-main my-8" />
+
+  <!-- SEO Content Section -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">Why Use WebUtil?</h2>
+      <div class="space-y-4 text-sm text-on-surface-variant leading-relaxed">
+        <p>
+          WebUtil is a collection of free online developer tools designed with privacy and performance in mind.
+          Unlike other online tool websites, every tool on WebUtil runs entirely in your browser using client-side JavaScript.
+          Your data never leaves your device — there are no server uploads, no data logging, and no tracking.
+        </p>
+        <p>
+          Our tools cover a wide range of developer needs: JSON formatting and validation, Base64 encoding and decoding,
+          URL encoding, password generation, UUID generation, color conversion, text case conversion, Markdown preview,
+          text diff checking, YAML/JSON conversion, and more.
+        </p>
+        <p>
+          Whether you're a web developer, software engineer, or just someone who needs a quick utility,
+          WebUtil provides the tools you need with a clean, fast, and intuitive interface.
+        </p>
+      </div>
+
+      <div class="mt-8 grid sm:grid-cols-2 gap-4">
+        <a href="/blog" class="tool-card block">
+          <h3 class="font-semibold text-sm">Developer Blog & Guides</h3>
+          <p class="mt-1 text-sm text-on-surface-variant">
+            In-depth guides on JSON formatting, Base64 encoding, password security, and more.
+          </p>
+        </a>
+        <a href="/faq" class="tool-card block">
+          <h3 class="font-semibold text-sm">Frequently Asked Questions</h3>
+          <p class="mt-1 text-sm text-on-surface-variant">
+            Answers to common questions about our tools, privacy, and how things work.
+          </p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

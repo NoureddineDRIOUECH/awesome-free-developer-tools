@@ -1,0 +1,59 @@
+---
+import BaseLayout from "./BaseLayout.astro";
+import AdSlot from "../components/AdSlot.astro";
+import ToolCard from "../components/ToolCard.astro";
+import type { ToolDefinition } from "../lib/tools";
+
+export interface Props {
+  title: string;
+  description: string;
+  tool: ToolDefinition;
+  relatedTools: ToolDefinition[];
+  canonical?: string;
+  jsonLd?: Record<string, unknown>;
+}
+
+const { title, description, tool, relatedTools, canonical, jsonLd } = Astro.props;
+---
+
+<BaseLayout
+  title={title}
+  description={description}
+  canonical={canonical}
+  jsonLd={jsonLd}
+>
+  <div class="container-main py-10">
+    <div class="grid lg:grid-cols-[1fr_300px] gap-8">
+      <div>
+        <div class="mb-2">
+          <a href="/tools" class="text-sm text-primary hover:underline">&larr; All Tools</a>
+        </div>
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-2">{title}</h1>
+        <p class="text-base text-on-surface-variant mb-8">{tool.description}</p>
+
+        <div class="rounded-xl border border-surface-container-highest bg-surface-container-low overflow-hidden">
+          <slot />
+        </div>
+
+        <AdSlot format="in-article" class="mt-8" />
+
+        {relatedTools.length > 0 && (
+          <section class="mt-12">
+            <h2 class="text-xl font-semibold mb-4">Related Tools</h2>
+            <div class="grid sm:grid-cols-2 gap-4">
+              {relatedTools.map((rt) => (
+                <ToolCard tool={rt} />
+              ))}
+            </div>
+          </section>
+        )}
+      </div>
+
+      <aside class="hidden lg:block space-y-6">
+        <div class="sticky top-24">
+          <AdSlot format="sidebar" />
+        </div>
+      </aside>
+    </div>
+  </div>
+</BaseLayout>

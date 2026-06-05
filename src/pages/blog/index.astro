@@ -1,0 +1,119 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const blogPosts = [
+  {
+    slug: "json-formatting-guide",
+    title: "How to Format JSON Properly: A Complete Guide",
+    description: "Learn how to format JSON data correctly with best practices, common patterns, and troubleshooting tips for developers.",
+    date: new Date("2025-12-15"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "common-json-errors",
+    title: "Common JSON Errors and How to Fix Them",
+    description: "A comprehensive guide to the most frequent JSON errors developers encounter and step-by-step solutions to fix them.",
+    date: new Date("2025-12-10"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "url-encoding-decoding",
+    title: "URL Encoding and Decoding: What Every Developer Should Know",
+    description: "Understand how URL encoding works, why it matters for web development, and how to properly encode and decode URLs.",
+    date: new Date("2025-12-05"),
+    category: "Encoders",
+    readTime: "4 min read",
+  },
+  {
+    slug: "base64-encoding-methods",
+    title: "Base64 Encoding: Methods, Use Cases, and Best Practices",
+    description: "A deep dive into Base64 encoding, when to use it, common pitfalls, and how it works under the hood.",
+    date: new Date("2025-11-28"),
+    category: "Encoders",
+    readTime: "5 min read",
+  },
+  {
+    slug: "password-security-best-practices",
+    title: "Password Security Best Practices for 2026",
+    description: "Learn how to create and manage secure passwords, understand password strength metrics, and protect against common attacks.",
+    date: new Date("2025-11-20"),
+    category: "Security",
+    readTime: "7 min read",
+  },
+  {
+    slug: "color-converter-guide",
+    title: "Color Converter Guide: HEX, RGB, and HSL Explained",
+    description: "A complete guide to understanding color models in web development, and how to convert between HEX, RGB, and HSL formats.",
+    date: new Date("2025-11-15"),
+    category: "Converters",
+    readTime: "4 min read",
+  },
+  {
+    slug: "uuid-guide",
+    title: "UUIDs Explained: What They Are and How to Use Them",
+    description: "Everything you need to know about UUIDs — how they work, different versions, and when to use each type in your applications.",
+    date: new Date("2025-11-10"),
+    category: "Generators",
+    readTime: "5 min read",
+  },
+  {
+    slug: "online-tools-security",
+    title: "Understanding Online Tool Security: Why Client-Side Matters",
+    description: "Discover the security implications of using online developer tools and why client-side processing is crucial for data privacy.",
+    date: new Date("2025-11-05"),
+    category: "Security",
+    readTime: "6 min read",
+  },
+];
+
+const blogSchema = {
+  "@context": "https://schema.org",
+  "@type": "Blog",
+  name: "WebUtil Developer Blog",
+  description: "Developer guides and tutorials on JSON formatting, Base64 encoding, password security, color conversion, and more.",
+  url: `${Astro.site}/blog`,
+};
+---
+
+<BaseLayout
+  title="Developer Blog - Web Development Guides & Tutorials"
+  description="Expert guides on JSON formatting, Base64 encoding, URL encoding, password security, color conversion, and more. Learn best practices for online developer tools."
+  jsonLd={blogSchema}
+>
+  <div class="container-main py-10">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">Developer Blog</h1>
+        <p class="mt-2 text-on-surface-variant text-lg">
+          Guides, tutorials, and best practices for developers. Learn how to use our tools effectively.
+        </p>
+      </div>
+
+      <div class="grid gap-6">
+        {blogPosts.map((post) => (
+          <a
+            href={`/blog/${post.slug}`}
+            class="tool-card group block"
+          >
+            <div class="flex items-center gap-3 text-xs text-on-surface-variant mb-3">
+              <span class="chip active text-xs cursor-default">{post.category}</span>
+              <span>{post.date.toLocaleDateString("en-US", { year: "numeric", month: "long", day: "numeric" })}</span>
+              <span>&middot;</span>
+              <span>{post.readTime}</span>
+            </div>
+            <h2 class="text-lg font-semibold group-hover:text-primary transition-colors">{post.title}</h2>
+            <p class="mt-1.5 text-sm text-on-surface-variant leading-relaxed">{post.description}</p>
+            <div class="mt-3 text-sm text-primary flex items-center gap-1">
+              Read more <span class="group-hover:translate-x-0.5 transition-transform">&rarr;</span>
+            </div>
+          </a>
+        ))}
+      </div>
+
+      <AdSlot format="in-article" class="mt-8" />
+    </div>
+  </div>
+</BaseLayout>

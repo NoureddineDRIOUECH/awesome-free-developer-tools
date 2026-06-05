@@ -1,0 +1,22 @@
+---
+export interface Props {
+  format?: "banner" | "rectangle" | "sidebar" | "in-article";
+  className?: string;
+}
+
+const { format = "rectangle", className = "" } = Astro.props;
+
+const sizeClasses: Record<string, string> = {
+  banner: "min-h-[90px] md:min-h-[90px]",
+  rectangle: "min-h-[250px]",
+  sidebar: "min-h-[600px]",
+  "in-article": "min-h-[120px] md:min-h-[250px]",
+};
+---
+
+<div class={`ad-container ${sizeClasses[format]} ${className}`}>
+  <span class="uppercase tracking-wider text-[10px] font-medium">Sponsored</span>
+  <div class="flex items-center justify-center h-full min-h-[inherit]">
+    <span class="text-outline/50 text-xs">Advertisement</span>
+  </div>
+</div>

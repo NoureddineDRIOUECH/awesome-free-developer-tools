@@ -1,0 +1,106 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolCard from "../../components/ToolCard.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { tools, categories, type ToolCategory } from "../../lib/tools";
+
+const selectedCategory = Astro.url.searchParams.get("category") as ToolCategory | null;
+const searchQuery = Astro.url.searchParams.get("q") || "";
+
+let filteredTools = tools;
+
+if (selectedCategory) {
+  filteredTools = filteredTools.filter((t) => t.category === selectedCategory);
+}
+
+if (searchQuery) {
+  const q = searchQuery.toLowerCase();
+  filteredTools = filteredTools.filter(
+    (t) =>
+      t.title.toLowerCase().includes(q) ||
+      t.description.toLowerCase().includes(q) ||
+      t.keywords.some((k) => k.toLowerCase().includes(q))
+  );
+}
+
+const allSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "All Free Online Developer Tools",
+  description: `Browse all ${tools.length} free online developer tools. Format JSON, encode Base64, generate passwords, and more.`,
+  url: `${Astro.site}/tools`,
+};
+---
+
+<BaseLayout
+  title={`All Developer Tools${selectedCategory ? ` - ${categories.find(c => c.id === selectedCategory)?.name}` : ""}`}
+  description={`Browse all ${filteredTools.length} free online developer tools. ${selectedCategory ? `${categories.find(c => c.id === selectedCategory)?.name}: ` : ""}Format, encode, generate, and convert data entirely in your browser.`}
+  jsonLd={allSchema}
+>
+  <div class="container-main py-10">
+    <div class="mb-8">
+      <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">
+        {selectedCategory
+          ? categories.find((c) => c.id === selectedCategory)?.name || "All Tools"
+          : "All Developer Tools"}
+      </h1>
+      <p class="mt-2 text-on-surface-variant">
+        {selectedCategory
+          ? categories.find((c) => c.id === selectedCategory)?.description
+          : `${tools.length} free tools across ${categories.length} categories`}
+      </p>
+    </div>
+
+    <!-- Categories filter -->
+    <div class="flex flex-wrap gap-2 mb-8">
+      <a
+        href="/tools"
+        class="chip"
+        class:list={{ "active": !selectedCategory }}
+      >
+        All ({tools.length})
+      </a>
+      {categories.map((cat) => (
+        <a
+          href={`/tools?category=${cat.id}`}
+          class="chip"
+          class:list={{ "active": selectedCategory === cat.id }}
+        >
+          {cat.name} ({tools.filter((t) => t.category === cat.id).length})
+        </a>
+      ))}
+    </div>
+
+    <AdSlot format="banner" className="mb-8" />
+
+    <!-- Tools Grid -->
+    {filteredTools.length > 0 ? (
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {filteredTools.map((tool) => (
+          <ToolCard tool={tool} />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-16">
+        <p class="text-on-surface-variant">No tools found matching your criteria.</p>
+      </div>
+    )}
+
+    <!-- Category descriptions (SEO) -->
+    {!selectedCategory && (
+      <section class="mt-16 pt-8 border-t border-surface-container-highest">
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 text-sm text-on-surface-variant leading-relaxed">
+          {categories.map((cat) => (
+            <div>
+              <h3 class="font-semibold text-on-surface mb-2">{cat.name}</h3>
+              <p>{cat.description}</p>
+              <a href={`/tools?category=${cat.id}`} class="text-primary hover:underline mt-2 inline-block">
+                Browse {cat.name} &rarr;
+              </a>
+            </div>
+          ))}
+        </div>
+      </section>
+    )}
+  </div>
+</BaseLayout>

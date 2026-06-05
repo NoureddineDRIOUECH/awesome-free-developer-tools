@@ -1,0 +1,30 @@
+---
+import { getToolCategoryPairs } from "../lib/tools";
+import ToolCard from "./ToolCard.astro";
+
+const pairs = getToolCategoryPairs();
+---
+
+<div class="space-y-16">
+  {pairs.map(({ category, tools }) => (
+    <section>
+      <div class="flex items-center justify-between mb-6">
+        <div>
+          <h2 class="section-title text-2xl sm:text-3xl">{category.name}</h2>
+          <p class="mt-1.5 text-sm text-on-surface-variant">{category.description}</p>
+        </div>
+        <a
+          href={`/tools?category=${category.id}`}
+          class="text-sm text-primary hover:text-primary-hover transition-colors shrink-0"
+        >
+          View all &rarr;
+        </a>
+      </div>
+      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {tools.slice(0, 3).map((tool) => (
+          <ToolCard tool={tool} />
+        ))}
+      </div>
+    </section>
+  ))}
+</div>

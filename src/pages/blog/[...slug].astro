@@ -1,0 +1,162 @@
+---
+import BlogLayout from "../../layouts/BlogLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+export async function getStaticPaths() {
+  const posts = [
+    { slug: "json-formatting-guide", category: "Formatters" },
+    { slug: "common-json-errors", category: "Formatters" },
+    { slug: "url-encoding-decoding", category: "Encoders" },
+    { slug: "base64-encoding-methods", category: "Encoders" },
+    { slug: "password-security-best-practices", category: "Security" },
+    { slug: "color-converter-guide", category: "Converters" },
+    { slug: "uuid-guide", category: "Generators" },
+    { slug: "online-tools-security", category: "Security" },
+  ];
+  return posts.map((p) => ({
+    params: { slug: p.slug },
+    props: p,
+  }));
+}
+
+const { slug, category } = Astro.props;
+const canonical = `${Astro.site}/blog/${slug}`;
+
+const content: Record<string, { title: string; description: string; date: Date; sections: { heading: string; body: string }[] }> = {
+  "json-formatting-guide": {
+    title: "How to Format JSON Properly: A Complete Guide",
+    description: "Learn how to format JSON data correctly with best practices, common patterns, and troubleshooting tips for developers.",
+    date: new Date("2025-12-15"),
+    sections: [
+      { heading: "What is JSON Formatting?", body: "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. Proper JSON formatting involves correctly structuring your data with appropriate indentation, spacing, and syntax to ensure it is both valid and readable." },
+      { heading: "Why Proper JSON Formatting Matters", body: "Well-formatted JSON is crucial for debugging, collaboration, and maintaining APIs. Proper formatting helps developers quickly understand data structures, identify errors, and ensure consistent communication between services. Unformatted or minified JSON can hide syntax errors and make debugging significantly more difficult." },
+      { heading: "JSON Formatting Best Practices", body: "Always use consistent indentation (2 or 4 spaces), avoid trailing commas, use double quotes for strings and property names, and keep nested structures organized. Our JSON Formatter tool automatically handles all of these best practices for you." },
+      { heading: "Common JSON Formatting Errors", body: "Trailing commas, missing quotes, unescaped special characters, and mismatched brackets are among the most common JSON formatting errors. Always validate your JSON after formatting to catch these issues early." },
+      { heading: "Using WebUtil's JSON Formatter", body: "Our free online JSON Formatter allows you to format, validate, and beautify your JSON data instantly. Simply paste your JSON, click format, and get properly indented, validated output. All processing happens in your browser — nothing is uploaded to any server." },
+    ],
+  },
+  "common-json-errors": {
+    title: "Common JSON Errors and How to Fix Them",
+    description: "A comprehensive guide to the most frequent JSON errors developers encounter and step-by-step solutions to fix them.",
+    date: new Date("2025-12-10"),
+    sections: [
+      { heading: "Trailing Commas", body: "One of the most common JSON errors is trailing commas at the end of arrays or objects. Unlike JavaScript, JSON does not allow trailing commas. Remove any extra commas after the last element in an array or property in an object." },
+      { heading: "Missing or Incorrect Quotes", body: "JSON requires double quotes around all strings and property names. Single quotes are not valid in JSON. Always use double quotes for consistency and validity." },
+      { heading: "Unescaped Special Characters", body: "Characters like newlines, tabs, and backslashes need to be properly escaped in JSON strings. Use \\n for newlines, \\t for tabs, and \\\\ for backslashes to ensure valid JSON." },
+      { heading: "Mismatched Brackets", body: "Ensure every opening bracket {, [, or ( has a matching closing bracket }, ], or ). Use a JSON validator to automatically detect mismatched brackets." },
+      { heading: "Invalid Data Types", body: "JSON supports strings, numbers, booleans, null, arrays, and objects. Undefined, NaN, Infinity, and functions are not valid JSON values. Ensure all values are valid JSON types." },
+    ],
+  },
+  "url-encoding-decoding": {
+    title: "URL Encoding and Decoding: What Every Developer Should Know",
+    description: "Understand how URL encoding works, why it matters for web development, and how to properly encode and decode URLs.",
+    date: new Date("2025-12-05"),
+    sections: [
+      { heading: "What is URL Encoding?", body: "URL encoding, also known as percent-encoding, converts characters into a format that can be transmitted over the internet. Special characters are replaced with a % followed by two hexadecimal digits representing the ASCII code of the character." },
+      { heading: "Why URL Encoding is Necessary", body: "URLs can only contain certain characters from the ASCII set. Characters like spaces, quotes, and non-ASCII characters must be encoded to ensure reliable transmission. URL encoding ensures that data in URLs is correctly interpreted by web servers." },
+      { heading: "Common URL Encoding Examples", body: "Spaces become %20, exclamation marks become %21, and non-ASCII characters like é become %C3%A9. Our URL Encoder tool handles all of these conversions automatically." },
+      { heading: "Difference Between encodeURI and encodeURIComponent", body: "encodeURI encodes a complete URI but preserves characters that are part of the URI syntax. encodeURIComponent encodes everything, making it safe for use as a query parameter value." },
+      { heading: "URL Decoding Best Practices", body: "Always decode URL parameters on the server side. When building URLs dynamically, always encode user-provided values to prevent URL injection and malformed URLs." },
+    ],
+  },
+  "base64-encoding-methods": {
+    title: "Base64 Encoding: Methods, Use Cases, and Best Practices",
+    description: "A deep dive into Base64 encoding, when to use it, common pitfalls, and how it works under the hood.",
+    date: new Date("2025-11-28"),
+    sections: [
+      { heading: "What is Base64 Encoding?", body: "Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format. It is commonly used to transmit data over media designed to handle textual data, such as email or HTTP." },
+      { heading: "Common Use Cases for Base64", body: "Base64 is widely used for embedding images in HTML/CSS, attaching files to emails, storing binary data in JSON, and transmitting data in APIs where binary formats are not supported." },
+      { heading: "How Base64 Encoding Works", body: "Base64 converts every 3 bytes of binary data into 4 ASCII characters using a specific alphabet of 64 characters (A-Z, a-z, 0-9, +, /). Padding with = characters is used to ensure the output length is a multiple of 4." },
+      { heading: "Base64 Best Practices", body: "Base64 increases data size by approximately 33%, so avoid using it for large data transfers when alternatives exist. Always consider whether Base64 is the right solution, or if a binary format would be more efficient." },
+      { heading: "Using WebUtil's Base64 Tool", body: "Our Base64 Encoder/Decoder tool allows you to instantly convert text to and from Base64 format. Everything runs in your browser, ensuring your data never leaves your computer." },
+    ],
+  },
+  "password-security-best-practices": {
+    title: "Password Security Best Practices for 2026",
+    description: "Learn how to create and manage secure passwords, understand password strength metrics, and protect against common attacks.",
+    date: new Date("2025-11-20"),
+    sections: [
+      { heading: "What Makes a Strong Password?", body: "A strong password is long (at least 12 characters), includes a mix of uppercase letters, lowercase letters, numbers, and symbols, does not contain dictionary words or personal information, and is unique for each account." },
+      { heading: "Understanding Password Strength", body: "Password strength is measured by entropy — a measure of unpredictability. Entropy is affected by length and character variety. A password with 80+ bits of entropy is generally considered secure against offline attacks." },
+      { heading: "Common Password Attacks", body: "Brute force attacks try every possible combination. Dictionary attacks use common words and patterns. Phishing attacks trick users into revealing passwords. Rainbow table attacks use precomputed hash values." },
+      { heading: "Password Manager Benefits", body: "Use a password manager to generate and store strong, unique passwords for every account. This eliminates password reuse and makes it practical to use truly random passwords for every service." },
+      { heading: "Using WebUtil's Password Generator", body: "Our free Password Generator creates cryptographically secure random passwords with customizable length and character sets. All generation happens in your browser using the Web Crypto API." },
+    ],
+  },
+  "color-converter-guide": {
+    title: "Color Converter Guide: HEX, RGB, and HSL Explained",
+    description: "A complete guide to understanding color models in web development, and how to convert between HEX, RGB, and HSL formats.",
+    date: new Date("2025-11-15"),
+    sections: [
+      { heading: "Understanding Color Models", body: "Color models are mathematical representations of colors. HEX uses hexadecimal values, RGB uses red/green/blue components, and HSL uses hue/saturation/lightness. Each has its own advantages for different use cases." },
+      { heading: "HEX Colors Explained", body: "HEX colors use six hexadecimal digits (#RRGGBB) to represent 16.7 million colors. They are compact and widely used in web development. A three-digit shorthand (#RGB) is also available for certain colors." },
+      { heading: "RGB Colors Explained", body: "RGB uses three values from 0-255 representing red, green, and blue components. It's the native color model for computer displays and is intuitive for specifying exact color values." },
+      { heading: "HSL Colors Explained", body: "HSL represents colors by hue (0-360 degrees on the color wheel), saturation (0-100%), and lightness (0-100%). HSL is more intuitive for creating color schemes because it separates the color from its intensity." },
+      { heading: "Color Accessibility and Contrast", body: "When designing for the web, ensure sufficient contrast between text and background colors. The WCAG guidelines require a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text." },
+    ],
+  },
+  "uuid-guide": {
+    title: "UUIDs Explained: What They Are and How to Use Them",
+    description: "Everything you need to know about UUIDs — how they work, different versions, and when to use each type in your applications.",
+    date: new Date("2025-11-10"),
+    sections: [
+      { heading: "What is a UUID?", body: "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUIDs are designed to be unique across space and time, making them ideal for distributed systems where IDs must not conflict." },
+      { heading: "UUID v4 — Random UUIDs", body: "UUID v4 is the most commonly used version. It generates IDs using random numbers, with 122 bits of randomness. The probability of collision is extremely low, making it suitable for most applications." },
+      { heading: "UUID v7 — Time-Ordered UUIDs", body: "UUID v7 is a newer version that combines a timestamp with random bits. This makes UUIDs sortable by creation time, improving database index performance compared to v4." },
+      { heading: "When to Use UUIDs", body: "UUIDs are ideal for distributed systems, database primary keys, API identifiers, and any scenario where you need globally unique identifiers without a central authority." },
+      { heading: "Using WebUtil's UUID Generator", body: "Our free UUID Generator creates UUID v4 identifiers instantly. You can generate single or multiple UUIDs at once, with bulk generation supporting up to 100 IDs at a time." },
+    ],
+  },
+  "online-tools-security": {
+    title: "Understanding Online Tool Security: Why Client-Side Matters",
+    description: "Discover the security implications of using online developer tools and why client-side processing is crucial for data privacy.",
+    date: new Date("2025-11-05"),
+    sections: [
+      { heading: "The Problem with Server-Side Tools", body: "Many online tools send your data to a server for processing. This means your sensitive data — passwords, API keys, personal information — is transmitted and potentially stored on third-party servers." },
+      { heading: "Client-Side Processing Benefits", body: "Client-side processing keeps your data on your device. All computation happens in your browser using JavaScript. No data is uploaded, no logs are kept, and no third-party ever sees your information." },
+      { heading: "WebUtil's Privacy Commitment", body: "Every tool on WebUtil runs 100% in your browser. We never upload your data, never track your usage, and never store your information. Your privacy is built into our platform from the ground up." },
+      { heading: "How to Verify Client-Side Processing", body: "You can verify client-side processing by using your browser's developer tools. Check the Network tab — if no requests are made when you use a tool, it's running entirely client-side." },
+      { heading: "The Future of Online Privacy", body: "As privacy concerns grow, client-side processing is becoming the standard for online tools. WebUtil is committed to this privacy-first approach, ensuring you can use our tools with complete confidence." },
+    ],
+  },
+};
+
+const post = content[slug];
+
+if (!post) {
+  return Astro.redirect("/blog", 301);
+}
+
+const articleSchema = {
+  "@context": "https://schema.org",
+  "@type": "Article",
+  headline: post.title,
+  description: post.description,
+  author: { "@type": "Organization", name: "WebUtil" },
+  datePublished: post.date.toISOString(),
+  publisher: { "@type": "Organization", name: "WebUtil" },
+};
+---
+
+<BlogLayout
+  title={post.title}
+  description={post.description}
+  canonical={canonical}
+  jsonLd={articleSchema}
+  publishDate={post.date}
+  category={category}
+>
+  {post.sections.map((section, i) => (
+    <section>
+      <h2>{section.heading}</h2>
+      <p>{section.body}</p>
+      {i === 2 && <AdSlot format="in-article" class="my-8" />}
+    </section>
+  ))}
+
+  <div class="mt-8 pt-6 border-t border-surface-container-highest">
+    <p class="text-sm text-on-surface-variant">
+      Use our <a href={`/tools/${slug.replace(/-(?:guide|decoding|methods|practices|explained)/, "")}`} class="text-primary hover:underline">free online tool</a> to get started instantly.
+    </p>
+  </div>
+</BlogLayout>
