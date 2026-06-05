@@ -1,5 +1,13 @@
 @import "tailwindcss";
 
+@font-face {
+  font-family: "Geist Variable";
+  src: url("/fonts/GeistVariableVF.woff2") format("woff2");
+  font-weight: 100 900;
+  font-display: swap;
+  font-style: normal;
+}
+
 @theme {
   --color-surface: #0c141f;
   --color-surface-dim: #0c141f;

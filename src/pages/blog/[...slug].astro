@@ -156,7 +156,16 @@ const articleSchema = {
 
   <div class="mt-8 pt-6 border-t border-surface-container-highest">
     <p class="text-sm text-on-surface-variant">
-      Use our <a href={`/tools/${slug.replace(/-(?:guide|decoding|methods|practices|explained)/, "")}`} class="text-primary hover:underline">free online tool</a> to get started instantly.
-    </p>
+        Use our <a href={`/tools/${({
+          "json-formatting-guide": "json-formatter",
+          "common-json-errors": "json-formatter",
+          "url-encoding-decoding": "url-encoder",
+          "base64-encoding-methods": "base64-encoder",
+          "password-security-best-practices": "password-generator",
+          "color-converter-guide": "color-converter",
+          "uuid-guide": "uuid-generator",
+          "online-tools-security": "jwt-decoder",
+        })[slug] || slug}`} class="text-primary hover:underline">free online tool</a> to get started instantly.
+      </p>
   </div>
 </BlogLayout>

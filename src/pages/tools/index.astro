@@ -51,40 +51,65 @@ const allSchema = {
       </p>
     </div>
 
-    <!-- Categories filter -->
-    <div class="flex flex-wrap gap-2 mb-8">
-      <a
-        href="/tools"
-        class="chip"
-        class:list={{ "active": !selectedCategory }}
-      >
-        All ({tools.length})
-      </a>
-      {categories.map((cat) => (
-        <a
-          href={`/tools?category=${cat.id}`}
+    <!-- Search & Filter Controls -->
+    <div class="mb-6 space-y-4">
+      <div class="flex flex-col sm:flex-row gap-3 items-start sm:items-center">
+        <div class="relative w-full sm:max-w-xs">
+          <svg class="absolute left-3 top-1/2 -translate-y-1/2 size-4 text-on-surface-variant/50 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+          </svg>
+          <input
+            id="tool-search"
+            type="search"
+            placeholder="Search tools by name, description, or keywords..."
+            value={searchQuery}
+            class="input-field w-full pl-9"
+          />
+        </div>
+        <p class="text-sm text-on-surface-variant whitespace-nowrap shrink-0">
+          <span id="visible-count">{filteredTools.length}</span> of {tools.length} tools
+        </p>
+      </div>
+
+      <div id="category-filters" class="flex flex-wrap gap-2">
+        <button
+          type="button"
+          data-category=""
           class="chip"
-          class:list={{ "active": selectedCategory === cat.id }}
+          class:list={{ active: !selectedCategory }}
         >
-          {cat.name} ({tools.filter((t) => t.category === cat.id).length})
-        </a>
-      ))}
+          All ({tools.length})
+        </button>
+        {categories.map((cat) => {
+          const count = tools.filter((t) => t.category === cat.id).length;
+          return (
+            <button
+              type="button"
+              data-category={cat.id}
+              class="chip"
+              class:list={{ active: selectedCategory === cat.id }}
+            >
+              {cat.name} ({count})
+            </button>
+          );
+        })}
+      </div>
     </div>
 
     <AdSlot format="banner" className="mb-8" />
 
     <!-- Tools Grid -->
-    {filteredTools.length > 0 ? (
-      <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {filteredTools.map((tool) => (
+    <div id="tools-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+      {tools.map((tool) => (
+        <div class="tool-card-wrapper" data-category={tool.category}>
           <ToolCard tool={tool} />
-        ))}
-      </div>
-    ) : (
-      <div class="text-center py-16">
-        <p class="text-on-surface-variant">No tools found matching your criteria.</p>
-      </div>
-    )}
+        </div>
+      ))}
+    </div>
+
+    <div id="no-results" class="text-center py-16 hidden">
+      <p class="text-on-surface-variant">No tools found matching your criteria.</p>
+    </div>
 
     <!-- Category descriptions (SEO) -->
     {!selectedCategory && (
@@ -104,3 +129,70 @@ const allSchema = {
     )}
   </div>
 </BaseLayout>
+
+<script is:inline>
+(function () {
+  const tools = JSON.parse(document.getElementById("tools-data").textContent);
+  const searchInput = document.getElementById("tool-search");
+  const categoryChips = document.querySelectorAll("#category-filters .chip");
+  const wrappers = document.querySelectorAll(".tool-card-wrapper");
+  const noResults = document.getElementById("no-results");
+  const countEl = document.getElementById("visible-count");
+
+  let activeCategory = new URLSearchParams(location.search).get("category") || "";
+  let searchQuery = new URLSearchParams(location.search).get("q") || "";
+
+  function updateActiveChip() {
+    categoryChips.forEach((chip) => {
+      chip.classList.toggle("active", chip.dataset.category === activeCategory);
+    });
+  }
+
+  function filter() {
+    const q = searchQuery.toLowerCase().trim();
+    let visible = 0;
+
+    tools.forEach((tool, i) => {
+      const wrapper = wrappers[i];
+      const matchesSearch =
+        !q ||
+        tool.title.toLowerCase().includes(q) ||
+        tool.description.toLowerCase().includes(q) ||
+        tool.keywords.some((k) => k.toLowerCase().includes(q));
+      const matchesCategory = !activeCategory || tool.category === activeCategory;
+      wrapper.style.display = matchesSearch && matchesCategory ? "" : "none";
+      if (matchesSearch && matchesCategory) visible++;
+    });
+
+    countEl.textContent = visible;
+    noResults.classList.toggle("hidden", visible > 0);
+  }
+
+  searchInput.addEventListener("input", function () {
+    searchQuery = this.value;
+    filter();
+  });
+
+  categoryChips.forEach((chip) => {
+    chip.addEventListener("click", function () {
+      activeCategory = this.dataset.category;
+      updateActiveChip();
+      filter();
+    });
+  });
+
+  updateActiveChip();
+  if (searchQuery) {
+    searchInput.value = searchQuery;
+    filter();
+  }
+})();
+</script>
+
+<script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
+  title: t.title,
+  description: t.description,
+  category: t.category,
+  keywords: t.keywords
+})))
+}</script>
