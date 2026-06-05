@@ -1,0 +1,330 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/uuid-generator`;
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: "UUID Generator Online",
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description:
+    "Free online UUID v4 generator. Generate random UUID identifiers instantly in your browser with batch support, copy, and secure random generation.",
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  sameAs: `${siteUrl}/tools`,
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    { "@type": "ListItem", position: 3, name: "UUID Generator Online", item: pageUrl },
+  ],
+};
+
+const faqSchema = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: [
+    {
+      "@type": "Question",
+      name: "What is a UUID?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "A UUID (Universally Unique Identifier) is a 128-bit label used for unique identification in computer systems. UUID v4 is randomly generated, providing approximately 5.3 x 10^36 possible values, making collisions virtually impossible.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "How do I generate a UUID online?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Click the Generate button or adjust the quantity to generate multiple UUIDs at once. The tool uses your browser's crypto.randomUUID() API for secure random generation. Copy any UUID by clicking the copy button next to it.",
+      },
+    },
+    {
+      "@type": "Question",
+      name: "Is this UUID generator secure?",
+      acceptedAnswer: {
+        "@type": "Answer",
+        text: "Yes. This tool uses the Web Crypto API (crypto.randomUUID()) which is cryptographically secure. It runs entirely in your browser with no server communication, ensuring your generated identifiers remain private.",
+      },
+    },
+  ],
+};
+---
+
+<BaseLayout
+  title="UUID Generator Online - Free Random UUID v4 Generator"
+  description="Generate UUID v4 instantly online. Free, fast, and secure UUID generator for developers. Batch generate 1-50 UUIDs with one click. 100% client-side, no server uploads."
+  canonical={pageUrl}
+  ogType="website"
+  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
+        </div>
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
+          UUID Generator Online
+        </h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          Generate random UUID v4 identifiers instantly. Batch generate up to 50 UUIDs with
+          cryptographically secure randomness — no server, no bullshit.
+        </p>
+      </div>
+    </div>
+    <div class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-5">
+          <div class="flex flex-wrap items-end gap-4">
+            <div class="flex-1 min-w-[160px]">
+              <label for="uuid-count" class="text-sm font-medium mb-1.5 block">Quantity</label>
+              <input
+                type="number"
+                id="uuid-count"
+                class="input-field text-sm"
+                value="5"
+                min="1"
+                max="50"
+              />
+            </div>
+            <button id="btn-generate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Generate
+            </button>
+            <button id="btn-copy-all" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Copy All
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div id="uuid-list" class="space-y-2">
+            <p class="text-sm text-on-surface-variant">Click Generate to create UUIDs.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a UUID?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>UUID</strong> (Universally Unique Identifier) is a 128-bit label used for unique
+        identification in computer systems. The term <strong>GUID</strong> (Globally Unique Identifier)
+        is often used interchangeably, particularly in Microsoft ecosystems. <strong>UUID v4</strong>
+        is randomly generated, providing approximately 5.3 × 10³⁶ possible values — making collisions
+        virtually impossible. Our free <strong>UUID generator online</strong> creates cryptographically
+        secure UUIDs right in your browser.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">UUID vs Auto-Increment IDs</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">UUID</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>Unique across all systems, databases, and tables</li>
+            <li>No central coordination needed</li>
+            <li>Safe in distributed and offline-first architectures</li>
+            <li>128-bit, takes more storage</li>
+          </ul>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Auto-Increment ID</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>Unique only within a single table</li>
+            <li>Requires sequential generation</li>
+            <li>Collisions when merging databases</li>
+            <li>32/64-bit integer, compact storage</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why UUID v4 Is Used</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Distributed Databases</strong> — Generate unique keys offline without conflicts when syncing.</li>
+        <li><strong>API Design</strong> — Use UUIDs as resource identifiers that can't be enumerated or guessed.</li>
+        <li><strong>Microservices</strong> — Each service generates its own IDs without a central authority.</li>
+        <li><strong>Event Sourcing</strong> — Unique event IDs that work across event stores and message buses.</li>
+        <li><strong>Client-Side Generation</strong> — Create IDs on the client before server submission (optimistic UI).</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Is UUID Safe?</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>UUID v4</strong> uses random number generation. Our tool uses the Web Crypto API
+        (<code class="text-primary">crypto.randomUUID()</code>), which is cryptographically secure.
+        This means your generated UUIDs are not predictable and are suitable for security-sensitive
+        applications like session tokens, API keys, and resource identifiers.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Generate UUIDs</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Set the <strong>quantity</strong> (1–50) and click <strong>Generate</strong>. Each UUID is
+        displayed in a separate row with its own copy button. Use <strong>Copy All</strong> to copy
+        every UUID to your clipboard at once — one per line, perfect for batch inserts or API payloads.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- Related Tools -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+      <div class="grid sm:grid-cols-3 gap-4">
+        <a href="/tools/json-formatter" class="tool-card block">
+          <h3 class="font-semibold text-sm">JSON Formatter</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
+        </a>
+        <a href="/tools/base64-encoder" class="tool-card block">
+          <h3 class="font-semibold text-sm">Base64 Encoder</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data instantly.</p>
+        </a>
+        <a href="/tools/password-generator" class="tool-card block">
+          <h3 class="font-semibold text-sm">Password Generator</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Generate strong, secure passwords.</p>
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  function generateUUID() {
+    if (crypto.randomUUID) {
+      return crypto.randomUUID();
+    }
+    return "xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx".replace(/[xy]/g, (c) => {
+      const r = Math.random() * 16 | 0;
+      const v = c === "x" ? r : (r & 0x3 | 0x8);
+      return v.toString(16);
+    });
+  }
+
+  const list = document.getElementById("uuid-list");
+  const countInput = document.getElementById("uuid-count");
+  const btnGenerate = document.getElementById("btn-generate");
+  const btnCopyAll = document.getElementById("btn-copy-all");
+  const btnClear = document.getElementById("btn-clear");
+
+  function renderUUIDs(ids) {
+    if (ids.length === 0) {
+      list.innerHTML = '<p class="text-sm text-on-surface-variant">No UUIDs generated yet.</p>';
+      return;
+    }
+    list.innerHTML = ids.map((id, i) =>
+      `<div class="flex items-center gap-2 p-2.5 rounded-lg bg-surface-container group hover:bg-surface-container-high transition-colors">
+        <span class="text-xs text-on-surface-variant/50 w-6 shrink-0">${i + 1}.</span>
+        <code class="flex-1 font-mono text-sm break-all select-all">${id}</code>
+        <button class="copy-single text-xs text-primary hover:text-primary-hover transition-colors shrink-0 px-2 py-1 rounded hover:bg-primary/10" data-uuid="${id}">
+          Copy
+        </button>
+      </div>`
+    ).join("");
+
+    list.querySelectorAll(".copy-single").forEach((btn) => {
+      btn.onclick = async () => {
+        const uuid = btn.getAttribute("data-uuid");
+        try {
+          await navigator.clipboard.writeText(uuid);
+          btn.textContent = "Copied!";
+          setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+        } catch {
+          const ta = document.createElement("textarea");
+          ta.value = uuid;
+          document.body.appendChild(ta);
+          ta.select();
+          document.execCommand("copy");
+          ta.remove();
+          btn.textContent = "Copied!";
+          setTimeout(() => { btn.textContent = "Copy"; }, 2000);
+        }
+      };
+    });
+  }
+
+  let currentUUIDs = [];
+
+  function generateUUIDs() {
+    const count = Math.min(Math.max(parseInt(countInput.value) || 1, 1), 50);
+    currentUUIDs = Array.from({ length: count }, () => generateUUID());
+    renderUUIDs(currentUUIDs);
+  }
+
+  btnGenerate.onclick = generateUUIDs;
+
+  countInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") generateUUIDs();
+  });
+
+  btnClear.onclick = () => {
+    currentUUIDs = [];
+    renderUUIDs([]);
+  };
+
+  btnCopyAll.onclick = async () => {
+    if (currentUUIDs.length === 0) return;
+    const text = currentUUIDs.join("\n");
+    try {
+      await navigator.clipboard.writeText(text);
+      btnCopyAll.innerHTML =
+        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopyAll.innerHTML =
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      btnCopyAll.innerHTML =
+        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopyAll.innerHTML =
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+      }, 2000);
+    }
+  };
+
+  generateUUIDs();
+</script>
