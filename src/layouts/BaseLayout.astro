@@ -25,22 +25,26 @@ const {
 } = Astro.props;
 ---
 
-<SEOHead
-  title={title}
-  description={description}
-  canonical={canonical}
-  ogImage={ogImage}
-  ogType={ogType}
-  noindex={noindex}
-  jsonLd={jsonLd}
-/>
-
-  <script defer src="/_vercel/insights/script.js"></script>
-  <script defer src="/_vercel/speed-insights/script.js"></script>
+<!doctype html>
+<html lang="en">
+  <head>
+    <SEOHead
+      title={title}
+      description={description}
+      canonical={canonical}
+      ogImage={ogImage}
+      ogType={ogType}
+      noindex={noindex}
+      jsonLd={jsonLd}
+    />
+    <script defer src="/_vercel/insights/script.js"></script>
+    <script defer src="/_vercel/speed-insights/script.js"></script>
+  </head>
   <body class="min-h-screen bg-background text-on-surface antialiased">
-  <Navbar />
-  <main>
-    <slot />
-  </main>
-  <Footer />
-</body>
+    <Navbar />
+    <main>
+      <slot />
+    </main>
+    <Footer />
+  </body>
+</html>
