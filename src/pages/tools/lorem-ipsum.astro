@@ -1,106 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import PopularTools from "../../components/PopularTools.astro";
+import { getToolById } from "../../lib/tools";
 
-const siteUrl = String(Astro.site).replace(/\/$/, "");
-const pageUrl = `${siteUrl}/tools/lorem-ipsum`;
-
-const softwareSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Lorem Ipsum Generator Online",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  description:
-    "Free Lorem Ipsum generator. Create placeholder text in paragraphs, sentences, or words for your designs, mockups, and wireframes. Instant generation, no sign-up required.",
-  url: pageUrl,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  sameAs: `${siteUrl}/tools`,
-  author: { "@type": "Organization", name: "WebUtil" },
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
-    { "@type": "ListItem", position: 3, name: "Lorem Ipsum Generator Online", item: pageUrl },
-  ],
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is Lorem Ipsum?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Lorem Ipsum is dummy text used in the printing and typesetting industry. It has been the standard placeholder text since the 1500s and is used by designers to demonstrate visual form before content is ready.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do I generate Lorem Ipsum text?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Select whether you want paragraphs, sentences, or words, enter the amount you need, and click Generate. The tool will instantly create the requested amount of placeholder text.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Why use Lorem Ipsum instead of real text?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Using Lorem Ipsum keeps the focus on design elements rather than readable content. It prevents reviewers from getting distracted by meaningful text during layout reviews and wireframe presentations.",
-      },
-    },
-  ],
-};
+const tool = getToolById("lorem-ipsum")!;
 ---
 
-<BaseLayout
-  title="Lorem Ipsum Generator Online - Free Placeholder Text Tool"
-  description="Free Lorem Ipsum generator. Create placeholder text in paragraphs, sentences, or words for your designs, mockups, and wireframes. Instant generation, no sign-up required."
-  canonical={pageUrl}
-  ogType="website"
-  breadcrumbs={[
-    { label: "Home", href: "/" },
-    { label: "Tools", href: "/tools" },
-    { label: "Generators", href: "/tools/category/generators" },
-    { label: "Lorem Ipsum Generator" },
-  ]},
-  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
->
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="container-main py-12 sm:py-16">
-      <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
-          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"/>
-          </svg>
-          Free Developer Tool — 100% Client-Side
-        </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
-          Lorem Ipsum Generator Online
-        </h1>
-        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-          Generate classic placeholder text instantly. Choose paragraphs, sentences, or words —
-          no sign-up, no ads, just dummy text.
-        </p>
-      </div>
-    </div>
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-    </div>
-  </section>
-
+<ToolLayout tool={tool}>
   <!-- Tool UI -->
   <section class="container-main pb-8">
     <div class="max-w-4xl mx-auto">
@@ -202,35 +109,9 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
 
-  
-  <section class="container-main py-8">
-    <div class="max-w-4xl mx-auto">
-      <PopularTools />
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="container-main py-8 pb-16">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/password-generator" class="tool-card block">
-          <h3 class="font-semibold text-sm">Password Generator</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Generate strong, secure passwords instantly.</p>
-        </a>
-        <a href="/tools/uuid-generator" class="tool-card block">
-          <h3 class="font-semibold text-sm">UUID Generator</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Generate random UUIDs and GUIDs.</p>
-        </a>
-        <a href="/tools/case-converter" class="tool-card block">
-          <h3 class="font-semibold text-sm">Case Converter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Convert text between upper, lower, title, and more.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<Toast />
 
 <script>
   const amountInput = document.getElementById("lorem-amount");

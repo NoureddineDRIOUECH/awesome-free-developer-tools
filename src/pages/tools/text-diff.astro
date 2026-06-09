@@ -1,106 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import PopularTools from "../../components/PopularTools.astro";
+import { getToolById } from "../../lib/tools";
 
-const siteUrl = String(Astro.site).replace(/\/$/, "");
-const pageUrl = `${siteUrl}/tools/text-diff`;
-
-const softwareSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Text Diff Checker Online - Compare Text Side by Side",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  description:
-    "Free online text diff checker. Compare two texts side-by-side and highlight additions, deletions, and changes. Perfect for code reviews and document comparison.",
-  url: pageUrl,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  sameAs: `${siteUrl}/tools`,
-  author: { "@type": "Organization", name: "WebUtil" },
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
-    { "@type": "ListItem", position: 3, name: "Text Diff Checker Online", item: pageUrl },
-  ],
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is a text diff?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A text diff is a comparison between two texts that highlights the differences. Lines that were added are shown in green, removed lines in red, and unchanged lines in neutral. This makes it easy to see exactly what changed between versions.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How do I compare two texts?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Paste the original text in the left field and the modified text in the right field, then click Compare. The tool will analyze both texts line by line and display the differences with color coding.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "When should I use a diff checker?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Diff checkers are essential for code reviews, tracking document changes, comparing configuration files, verifying data migrations, and debugging unexpected behavior in text-based content.",
-      },
-    },
-  ],
-};
+const tool = getToolById("text-diff")!;
 ---
 
-<BaseLayout
-  title="Text Diff Checker Online - Compare Text Side by Side"
-  description="Free online text diff checker. Compare two texts side-by-side and highlight additions, deletions, and changes. Perfect for code reviews and document comparison."
-  canonical={pageUrl}
-  ogType="website"
-  breadcrumbs={[
-    { label: "Home", href: "/" },
-    { label: "Tools", href: "/tools" },
-    { label: "Text Tools", href: "/tools/category/text" },
-    { label: "Text Diff Checker" },
-  ]},
-  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
->
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="container-main py-12 sm:py-16">
-      <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
-          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-          </svg>
-          Free Developer Tool — 100% Client-Side
-        </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
-          Text Diff Checker Online
-        </h1>
-        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-          Compare two texts side-by-side and highlight additions, deletions, and changes instantly.
-          Perfect for code reviews and document comparison.
-        </p>
-      </div>
-    </div>
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-    </div>
-  </section>
-
+<ToolLayout tool={tool}>
   <!-- Tool UI -->
   <section class="container-main pb-8">
     <div class="max-w-5xl mx-auto">
@@ -212,35 +119,9 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
 
-  
-  <section class="container-main py-8">
-    <div class="max-w-4xl mx-auto">
-      <PopularTools />
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="container-main py-8 pb-16">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/json-formatter" class="tool-card block">
-          <h3 class="font-semibold text-sm">JSON Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
-        </a>
-        <a href="/tools/markdown-preview" class="tool-card block">
-          <h3 class="font-semibold text-sm">Markdown Preview</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Preview and render Markdown in real time.</p>
-        </a>
-        <a href="/tools/case-converter" class="tool-card block">
-          <h3 class="font-semibold text-sm">Case Converter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Convert text between uppercase, lowercase, title case, and more.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<Toast />
 
 <script>
   const input1 = document.getElementById("diff-input1");

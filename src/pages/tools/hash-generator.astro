@@ -1,106 +1,15 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import PopularTools from "../../components/PopularTools.astro";
+import { getToolById } from "../../lib/tools";
 
-const siteUrl = String(Astro.site).replace(/\/$/, "");
-const pageUrl = `${siteUrl}/tools/hash-generator`;
-
-const softwareSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "Hash Generator Online",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  description:
-    "Free online hash generator. Generate MD5, SHA-1, SHA-256, and SHA-512 cryptographic hashes instantly in your browser with no server upload.",
-  url: pageUrl,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  sameAs: `${siteUrl}/tools`,
-  author: { "@type": "Organization", name: "WebUtil" },
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
-    { "@type": "ListItem", position: 3, name: "Hash Generator Online", item: pageUrl },
-  ],
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "What is a cryptographic hash function?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "A cryptographic hash function takes an input and produces a fixed-size string of bytes. The output is deterministic (same input always produces same hash) but irreversible — you cannot recover the original input from the hash.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "What is the difference between MD5 and SHA-256?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "SHA-256 is a newer and more secure algorithm that produces a 256-bit hash. MD5 is older, faster, and produces a 128-bit hash, but is considered cryptographically broken for security-sensitive applications due to collision vulnerabilities.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is MD5 still safe to use?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "MD5 is not considered cryptographically secure for security purposes like password storage or certificate signing. However, it is still widely used for non-security applications like file integrity checks, checksums, and data deduplication.",
-      },
-    },
-  ],
-};
+const tool = getToolById("hash-generator")!;
 ---
 
-<BaseLayout
-  title="Hash Generator Online - MD5, SHA256, SHA1 Free Tool"
-  description="Generate MD5, SHA-1, SHA-256 and SHA-512 hashes online instantly. Free browser-based cryptographic hash generator for developers. 100% client-side, no data upload."
-  canonical={pageUrl}
-  ogType="website"
-  breadcrumbs={[
-    { label: "Home", href: "/" },
-    { label: "Tools", href: "/tools" },
-    { label: "Security", href: "/tools/category/security" },
-    { label: "Hash Generator" },
-  ]},
-  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
+<ToolLayout
+  tool={tool}
 >
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="container-main py-12 sm:py-16">
-      <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
-          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
-          </svg>
-          Free Developer Tool — 100% Client-Side
-        </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
-          Hash Generator Online
-        </h1>
-        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-          Generate MD5, SHA-1, SHA-256, and SHA-512 hashes instantly. All processing happens in
-          your browser — nothing is uploaded to any server.
-        </p>
-      </div>
-    </div>
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-    </div>
-  </section>
-
   <!-- Tool UI -->
   <section class="container-main pb-8">
     <div class="max-w-4xl mx-auto">
@@ -245,35 +154,9 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
 
-  
-  <section class="container-main py-8">
-    <div class="max-w-4xl mx-auto">
-      <PopularTools />
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="container-main py-8 pb-16">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/jwt-decoder" class="tool-card block">
-          <h3 class="font-semibold text-sm">JWT Decoder</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Decode and inspect JWT tokens and signatures.</p>
-        </a>
-        <a href="/tools/base64-encoder" class="tool-card block">
-          <h3 class="font-semibold text-sm">Base64 Encoder</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Encode and decode Base64 data.</p>
-        </a>
-        <a href="/tools/uuid-generator" class="tool-card block">
-          <h3 class="font-semibold text-sm">UUID Generator</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Generate unique identifiers for your systems.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<Toast />
 
 <script>
   const input = document.getElementById("hash-input");

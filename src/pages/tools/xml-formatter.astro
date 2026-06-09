@@ -1,106 +1,13 @@
 ---
-import BaseLayout from "../../layouts/BaseLayout.astro";
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
 import AdSlot from "../../components/AdSlot.astro";
-import PopularTools from "../../components/PopularTools.astro";
+import { getToolById } from "../../lib/tools";
 
-const siteUrl = String(Astro.site).replace(/\/$/, "");
-const pageUrl = `${siteUrl}/tools/xml-formatter`;
-
-const softwareSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: "XML Formatter Online - Beautify XML Data",
-  applicationCategory: "DeveloperApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  description:
-    "Free online XML formatter and validator. Beautify, minify, and validate XML data with syntax highlighting. 100% client-side processing.",
-  url: pageUrl,
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  sameAs: `${siteUrl}/tools`,
-  author: { "@type": "Organization", name: "WebUtil" },
-};
-
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
-    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
-    { "@type": "ListItem", position: 3, name: "XML Formatter Online - Beautify XML Data", item: pageUrl },
-  ],
-};
-
-const faqSchema = {
-  "@context": "https://schema.org",
-  "@type": "FAQPage",
-  mainEntity: [
-    {
-      "@type": "Question",
-      name: "Why should I format my XML?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "Formatting XML with proper indentation makes it easier to read, debug, and maintain. Well-formatted XML helps developers quickly understand the document structure and identify nesting errors.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "How does XML formatting work?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "The tool parses your XML using the browser's built-in DOMParser, then serializes it back with proper indentation. Each nested element gets additional indentation, making the hierarchical structure visually clear.",
-      },
-    },
-    {
-      "@type": "Question",
-      name: "Is my XML data sent to a server?",
-      acceptedAnswer: {
-        "@type": "Answer",
-        text: "No. The XML formatting happens entirely in your browser using native DOMParser and XMLSerializer APIs. Your data never leaves your computer.",
-      },
-    },
-  ],
-};
+const tool = getToolById("xml-formatter")!;
 ---
 
-<BaseLayout
-  title="XML Formatter Online - Beautify XML Data"
-  description="Free online XML formatter and validator. Beautify, minify, and validate XML data with syntax highlighting. 100% client-side processing."
-  canonical={pageUrl}
-  ogType="website"
-  breadcrumbs={[
-    { label: "Home", href: "/" },
-    { label: "Tools", href: "/tools" },
-    { label: "Formatters", href: "/tools/category/formatters" },
-    { label: "XML Formatter" },
-  ]},
-  jsonLd={[softwareSchema, breadcrumbSchema, faqSchema]}
->
-  <!-- Hero -->
-  <section class="relative overflow-hidden">
-    <div class="container-main py-12 sm:py-16">
-      <div class="max-w-3xl mx-auto text-center">
-        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6">
-          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
-          </svg>
-          Free Developer Tool — 100% Client-Side
-        </div>
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">
-          XML Formatter Online
-        </h1>
-        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
-          Beautify, validate, and format your XML data instantly. Your data stays in your browser —
-          nothing is uploaded, nothing is stored.
-        </p>
-      </div>
-    </div>
-    <div class="absolute inset-0 -z-10 overflow-hidden">
-      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
-    </div>
-  </section>
-
+<ToolLayout tool={tool}>
   <!-- Tool UI -->
   <section class="container-main pb-8">
     <div class="max-w-4xl mx-auto">
@@ -218,35 +125,9 @@ const faqSchema = {
   </section>
 
   <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
 
-  
-  <section class="container-main py-8">
-    <div class="max-w-4xl mx-auto">
-      <PopularTools />
-    </div>
-  </section>
-
-  <!-- Related Tools -->
-  <section class="container-main py-8 pb-16">
-    <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
-      <div class="grid sm:grid-cols-3 gap-4">
-        <a href="/tools/json-formatter" class="tool-card block">
-          <h3 class="font-semibold text-sm">JSON Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Format, validate, and beautify JSON data.</p>
-        </a>
-        <a href="/tools/yaml-converter" class="tool-card block">
-          <h3 class="font-semibold text-sm">YAML Converter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Convert between YAML, JSON, and XML.</p>
-        </a>
-        <a href="/tools/sql-formatter" class="tool-card block">
-          <h3 class="font-semibold text-sm">SQL Formatter</h3>
-          <p class="mt-1 text-xs text-on-surface-variant">Beautify and format SQL queries.</p>
-        </a>
-      </div>
-    </div>
-  </section>
-</BaseLayout>
+<Toast />
 
 <script>
   const input = document.getElementById("xml-input");

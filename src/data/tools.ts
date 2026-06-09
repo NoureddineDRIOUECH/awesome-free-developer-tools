@@ -1,0 +1,334 @@
+export type ToolCategory = "formatters" | "encoders" | "generators" | "converters" | "text" | "images" | "security";
+
+export interface CodeSnippet {
+  lang: "javascript" | "python" | "go" | "bash";
+  label: string;
+  code: string;
+}
+
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface ToolData {
+  id: string;
+  title: string;
+  description: string;
+  metaDescription: string;
+  category: ToolCategory;
+  keywords: string[];
+  relatedTools: string[];
+  codeSnippets: CodeSnippet[];
+  faqItems: FaqItem[];
+  examplePayload?: string;
+}
+
+export const toolsData: ToolData[] = [
+  {
+    id: "json-formatter",
+    title: "JSON Formatter",
+    description: "Format, validate, and beautify your JSON data with syntax highlighting and error detection.",
+    metaDescription: "Free online JSON formatter and validator. Beautify, minify, and validate JSON data with syntax highlighting and detailed error messages. No server uploads, 100% client-side.",
+    category: "formatters",
+    keywords: ["json formatter", "json validator", "json beautifier", "format json", "json pretty print"],
+    relatedTools: ["base64-encoder", "yaml-converter", "xml-formatter"],
+    examplePayload: '{"name":"WebUtil","type":"tool","features":["formatter","validator","minifier"],"version":1.0}',
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const formatted = JSON.stringify(data, null, 2);\nconst minified = JSON.stringify(data);\nfunction validateJSON(str) {\n  try { JSON.parse(str); return true; }\n  catch (e) { return false; }\n}" },
+      { lang: "python", label: "Python", code: "import json\nformatted = json.dumps(data, indent=2)\nminified = json.dumps(data)\ndef validate_json(s):\n  try:\n    json.loads(s)\n    return True\n  except json.JSONDecodeError:\n    return False" },
+      { lang: "go", label: "Go", code: `import "encoding/json"\n\nvar buf bytes.Buffer\njson.Indent(&buf, data, "", "  ")\nfmt.Println(buf.String())\n\nfunc isValidJSON(s string) bool {\n  var js json.RawMessage\n  return json.Unmarshal([]byte(s), &js) == nil\n}` },
+      { lang: "bash", label: "Bash", code: "jq . input.json\njq -c . input.json\njq empty input.json && echo \"Valid\" || echo \"Invalid\"" },
+    ],
+    faqItems: [
+      { question: "What is a JSON formatter?", answer: "A JSON formatter takes raw JSON and reformats it with proper indentation for readability. Also called JSON beautification or pretty-printing." },
+      { question: "Is this tool free?", answer: "Yes, completely free. No sign-up, no limits, no server uploads — everything runs in your browser." },
+      { question: "What's the difference between format and minify?", answer: "Formatting adds indentation for readability. Minifying removes whitespace for smaller file sizes." },
+      { question: "Is my JSON data safe?", answer: "Yes. All processing happens client-side. Your data never leaves your device." },
+      { question: "Can I use this offline?", answer: "Yes. Once the page loads, it works fully offline since everything runs in-browser." },
+    ],
+  },
+  {
+    id: "base64-encoder", title: "Base64 Encoder / Decoder",
+    description: "Encode or decode text and files to and from Base64 format instantly.",
+    metaDescription: "Free online Base64 encoder and decoder. Convert text and files to/from Base64 encoding. 100% client-side.",
+    category: "encoders", keywords: ["base64 encoder", "base64 decoder", "base64 encode", "base64 decode"],
+    relatedTools: ["json-formatter", "url-encoder", "html-entities"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const encoded = btoa('hello world');\nconst decoded = atob(encoded);" },
+      { lang: "python", label: "Python", code: "import base64\nencoded = base64.b64encode(b'hello').decode()\ndecoded = base64.b64decode(encoded)" },
+      { lang: "go", label: "Go", code: `import "encoding/base64"\n\nencoded := base64.StdEncoding.EncodeToString([]byte("hello"))\ndecoded, _ := base64.StdEncoding.DecodeString(encoded)` },
+      { lang: "bash", label: "Bash", code: "echo -n 'hello' | base64\necho 'aGVsbG8=' | base64 -d" },
+    ],
+    faqItems: [
+      { question: "What is Base64?", answer: "Base64 is an encoding scheme that converts binary data to a text format using 64 printable ASCII characters. It's commonly used for transmitting data over text-based protocols like HTTP." },
+      { question: "Is Base64 encryption?", answer: "No. Base64 is encoding, not encryption. Anyone can decode Base64. Never use it to protect sensitive data." },
+    ],
+  },
+  {
+    id: "url-encoder", title: "URL Encoder / Decoder",
+    description: "Encode or decode URLs and query parameters for proper web transmission.",
+    metaDescription: "Free online URL encoder and decoder. Encode or decode URLs and query parameters.",
+    category: "encoders", keywords: ["url encoder", "url decoder", "url encode", "url decode", "percent encoding"],
+    relatedTools: ["base64-encoder", "html-entities", "json-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const encoded = encodeURIComponent('hello world');\nconst decoded = decodeURIComponent(encoded);" },
+      { lang: "python", label: "Python", code: "from urllib.parse import quote, unquote\nencoded = quote('hello world')\ndecoded = unquote(encoded)" },
+      { lang: "go", label: "Go", code: `import "net/url"\n\nencoded := url.QueryEscape("hello world")\ndecoded, _ := url.QueryUnescape(encoded)` },
+      { lang: "bash", label: "Bash", code: 'echo "hello world" | xxd -plain | sed "s/\\(..\\)/%\\1/g"' },
+    ],
+    faqItems: [
+      { question: "Why URL-encode?", answer: "URL encoding converts characters that are not allowed in URLs (like spaces, &, #) into %-encoded format so they transmit safely." },
+      { question: "What characters need encoding?", answer: "Spaces become %20, & becomes %26, # becomes %23, and other non-ASCII characters are encoded as %XX in hex." },
+    ],
+  },
+  {
+    id: "html-entities", title: "HTML Entities Encoder",
+    description: "Convert special characters to HTML entities and vice versa for safe web rendering.",
+    metaDescription: "Free online HTML entities encoder and decoder. Escape HTML special characters.",
+    category: "encoders", keywords: ["html entities", "html encoder", "html escape", "html unescape"],
+    relatedTools: ["url-encoder", "base64-encoder", "markdown-preview"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const escaped = str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');" },
+      { lang: "python", label: "Python", code: "import html\nescaped = html.escape('<script>alert(1)</script>')" },
+      { lang: "go", label: "Go", code: `import "html"\n\nescaped := html.EscapeString("<script>alert(1)</script>")` },
+      { lang: "bash", label: "Bash", code: "echo '<div>' | sed 's/</\\&lt;/g; s/>/\\&gt;/g'" },
+    ],
+    faqItems: [
+      { question: "What are HTML entities?", answer: "HTML entities are special codes (like &amp; for &, &lt; for <) that display reserved HTML characters safely in rendered pages." },
+    ],
+  },
+  {
+    id: "password-generator", title: "Password Generator",
+    description: "Generate strong, secure passwords with customizable length and character sets.",
+    metaDescription: "Free online secure password generator. Create strong random passwords with customizable options. 100% client-side.",
+    category: "generators", keywords: ["password generator", "secure password", "random password", "strong password"],
+    relatedTools: ["uuid-generator", "base64-encoder", "lorem-ipsum"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function generatePassword(len) {\n  const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()';\n  return Array.from(crypto.getRandomValues(new Uint32Array(len)))\n    .map(v => chars[v % chars.length]).join('');\n}" },
+      { lang: "python", label: "Python", code: "import secrets\nimport string\nchars = string.ascii_letters + string.digits + '!@#$%^&*()'\npassword = ''.join(secrets.choice(chars) for _ in range(16))" },
+      { lang: "go", label: "Go", code: `import "crypto/rand"\n\nfunc genPassword(n int) string {\n  chars := []byte("ABC...xyz0129!@#$")\n  b := make([]byte, n)\n  rand.Read(b)\n  for i := range b { b[i] = chars[b[i] % byte(len(chars))] }\n  return string(b)\n}` },
+      { lang: "bash", label: "Bash", code: "openssl rand -base64 12\n< /dev/urandom tr -dc 'A-Za-z0-9!@#$' | head -c16" },
+    ],
+    faqItems: [
+      { question: "How secure are these passwords?", answer: "Passwords are generated using your browser's cryptographically secure random API — the same standard used for encryption keys." },
+      { question: "Are passwords saved or stored?", answer: "No. Passwords are generated client-side and never sent to any server. Once you leave the page they're gone." },
+    ],
+  },
+  {
+    id: "uuid-generator", title: "UUID Generator",
+    description: "Generate UUID v4 identifiers for databases, APIs, and distributed systems.",
+    metaDescription: "Free online UUID generator. Generate random UUID v4 identifiers instantly. 100% client-side.",
+    category: "generators", keywords: ["uuid generator", "uuid v4", "generate uuid", "guid generator"],
+    relatedTools: ["password-generator", "json-formatter", "base64-encoder"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "crypto.randomUUID();\n// or: 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => (crypto.getRandomValues(new Uint8Array(1))[0] & 15 | (c === 'x' ? 0 : 8)).toString(16))" },
+      { lang: "python", label: "Python", code: "import uuid\nuuid.uuid4()" },
+      { lang: "go", label: "Go", code: `import "github.com/google/uuid"\n\nid := uuid.New().String()` },
+      { lang: "bash", label: "Bash", code: "uuidgen\ncat /proc/sys/kernel/random/uuid" },
+    ],
+    faqItems: [
+      { question: "What is UUID v4?", answer: "UUID v4 generates a 128-bit universally unique identifier using random numbers. The chance of collision is effectively zero." },
+      { question: "Where are UUIDs used?", answer: "UUIDs are used as database primary keys, API resource identifiers, session tokens, and anywhere unique IDs are needed across distributed systems." },
+    ],
+  },
+  {
+    id: "lorem-ipsum", title: "Lorem Ipsum Generator",
+    description: "Generate placeholder text for your designs, mockups, and layouts.",
+    metaDescription: "Free Lorem Ipsum generator. Create placeholder text for designs, mockups, and wireframes.",
+    category: "generators", keywords: ["lorem ipsum", "placeholder text", "dummy text", "text generator"],
+    relatedTools: ["password-generator", "uuid-generator", "case-converter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const lorem = 'Lorem ipsum dolor sit amet consectetur adipiscing elit sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.';\nfunction getLorem(n) { return Array(n).fill(lorem).join(' '); }" },
+      { lang: "python", label: "Python", code: "from lorem_text import lorem\nlorem.paragraph()\nlorem.words(10)" },
+      { lang: "bash", label: "Bash", code: "cat /usr/share/dict/words | shuf -n 50 | paste -sd ' '\n# or install 'lorem' package" },
+    ],
+    faqItems: [
+      { question: "What is Lorem Ipsum?", answer: "Lorem Ipsum is dummy text derived from Latin literature, used since the 1500s as placeholder text in design mockups." },
+      { question: "How much text can I generate?", answer: "There's no limit. The text is generated in your browser — you can create as many paragraphs, words, or bytes as you need." },
+    ],
+  },
+  {
+    id: "yaml-converter", title: "YAML to JSON Converter",
+    description: "Convert YAML data to JSON format and vice versa with live preview.",
+    metaDescription: "Free online YAML to JSON converter. Convert YAML to JSON and JSON to YAML with live preview.",
+    category: "converters", keywords: ["yaml to json", "json to yaml", "yaml converter", "yaml formatter"],
+    relatedTools: ["json-formatter", "xml-formatter", "sql-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "import { parse, stringify } from 'yaml';\nconst json = parse(yamlString);\nconst yaml = stringify(jsonObj);" },
+      { lang: "python", label: "Python", code: "import yaml\nimport json\ndata = yaml.safe_load(yaml_string)\njson_str = json.dumps(data, indent=2)" },
+      { lang: "go", label: "Go", code: `import "gopkg.in/yaml.v3"\n\nvar data map[string]any\nyaml.Unmarshal([]byte(yamlStr), &data)\njsonData, _ := json.MarshalIndent(data, "", "  ")` },
+      { lang: "bash", label: "Bash", code: "yq -o=json input.yaml\njq -c . | yq -P > output.yaml" },
+    ],
+    faqItems: [
+      { question: "Why convert YAML to JSON?", answer: "JSON is better for APIs and web transmission. YAML is more human-readable for config files. Converting between them gives you the best of both." },
+      { question: "Is either format lossy?", answer: "Most YAML features (like anchors and aliases) are not representable in JSON, so some data may be expanded during conversion." },
+    ],
+  },
+  {
+    id: "color-converter", title: "Color Converter",
+    description: "Convert between HEX, RGB, HSL, and named CSS colors with live preview.",
+    metaDescription: "Free online color converter. Convert between HEX, RGB, HSL, and named CSS colors.",
+    category: "converters", keywords: ["color converter", "hex to rgb", "rgb to hex", "hex color converter"],
+    relatedTools: ["image-converter", "json-formatter", "case-converter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function hexToRgb(hex) {\n  const r = parseInt(hex.slice(1,3), 16);\n  const g = parseInt(hex.slice(3,5), 16);\n  const b = parseInt(hex.slice(5,7), 16);\n  return { r, g, b };\n}" },
+      { lang: "python", label: "Python", code: "def hex_to_rgb(hex):\n  h = hex.lstrip('#')\n  return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))" },
+      { lang: "go", label: "Go", code: `import "fmt"\n\nfunc hexToRGB(hex string) (r, g, b int) {\n  fmt.Sscanf(hex, "#%02x%02x%02x", &r, &g, &b)\n  return\n}` },
+    ],
+    faqItems: [
+      { question: "What's the difference between HEX, RGB, and HSL?", answer: "HEX is a 6-digit hex code (#ff0000). RGB uses 0-255 values per channel. HSL uses hue (0-360°), saturation (%), and lightness (%)." },
+    ],
+  },
+  {
+    id: "case-converter", title: "Case Converter",
+    description: "Convert text between camelCase, snake_case, kebab-case, and more.",
+    metaDescription: "Free online case converter. Convert text between camelCase, snake_case, kebab-case, and more.",
+    category: "text", keywords: ["case converter", "camel case", "snake case", "kebab case", "text converter"],
+    relatedTools: ["json-formatter", "markdown-preview", "text-diff"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function toCamelCase(str) {\n  return str.replace(/[-_\\s]+(.)/g, (_, c) => c.toUpperCase());\n}\nfunction toSnakeCase(str) {\n  return str.replace(/[A-Z]/g, l => '_' + l.toLowerCase()).replace(/^_/, '');\n}" },
+      { lang: "python", label: "Python", code: "import re\ndef to_snake(s):\n  return re.sub(r'([A-Z])', r'_\\1', s).lower().lstrip('_')" },
+    ],
+    faqItems: [
+      { question: "What is camelCase?", answer: "camelCase capitalizes each word after the first (e.g., getUserName). PascalCase capitalizes all words (e.g., GetUserName). snake_case uses underscores between lowercase words." },
+      { question: "Which naming convention should I use?", answer: "JavaScript/TypeScript uses camelCase for variables. Python uses snake_case. CSS uses kebab-case. Use PascalCase for classes and constructors." },
+    ],
+  },
+  {
+    id: "markdown-preview", title: "Markdown Preview",
+    description: "Write and preview Markdown in real-time with syntax highlighting and HTML output.",
+    metaDescription: "Free online Markdown previewer and editor. Write Markdown with live HTML preview.",
+    category: "text", keywords: ["markdown preview", "markdown editor", "markdown to html", "md editor"],
+    relatedTools: ["html-entities", "case-converter", "text-diff"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "import { marked } from 'marked';\nconst html = marked.parse(markdownString);\ndocument.getElementById('preview').innerHTML = html;" },
+      { lang: "python", label: "Python", code: "import markdown\nhtml = markdown.markdown(text)" },
+      { lang: "go", label: "Go", code: `import "github.com/yuin/goldmark"\n\nvar buf bytes.Buffer\ngoldmark.Convert([]byte(md), &buf)` },
+      { lang: "bash", label: "Bash", code: "echo '# Hello' | pandoc -f markdown -t html" },
+    ],
+    faqItems: [
+      { question: "What is Markdown?", answer: "Markdown is a lightweight markup language that uses plain text formatting to create structured documents that can be converted to HTML." },
+      { question: "What syntax is supported?", answer: "Headings (# ), bold (**), italic (*), links, images, code blocks, lists, tables, and blockquotes are all supported." },
+    ],
+  },
+  {
+    id: "text-diff", title: "Text Diff Checker",
+    description: "Compare two texts side by side and highlight the differences between them.",
+    metaDescription: "Free online text diff checker. Compare two texts side-by-side and highlight changes.",
+    category: "text", keywords: ["text diff", "diff checker", "compare text", "text comparison"],
+    relatedTools: ["json-formatter", "markdown-preview", "case-converter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "import { diffChars } from 'diff';\nconst changes = diffChars(oldText, newText);\nchanges.forEach(part => {\n  const color = part.added ? 'green' : part.removed ? 'red' : 'grey';\n  console.log(`%c${part.value}`, `color: ${color}`);\n});" },
+      { lang: "python", label: "Python", code: "import difflib\ndiff = difflib.unified_diff(old.splitlines(), new.splitlines(), lineterm='')\nprint('\\n'.join(diff))" },
+      { lang: "bash", label: "Bash", code: "diff -u file1.txt file2.txt\n# or with colordiff:\ncolordiff -u file1.txt file2.txt" },
+    ],
+    faqItems: [
+      { question: "How does diff work?", answer: "The diff algorithm finds the longest common subsequence between two texts and highlights additions (green), deletions (red), and unchanged sections." },
+    ],
+  },
+  {
+    id: "image-converter", title: "Image Converter",
+    description: "Convert images between formats using your browser's Canvas API. No uploads needed.",
+    metaDescription: "Free online image converter. Convert images between PNG, JPEG, WebP, and GIF formats using your browser. 100% client-side.",
+    category: "images", keywords: ["image converter", "convert image", "png to jpg", "jpg to png"],
+    relatedTools: ["color-converter", "base64-encoder", "json-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function convertImage(file, format) {\n  const img = new Image();\n  const canvas = document.createElement('canvas');\n  img.onload = () => {\n    canvas.width = img.width;\n    canvas.height = img.height;\n    canvas.getContext('2d').drawImage(img, 0, 0);\n    canvas.toBlob(blob => download(blob), `image/${format}`);\n  };\n  img.src = URL.createObjectURL(file);\n}" },
+      { lang: "python", label: "Python", code: "from PIL import Image\nimg = Image.open('input.png')\nimg.save('output.jpg', 'JPEG')" },
+      { lang: "bash", label: "Bash", code: "convert input.png output.jpg\n# or: magick input.png output.webp" },
+    ],
+    faqItems: [
+      { question: "What formats are supported?", answer: "PNG (lossless), JPEG (lossy), WebP (modern, smaller), and GIF (animated) are supported." },
+      { question: "Are my images uploaded to a server?", answer: "No. All image processing happens in your browser using the Canvas API. Your files never leave your device." },
+    ],
+  },
+  {
+    id: "sql-formatter", title: "SQL Formatter",
+    description: "Format and beautify SQL queries for better readability and maintainability.",
+    metaDescription: "Free online SQL formatter and beautifier. Format SQL queries with customizable indentation.",
+    category: "formatters", keywords: ["sql formatter", "sql beautifier", "format sql", "sql pretty print"],
+    relatedTools: ["json-formatter", "yaml-converter", "xml-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "// Using sql-formatter\nimport { format } from 'sql-formatter';\nconst formatted = format('SELECT * FROM users WHERE id = 1', { language: 'sql' });" },
+      { lang: "python", label: "Python", code: "import sqlparse\nformatted = sqlparse.format(sql, reindent=True, keyword_case='upper')" },
+      { lang: "bash", label: "Bash", code: "echo 'SELECT * FROM users;' | sqlformat --reindent --keywords upper -" },
+    ],
+    faqItems: [
+      { question: "What SQL dialects are supported?", answer: "Standard SQL, MySQL, PostgreSQL, and SQLite are all supported by the formatter." },
+    ],
+  },
+  {
+    id: "xml-formatter", title: "XML Formatter",
+    description: "Format, validate, and beautify XML data with syntax highlighting.",
+    metaDescription: "Free online XML formatter and validator. Beautify, minify, and validate XML data. 100% client-side.",
+    category: "formatters", keywords: ["xml formatter", "xml validator", "xml beautifier", "format xml"],
+    relatedTools: ["json-formatter", "yaml-converter", "sql-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function formatXml(xml) {\n  const xsltDoc = new DOMParser().parseFromString(\n    '<xsl:stylesheet xmlns:xsl=\"http://www.w3.org/1999/XSL/Transform\">' +\n    '<xsl:output indent=\"yes\" method=\"xml\"/>' +\n    '<xsl:template match=\"/\"><xsl:copy-of select=\".\"/></xsl:template></xsl:stylesheet>', 'text/xml');\n  const result = new XSLTProcessor();\n  result.importStylesheet(xsltDoc);\n  return new XMLSerializer().serializeToString(result.transformToDocument(xmlDoc));\n}" },
+      { lang: "python", label: "Python", code: "import xml.dom.minidom\nformatted = xml.dom.minidom.parseString(xml_str).toprettyxml(indent='  ')" },
+      { lang: "bash", label: "Bash", code: "xmllint --format input.xml\n# or:\nxq . input.xml | jq ." },
+    ],
+    faqItems: [
+      { question: "What is XML formatting?", answer: "XML formatting adds proper indentation and line breaks to make XML data human-readable. It also helps identify structural issues in your XML." },
+    ],
+  },
+  {
+    id: "jwt-decoder", title: "JWT Decoder",
+    description: "Decode and inspect JWT tokens — view header, payload, and signature information instantly.",
+    metaDescription: "Free online JWT decoder. Decode JSON Web Tokens and inspect header, payload, and signature. 100% client-side.",
+    category: "security", keywords: ["jwt decoder", "jwt token decoder", "decode jwt", "jwt inspector"],
+    relatedTools: ["base64-encoder", "json-formatter", "uuid-generator"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function decodeJWT(token) {\n  const parts = token.split('.');\n  const header = JSON.parse(atob(parts[0]));\n  const payload = JSON.parse(atob(parts[1]));\n  return { header, payload, signature: parts[2] };\n}" },
+      { lang: "python", label: "Python", code: "import base64, json\ndef decode_jwt(token):\n  parts = token.split('.')\n  header = json.loads(base64.b64decode(parts[0] + '=='))\n  payload = json.loads(base64.b64decode(parts[1] + '=='))\n  return header, payload" },
+      { lang: "bash", label: "Bash", code: "cut -d. -f1 <<< \"$token\" | base64 -d 2>/dev/null | jq .\ncut -d. -f2 <<< \"$token\" | base64 -d 2>/dev/null | jq ." },
+    ],
+    faqItems: [
+      { question: "What is a JWT?", answer: "A JSON Web Token (JWT) is a compact, URL-safe token format used for authentication. It consists of a header, payload, and signature, each Base64-encoded." },
+      { question: "Can I see the signature?", answer: "Yes, the signature is Base64-decoded and displayed. However, JWTs are signed, not encrypted — the signature verifies integrity, not confidentiality." },
+    ],
+  },
+  {
+    id: "hash-generator", title: "Hash Generator",
+    description: "Generate MD5, SHA-1, SHA-256, and SHA-512 hashes from any text input.",
+    metaDescription: "Free online hash generator. Generate MD5, SHA-1, SHA-256, and SHA-512 hashes instantly.",
+    category: "security", keywords: ["hash generator", "md5 generator", "sha256 generator", "sha1 generator"],
+    relatedTools: ["jwt-decoder", "base64-encoder", "uuid-generator"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "async function hashString(algo, str) {\n  const buf = await crypto.subtle.digest(algo, new TextEncoder().encode(str));\n  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, '0')).join('');\n}\nhashString('SHA-256', 'hello').then(console.log);" },
+      { lang: "python", label: "Python", code: "import hashlib\nhashlib.md5(b'hello').hexdigest()\nhashlib.sha256(b'hello').hexdigest()" },
+      { lang: "go", label: "Go", code: `import "crypto/sha256"\n\nh := sha256.Sum256([]byte("hello"))\nfmt.Printf("%x", h)` },
+      { lang: "bash", label: "Bash", code: "echo -n 'hello' | md5sum\necho -n 'hello' | sha256sum" },
+    ],
+    faqItems: [
+      { question: "What is the difference between MD5, SHA-1, and SHA-256?", answer: "SHA-256 offers the strongest security (256-bit hash). SHA-1 (160-bit) is deprecated for security. MD5 (128-bit) is broken and should only be used for checksums, not security." },
+      { question: "Which hash should I use?", answer: "For security-sensitive applications, use SHA-256 or SHA-512. MD5 and SHA-1 should only be used for checksums and legacy compatibility." },
+    ],
+  },
+  {
+    id: "regex-tester", title: "Regex Tester",
+    description: "Test regular expressions in real-time with match highlighting, group capture, and flag controls.",
+    metaDescription: "Free online regex tester. Test regular expressions in real-time with match highlighting and group capture. 100% client-side.",
+    category: "text", keywords: ["regex tester", "regular expression tester", "regex checker", "regex playground"],
+    relatedTools: ["json-formatter", "case-converter", "text-diff"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "const regex = /hello (\\w+)/gi;\nconst match = regex.exec('Hello World hello everyone');\n// match[0] = full match, match[1] = captured group" },
+      { lang: "python", label: "Python", code: "import re\npattern = r'hello (\\w+)'\nmatches = re.findall(pattern, 'hello world', re.IGNORECASE)" },
+      { lang: "go", label: "Go", code: `import "regexp"\n\nre := regexp.MustCompile(\`hello (\\w+)\`)\nmatches := re.FindStringSubmatch("hello world")` },
+      { lang: "bash", label: "Bash", code: "echo 'hello world' | grep -Eo 'hello [a-z]+'\necho 'hello world' | sed -n 's/hello \\([a-z]*\\)/found: \\1/p'" },
+    ],
+    faqItems: [
+      { question: "What regex flavors are supported?", answer: "This tool uses JavaScript's RegExp engine, which follows the ECMAScript specification. It supports most common patterns including groups, lookaheads, and quantifiers." },
+      { question: "What do the flags do?", answer: "g = global (find all matches, not just first), i = case-insensitive, m = multiline (^ and $ match line boundaries), s = dotAll (. matches newlines)." },
+    ],
+  },
+];
+
+export function getToolDataById(id: string): ToolData | undefined {
+  return toolsData.find(t => t.id === id);
+}
+
+export function getRelatedToolData(toolData: ToolData): ToolData[] {
+  return toolData.relatedTools.map(id => getToolDataById(id)).filter(Boolean) as ToolData[];
+}

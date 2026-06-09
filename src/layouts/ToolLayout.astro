@@ -2,26 +2,19 @@
 import BaseLayout from "./BaseLayout.astro";
 import PopularTools from "../components/PopularTools.astro";
 import { tools, getRelatedTools, getCategoryInfo, type ToolDefinition } from "../lib/tools";
-
-export interface CodeSnippet {
-  lang: "javascript" | "python" | "go" | "bash";
-  label: string;
-  code: string;
-}
-
-export interface FaqItem {
-  question: string;
-  answer: string;
-}
+import { getToolDataById } from "../data/tools";
 
 export interface Props {
   tool: ToolDefinition;
-  codeSnippets?: CodeSnippet[];
-  faqItems?: FaqItem[];
+  codeSnippets?: { lang: "javascript" | "python" | "go" | "bash"; label: string; code: string }[];
+  faqItems?: { question: string; answer: string }[];
   children?: any;
 }
 
-const { tool, codeSnippets = [], faqItems = [] } = Astro.props;
+const { tool, codeSnippets: inlineCodeSnippets, faqItems: inlineFaqItems } = Astro.props;
+const toolData = getToolDataById(tool.id);
+const codeSnippets = inlineCodeSnippets ?? toolData?.codeSnippets ?? [];
+const faqItems = inlineFaqItems ?? toolData?.faqItems ?? [];
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/${tool.id}`;
 const category = getCategoryInfo(tool.category);
