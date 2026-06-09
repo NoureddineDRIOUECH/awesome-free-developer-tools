@@ -81,6 +81,7 @@
   --animate-fade-in: fade-in 0.3s ease-out;
   --animate-slide-up: slide-up 0.4s ease-out;
   --animate-pulse-glow: pulse-glow 2s infinite;
+  --animate-scale-in: scale-in 0.2s ease-out;
 
   @keyframes fade-in {
     from { opacity: 0; }
@@ -93,6 +94,10 @@
   @keyframes pulse-glow {
     0%, 100% { box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.4); }
     50% { box-shadow: 0 0 0 8px rgba(139, 92, 246, 0); }
+  }
+  @keyframes scale-in {
+    from { opacity: 0; transform: scale(0.95); }
+    to { opacity: 1; transform: scale(1); }
   }
 }
 
@@ -118,7 +123,7 @@
 
 @layer components {
   .tool-card {
-    @apply border border-surface-container-highest bg-surface-container-low rounded-lg p-6 transition-all duration-300;
+    @apply border border-surface-container-highest bg-surface-container-low rounded-xl p-6 transition-all duration-200;
   }
   .tool-card:hover {
     @apply border-primary/40 -translate-y-0.5;
@@ -130,6 +135,7 @@
   }
   .btn-primary:hover {
     background-color: var(--color-primary-hover);
+    box-shadow: 0 0 16px rgba(126, 81, 224, 0.3);
   }
   .btn-secondary {
     @apply inline-flex items-center justify-center gap-2 rounded-lg px-5 py-2.5 text-sm font-medium transition-all duration-200 border;
@@ -141,7 +147,7 @@
     border-color: var(--color-outline);
   }
   .input-field {
-    @apply w-full rounded-lg px-4 py-2.5 text-sm border bg-surface-container border-surface-container-highest text-on-surface placeholder:text-on-surface-variant/50 transition-colors duration-200;
+    @apply w-full rounded-lg px-4 py-2.5 text-sm border bg-surface-container border-surface-container-highest text-on-surface placeholder:text-on-surface-variant/50 transition-all duration-200;
   }
   .input-field:focus {
     @apply border-primary/50 outline-none;
@@ -155,6 +161,7 @@
   .chip:hover {
     border-color: var(--color-primary);
     color: var(--color-primary);
+    box-shadow: 0 0 8px rgba(126, 81, 224, 0.15);
   }
   .chip.active {
     border-color: var(--color-primary);
@@ -173,6 +180,13 @@
     @apply border border-dashed border-outline/30 rounded-lg p-4 text-center text-xs;
     color: var(--color-outline);
     background-color: var(--color-background);
+  }
+  .glow-hover {
+    transition: all 0.2s;
+  }
+  .glow-hover:hover {
+    box-shadow: 0 0 20px rgba(126, 81, 224, 0.15);
+    border-color: rgba(126, 81, 224, 0.3);
   }
 }
 

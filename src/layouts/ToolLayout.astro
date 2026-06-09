@@ -1,59 +1,211 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
-import AdSlot from "../components/AdSlot.astro";
-import ToolCard from "../components/ToolCard.astro";
-import type { ToolDefinition } from "../lib/tools";
+import PopularTools from "../components/PopularTools.astro";
+import { tools, getRelatedTools, getCategoryInfo, type ToolDefinition } from "../lib/tools";
 
-export interface Props {
-  title: string;
-  description: string;
-  tool: ToolDefinition;
-  relatedTools: ToolDefinition[];
-  canonical?: string;
-  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+export interface CodeSnippet {
+  lang: "javascript" | "python" | "go" | "bash";
+  label: string;
+  code: string;
 }
 
-const { title, description, tool, relatedTools, canonical, jsonLd } = Astro.props;
+export interface FaqItem {
+  question: string;
+  answer: string;
+}
+
+export interface Props {
+  tool: ToolDefinition;
+  codeSnippets?: CodeSnippet[];
+  faqItems?: FaqItem[];
+  children?: any;
+}
+
+const { tool, codeSnippets = [], faqItems = [] } = Astro.props;
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const pageUrl = `${siteUrl}/tools/${tool.id}`;
+const category = getCategoryInfo(tool.category);
+
+const softwareSchema = {
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  name: tool.title,
+  applicationCategory: "DeveloperApplication",
+  operatingSystem: "All",
+  browserRequirements: "Requires JavaScript",
+  description: tool.metaDescription,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
+  author: { "@type": "Organization", name: "WebUtil" },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Home", item: siteUrl },
+    { "@type": "ListItem", position: 2, name: "Tools", item: `${siteUrl}/tools` },
+    ...(category ? [{ "@type": "ListItem", position: 3, name: category.name, item: `${siteUrl}/tools/category/${category.id}` }] : []),
+    { "@type": "ListItem", position: category ? 4 : 3, name: tool.title, item: pageUrl },
+  ],
+};
+
+const faqSchema = faqItems.length > 0 ? {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: faqItems.map((item) => ({
+    "@type": "Question",
+    name: item.question,
+    acceptedAnswer: { "@type": "Answer", text: item.answer },
+  })),
+} : null;
+
+const schemas = [softwareSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
+
+const allTabs = codeSnippets.length > 0
+  ? codeSnippets
+  : [];
+
+const related = getRelatedTools(tool.id);
 ---
 
 <BaseLayout
-  title={title}
-  description={description}
-  canonical={canonical}
-  jsonLd={jsonLd}
+  title={`${tool.title} Online - Free ${category?.name || "Developer"} Tool`}
+  description={tool.metaDescription}
+  canonical={pageUrl}
+  jsonLd={schemas}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Tools", href: "/tools" },
+    ...(category ? [{ label: category.name, href: `/tools/category/${category.id}` }] : []),
+    { label: tool.title },
+  ]}
 >
-  <div class="container-main py-10">
-    <div class="grid lg:grid-cols-[1fr_300px] gap-8">
-      <div>
-        <div class="mb-2">
-          <a href="/tools" class="text-sm text-primary hover:underline">&larr; All Tools</a>
+  <!-- Hero -->
+  <section class="relative overflow-hidden">
+    <div class="container-main py-12 sm:py-16">
+      <div class="max-w-3xl mx-auto text-center">
+        <div class="inline-flex items-center gap-2 rounded-full border border-primary/20 bg-primary/5 px-4 py-1.5 text-sm text-primary mb-6 animate-fade-in">
+          <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+          </svg>
+          Free Developer Tool — 100% Client-Side
         </div>
-        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-2">{title}</h1>
-        <p class="text-base text-on-surface-variant mb-8">{tool.description}</p>
-
-        <div class="rounded-xl border border-surface-container-highest bg-surface-container-low overflow-hidden">
-          <slot />
-        </div>
-
-        <AdSlot format="in-article" class="mt-8" />
-
-        {relatedTools.length > 0 && (
-          <section class="mt-12">
-            <h2 class="text-xl font-semibold mb-4">Related Tools</h2>
-            <div class="grid sm:grid-cols-2 gap-4">
-              {relatedTools.map((rt) => (
-                <ToolCard tool={rt} />
-              ))}
-            </div>
-          </section>
-        )}
+        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-bold tracking-tight leading-[1.1]">{tool.title}</h1>
+        <p class="mt-4 text-base sm:text-lg text-on-surface-variant max-w-2xl mx-auto leading-relaxed">
+          {tool.description}
+        </p>
       </div>
-
-      <aside class="hidden lg:block space-y-6">
-        <div class="sticky top-24">
-          <AdSlot format="sidebar" />
-        </div>
-      </aside>
     </div>
-  </div>
+    <div aria-hidden="true" class="absolute inset-0 -z-10 overflow-hidden">
+      <div class="absolute -top-40 -right-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+      <div class="absolute -bottom-40 -left-40 size-96 rounded-full bg-primary/5 blur-3xl"></div>
+    </div>
+  </section>
+
+  <slot />
+
+  {allTabs.length > 0 && (
+    <section class="container-main py-12">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold tracking-tight mb-6">How to Do This in Code</h2>
+        <div class="rounded-xl border border-surface-container-highest bg-surface-container-low overflow-hidden">
+          <div class="flex border-b border-surface-container-highest overflow-x-auto" role="tablist">
+            {allTabs.map((tab) => (
+              <button
+                class="code-tab px-4 py-2.5 text-xs font-medium text-on-surface-variant hover:text-on-surface transition-colors whitespace-nowrap border-b-2 border-transparent"
+                data-lang={tab.lang}
+                role="tab"
+              >{tab.label}</button>
+            ))}
+          </div>
+          {allTabs.map((tab) => (
+            <pre class="code-block hidden" data-lang={tab.lang}><code class="text-sm font-mono leading-relaxed">{tab.code}</code></pre>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <section class="container-main py-8">
+    <div class="max-w-4xl mx-auto">
+      <PopularTools />
+    </div>
+  </section>
+
+  {related.length > 0 && (
+    <section class="container-main py-8 pb-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {related.map((rt) => (
+            <a href={`/tools/${rt.id}`} class="tool-card block p-4 group transition-all duration-200 hover:border-primary/30 hover:-translate-y-0.5">
+              <h3 class="font-semibold text-sm group-hover:text-primary transition-colors">{rt.title}</h3>
+              <p class="mt-1 text-xs text-on-surface-variant leading-relaxed">{rt.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {faqItems.length > 0 && (
+    <section class="container-main py-8 pb-16">
+      <div class="max-w-3xl mx-auto">
+        <h2 class="text-2xl font-semibold tracking-tight mb-6">{tool.title} FAQ</h2>
+        <div class="space-y-2">
+          {faqItems.map((item) => (
+            <details class="tool-card p-4 group open:border-primary/30 transition-all duration-200 cursor-pointer">
+              <summary class="text-sm font-medium list-none flex items-center justify-between gap-4">
+                <span>{item.question}</span>
+                <svg class="size-4 text-on-surface-variant shrink-0 group-open:rotate-180 transition-transform duration-200" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+                </svg>
+              </summary>
+              <p class="mt-2 text-xs text-on-surface-variant leading-relaxed">{item.answer}</p>
+            </details>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
 </BaseLayout>
+
+<script is:inline>
+document.addEventListener("astro:page-load", function () {
+  var tabs = document.querySelectorAll(".code-tab");
+  var blocks = document.querySelectorAll(".code-block");
+
+  function activateTab(lang) {
+    tabs.forEach(function (t) {
+      var active = t.dataset.lang === lang;
+      t.classList.toggle("border-primary", active);
+      t.classList.toggle("text-primary", active);
+      t.classList.toggle("text-on-surface-variant", !active);
+      t.classList.toggle("border-transparent", !active);
+    });
+    blocks.forEach(function (b) {
+      b.classList.toggle("hidden", b.dataset.lang !== lang);
+    });
+  }
+
+  tabs.forEach(function (tab) {
+    tab.addEventListener("click", function () {
+      activateTab(this.dataset.lang);
+    });
+  });
+
+  if (tabs.length > 0) activateTab(tabs[0].dataset.lang);
+});
+</script>
+
+<style>
+  .code-block {
+    padding: 1rem;
+    overflow-x: auto;
+    -webkit-font-smoothing: antialiased;
+  }
+  .code-block code {
+    color: var(--color-on-surface-variant);
+  }
+</style>

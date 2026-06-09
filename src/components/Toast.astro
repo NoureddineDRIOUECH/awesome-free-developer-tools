@@ -1,0 +1,37 @@
+---
+interface Props {
+  id?: string;
+}
+
+const { id = "toast" } = Astro.props;
+---
+
+<div id={id} class="fixed bottom-6 left-1/2 -translate-x-1/2 z-[100] hidden">
+  <div class="flex items-center gap-2 rounded-lg bg-success/15 border border-success/30 px-4 py-2.5 text-sm text-success shadow-lg backdrop-blur-sm">
+    <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+    </svg>
+    <span id={`${id}-text`}>Copied!</span>
+  </div>
+</div>
+
+<script>
+const TOAST_DURATION = 2000;
+let toastTimer = null;
+
+window.showToast = function (msg, id) {
+  id = id || "toast";
+  var el = document.getElementById(id);
+  var text = document.getElementById(id + "-text");
+  if (!el || !text) return;
+  if (toastTimer) clearTimeout(toastTimer);
+  text.textContent = msg || "Copied!";
+  el.classList.remove("hidden");
+  el.style.animation = "none";
+  el.offsetHeight;
+  el.style.animation = "slide-up 0.3s ease-out";
+  toastTimer = setTimeout(function () {
+    el.classList.add("hidden");
+  }, TOAST_DURATION);
+};
+</script>
