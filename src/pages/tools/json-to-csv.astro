@@ -1,0 +1,252 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("json-to-csv")!;
+const csvPlaceholder = '[{"name": "Alice", "email": "alice@example.com", "role": "Admin"}]';
+const csvDefault = '[{"name":"Alice","email":"alice@example.com","role":"Admin","active":true},{"name":"Bob","email":"bob@test.com","role":"Editor","active":false}]';
+const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="csv-input" class="text-sm font-medium mb-1.5 block">
+              JSON Input
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="csv-input"
+              class="input-field font-mono text-sm min-h-[220px] resize-y scrollbar-thin"
+              placeholder={csvPlaceholder}
+              spellcheck="false"
+            >{csvDefault}</textarea>
+          </div>
+
+          <div class="flex flex-wrap gap-2">
+            <button id="btn-convert" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4"/>
+              </svg>
+              Convert to CSV
+            </button>
+            <button id="btn-copy" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Copy CSV
+            </button>
+            <button id="btn-download" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download .csv
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label class="text-sm font-medium">CSV Output</label>
+              <span id="csv-info" class="text-xs text-on-surface-variant/60"></span>
+            </div>
+            <pre
+              id="csv-output"
+              class="input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin"
+            ></pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto prose-custom">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is JSON to CSV for Excel?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Converting <strong>JSON to CSV</strong> is a common task when you need to analyze API data,
+        database exports, or configuration files in <strong>Excel</strong>. This tool converts
+        <strong>JSON arrays</strong> into properly formatted CSV files that open correctly in Excel
+        — with a BOM (Byte Order Mark) for correct UTF-8 encoding, proper quoting of values
+        containing commas or quotes, and flattening of nested objects.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why CSV for Excel Needs a BOM</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Excel has a long-standing issue with UTF-8 encoded CSV files. Without a BOM
+        (<code class="text-primary">\uFEFF</code>) at the start of the file, Excel assumes the
+        file is encoded in the system's default ANSI codepage, which breaks special characters,
+        emoji, and non-Latin text. This tool automatically prepends the BOM so your data displays
+        correctly in Excel, Google Sheets, and LibreOffice Calc.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How Nested Data Is Handled</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        JSON data often contains nested objects and arrays. This converter flattens nested objects
+        using <strong>underscore notation</strong>. For example, a JSON object like
+        <code class="text-primary">{nestedExample}</code> becomes two
+        CSV columns: <code class="text-primary">user_name</code> and
+        <code class="text-primary">user_age</code>. Nested arrays are converted to JSON strings
+        within the cell, preserving the full data.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Use Cases</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>API Data Export</strong> — Convert REST API JSON responses into spreadsheets for reporting.</li>
+        <li><strong>Database Migration</strong> — Export database records as JSON and convert to CSV for import into Excel.</li>
+        <li><strong>Data Analysis</strong> — Transform JSON datasets into tabular format for pivot tables and charts.</li>
+        <li><strong>Client Reports</strong> — Generate CSV files that non-technical stakeholders can open in Excel.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Paste a JSON array into the input field and click <strong>Convert to CSV</strong>.
+        The output shows the CSV data that's ready for Excel. Use <strong>Copy CSV</strong> to
+        copy to clipboard, or <strong>Download .csv</strong> to save a file with the BOM included.
+        The row count is displayed above the output so you know how many records were converted.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("csv-input");
+  const output = document.getElementById("csv-output");
+  const stats = document.getElementById("input-stats");
+  const info = document.getElementById("csv-info");
+  const btnConvert = document.getElementById("btn-convert");
+  const btnCopy = document.getElementById("btn-copy");
+  const btnDownload = document.getElementById("btn-download");
+  const btnClear = document.getElementById("btn-clear");
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  function flattenKeys(obj, prefix) {
+    prefix = prefix || "";
+    const keys = [];
+    for (const k in obj) {
+      if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
+        keys.push(...flattenKeys(obj[k], prefix + k + "_"));
+      } else {
+        keys.push(prefix + k);
+      }
+    }
+    return keys;
+  }
+
+  function getFlattened(obj, path) {
+    const parts = path.split("_");
+    let val = obj;
+    for (const p of parts) {
+      if (val == null || typeof val !== "object") return val;
+      val = val[p];
+    }
+    return val;
+  }
+
+  function escapeCsv(val) {
+    if (val == null) return "";
+    const str = String(val);
+    if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+      return '"' + str.replace(/"/g, '""') + '"';
+    }
+    return str;
+  }
+
+  function jsonToCsv(jsonStr) {
+    const parsed = JSON.parse(jsonStr);
+    const items = Array.isArray(parsed) ? parsed : [parsed];
+    if (!items.length) return { csv: "", rows: 0 };
+
+    const keys = [...new Set(items.flatMap(obj => flattenKeys(obj)))];
+    const header = keys.join(",");
+    const rows = items.map(item =>
+      keys.map(k => {
+        const val = getFlattened(item, k);
+        return escapeCsv(val);
+      }).join(",")
+    );
+    return { csv: "\uFEFF" + [header, ...rows].join("\n"), rows: items.length };
+  }
+
+  btnConvert.onclick = () => {
+    const raw = input.value.trim();
+    if (!raw) {
+      output.textContent = "Enter JSON data to convert.";
+      output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
+      info.textContent = "";
+      return;
+    }
+    try {
+      const { csv, rows } = jsonToCsv(raw);
+      output.textContent = csv;
+      output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
+      info.textContent = `${rows} row${rows !== 1 ? "s" : ""} · includes BOM for Excel`;
+    } catch (e) {
+      output.textContent = "Invalid JSON:\n" + e.message;
+      output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin border-red-500/50";
+      info.textContent = "";
+    }
+  };
+
+  btnCopy.onclick = async () => {
+    const text = output.textContent;
+    if (!text || text.startsWith("Invalid")) return;
+    try {
+      await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+    }
+  };
+
+  btnDownload.onclick = () => {
+    const text = output.textContent;
+    if (!text || text.startsWith("Invalid")) return;
+    const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "export.csv";
+    a.click();
+    URL.revokeObjectURL(url);
+  };
+
+  btnClear.onclick = () => {
+    input.value = "";
+    output.textContent = "";
+    output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
+    info.textContent = "";
+    updateStats();
+    input.focus();
+  };
+
+  input.addEventListener("input", updateStats);
+  updateStats();
+</script>

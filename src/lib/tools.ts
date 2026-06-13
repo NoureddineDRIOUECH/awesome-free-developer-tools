@@ -258,6 +258,26 @@ export const tools: ToolDefinition[] = [
     keywords: ["xml formatter", "xml validator", "xml beautifier", "format xml", "xml pretty print"],
     relatedTools: ["json-formatter", "yaml-converter", "sql-formatter"],
   },
+  {
+    id: "json-to-csv",
+    title: "JSON to CSV for Excel",
+    description: "Convert JSON arrays into CSV files ready for Excel. Handles nested objects, arrays, and Unicode with BOM.",
+    category: "converters",
+    icon: "table_chart",
+    metaDescription: "Free online JSON to CSV converter for Excel. Convert JSON arrays to Excel-ready CSV with BOM, proper escaping, and nested object flattening. 100% client-side.",
+    keywords: ["json to csv", "json to excel", "csv converter", "json to csv excel", "convert json to csv"],
+    relatedTools: ["json-formatter", "yaml-converter", "sql-formatter"],
+  },
+  {
+    id: "px-to-rem",
+    title: "CSS px to rem Converter",
+    description: "Convert pixel values to rem units instantly. Includes a reference table for common values at any base font size.",
+    category: "converters",
+    icon: "straighten",
+    metaDescription: "Free online CSS px to rem converter. Instantly convert pixel values to rem units with a reference table. Set any base font size (default 16px). 100% client-side.",
+    keywords: ["px to rem", "rem converter", "css units", "px to rem converter", "rem calculator"],
+    relatedTools: ["color-converter", "case-converter", "regex-tester"],
+  },
 ];
 
 export function getToolById(id: string): ToolDefinition | undefined {

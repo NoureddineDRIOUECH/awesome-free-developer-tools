@@ -4,7 +4,7 @@ import { getToolById, getRelatedTools, getCategoryInfo, tools } from "../../lib/
 import type { ToolDefinition } from "../../lib/tools";
 
 export function getStaticPaths() {
-  return tools.filter((t) => t.id !== "json-formatter" && t.id !== "base64-encoder" && t.id !== "url-encoder" && t.id !== "uuid-generator" && t.id !== "jwt-decoder" && t.id !== "hash-generator" && t.id !== "html-entities" && t.id !== "password-generator" && t.id !== "lorem-ipsum" && t.id !== "yaml-converter" && t.id !== "color-converter" && t.id !== "case-converter" && t.id !== "markdown-preview" && t.id !== "text-diff" && t.id !== "image-converter" && t.id !== "sql-formatter" && t.id !== "xml-formatter" && t.id !== "regex-tester").map((tool) => ({
+  return tools.filter((t) => t.id !== "json-formatter" && t.id !== "base64-encoder" && t.id !== "url-encoder" && t.id !== "uuid-generator" && t.id !== "jwt-decoder" && t.id !== "hash-generator" && t.id !== "html-entities" && t.id !== "password-generator" && t.id !== "lorem-ipsum" && t.id !== "yaml-converter" && t.id !== "color-converter" && t.id !== "case-converter" && t.id !== "markdown-preview" && t.id !== "text-diff" && t.id !== "image-converter" && t.id !== "sql-formatter" && t.id !== "xml-formatter" && t.id !== "regex-tester" && t.id !== "json-to-csv" && t.id !== "px-to-rem").map((tool) => ({
     params: { tool: tool.id },
     props: { tool },
   }));

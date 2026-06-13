@@ -323,6 +323,45 @@ export const toolsData: ToolData[] = [
       { question: "What do the flags do?", answer: "g = global (find all matches, not just first), i = case-insensitive, m = multiline (^ and $ match line boundaries), s = dotAll (. matches newlines)." },
     ],
   },
+  {
+    id: "json-to-csv",
+    title: "JSON to CSV for Excel",
+    description: "Convert JSON arrays into CSV files ready for Excel. Handles nested objects, arrays, and Unicode with BOM.",
+    metaDescription: "Free online JSON to CSV converter for Excel. Convert JSON arrays to Excel-ready CSV with BOM, proper escaping, and nested object flattening. 100% client-side.",
+    category: "converters",
+    keywords: ["json to csv", "json to excel", "csv converter", "json to csv excel", "convert json to csv"],
+    relatedTools: ["json-formatter", "yaml-converter", "sql-formatter"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function jsonToCsv(json, flatten = true) {\n  const items = Array.isArray(json) ? json : [json];\n  if (!items.length) return '';\n  const keys = [...new Set(items.flatMap(obj => flattenKeys(obj)))];\n  const csv = [keys.join(','), ...items.map(item =>\n    keys.map(k => {\n      const val = flatten ? getFlattened(item, k) : item[k];\n      const str = val == null ? '' : String(val);\n      return str.includes(',') || str.includes('\"') || str.includes('\\n')\n        ? '\"' + str.replace(/\"/g, '\"\"') + '\"'\n        : str;\n    }).join(',')\n  )].join('\\n');\n  return '\\uFEFF' + csv; // BOM for Excel\n}" },
+      { lang: "python", label: "Python", code: "import json, csv, io\n\ndef json_to_csv(json_str):\n    data = json.loads(json_str)\n    if not data:\n        return ''\n    output = io.StringIO()\n    # Flatten nested objects\n    def flatten(obj, prefix=''):\n        items = {}\n        for k, v in obj.items():\n            key = f'{prefix}{k}'\n            if isinstance(v, dict):\n                items.update(flatten(v, key + '_'))\n            else:\n                items[key] = v\n        return items\n    flat = [flatten(row) for row in data]\n    writer = csv.DictWriter(output, fieldnames=flat[0].keys())\n    writer.writeheader()\n    writer.writerows(flat)\n    return output.getvalue()" },
+      { lang: "bash", label: "Bash", code: "# Convert JSON to CSV with jq\ncat data.json | jq -r '(.[0] | keys_unsorted) as $keys | $keys, (.[] | [.[$keys[]]] | @csv)' > output.csv\n\n# Add BOM for Excel compatibility\nprintf '\\uFEFF' | cat - output.csv > excel_ready.csv" },
+    ],
+    faqItems: [
+      { question: "Why won't my CSV open correctly in Excel?", answer: "Excel often misreads UTF-8 CSV files without a BOM (Byte Order Mark). This tool adds a BOM (\\uFEFF) automatically, so your CSV opens with correct encoding in Excel, including special characters and emoji." },
+      { question: "How are nested objects handled?", answer: "Nested objects are flattened with underscore notation. For example, {\"user\": {\"name\": \"John\"}} becomes a column named user_name. Nested arrays are converted to JSON strings within the cell." },
+      { question: "Can I convert large JSON files?", answer: "Yes, the conversion runs entirely in your browser. However, very large files may be slow. For optimal performance, keep files under 10MB. There is no server upload — everything stays on your device." },
+    ],
+  },
+  {
+    id: "px-to-rem",
+    title: "CSS px to rem Converter",
+    description: "Convert pixel values to rem units instantly. Includes a reference table for common values at any base font size.",
+    metaDescription: "Free online CSS px to rem converter. Instantly convert pixel values to rem units with a reference table. Set any base font size (default 16px). 100% client-side.",
+    category: "converters",
+    keywords: ["px to rem", "rem converter", "css units", "px to rem converter", "rem calculator"],
+    relatedTools: ["color-converter", "case-converter", "regex-tester"],
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: "function pxToRem(px, base = 16) {\n  return px / base;\n}\n\n// Usage\nconsole.log(pxToRem(16)); // 1rem\nconsole.log(pxToRem(32, 16)); // 2rem\nconsole.log(pxToRem(24, 14)); // 1.714rem" },
+      { lang: "python", label: "Python", code: "def px_to_rem(px, base=16):\n    return px / base\n\n# Usage\nprint(px_to_rem(16))  # 1.0\nprint(px_to_rem(32))  # 2.0\nprint(px_to_rem(24, 14))  # 1.714" },
+      { lang: "bash", label: "Bash", code: "# Quick px to rem in bash\npx_to_rem() {\n  echo \"scale=3; $1 / ${2:-16}\" | bc\n}\n\npx_to_rem 32   # 2.000\npx_to_rem 24 14  # 1.714" },
+    ],
+    faqItems: [
+      { question: "What is the rem unit?", answer: "rem (root em) is a CSS unit relative to the root element's font size. 1rem equals the font size of the <html> element, which is typically 16px by default in browsers. Using rem units ensures your layout scales when users change their browser's base font size." },
+      { question: "What base font size should I use?", answer: "The default browser font size is 16px, which is what most websites use as their base. Some design systems use 14px or 10px for easier math (1rem = 10px). You can set any base size with this tool." },
+      { question: "Why use rem instead of px?", answer: "rem units respect user accessibility settings. If a user increases their browser's default font size, your entire layout scales proportionally. px units are absolute and ignore these settings, making rem the recommended choice for font sizes and spacing in modern responsive design." },
+      { question: "What is the difference between rem and em?", answer: "rem is relative to the root (<html>) font size. em is relative to the parent element's font size, which can compound and cause unpredictable results. rem is generally preferred for consistency across components." },
+    ],
+  },
 ];
 
 export function getToolDataById(id: string): ToolData | undefined {

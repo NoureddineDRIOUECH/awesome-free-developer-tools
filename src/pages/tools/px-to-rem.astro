@@ -1,0 +1,222 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("px-to-rem")!;
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-6">
+          <div class="grid sm:grid-cols-2 gap-4">
+            <div>
+              <label for="px-value" class="text-sm font-medium mb-1.5 block">Pixel Value (px)</label>
+              <input
+                id="px-value"
+                type="number"
+                class="input-field text-sm"
+                value="16"
+                min="0"
+                step="1"
+              />
+            </div>
+            <div>
+              <label for="base-size" class="text-sm font-medium mb-1.5 block">Base Font Size (px)</label>
+              <input
+                id="base-size"
+                type="number"
+                class="input-field text-sm"
+                value="16"
+                min="1"
+                max="100"
+                step="1"
+              />
+            </div>
+          </div>
+
+          <div class="tool-card p-6 text-center bg-primary/[0.03] border-primary/10">
+            <p class="text-xs text-on-surface-variant/60 mb-1">Result</p>
+            <p id="result-text" class="text-4xl font-bold tracking-tight text-primary">1rem</p>
+            <p id="result-detail" class="text-xs text-on-surface-variant/60 mt-1">16px ÷ 16px = 1rem</p>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-sm font-medium">Common Conversion Reference</h3>
+              <button id="btn-copy-table" class="text-xs text-primary hover:text-primary-hover transition-colors">
+                Copy Table
+              </button>
+            </div>
+            <div class="overflow-x-auto rounded-xl border border-surface-container-highest">
+              <table class="w-full text-sm">
+                <thead>
+                  <tr class="bg-surface-container-highest/50">
+                    <th class="text-left p-3 font-medium text-on-surface-variant text-xs">Pixels</th>
+                    <th class="text-left p-3 font-medium text-on-surface-variant text-xs">rem</th>
+                    <th class="text-left p-3 font-medium text-on-surface-variant text-xs">Common Use</th>
+                  </tr>
+                </thead>
+                <tbody id="ref-table" class="divide-y divide-surface-container-highest"></tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto prose-custom">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a px to rem Converter?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>px to rem converter</strong> helps developers convert pixel values to relative
+        <strong>rem units</strong> for responsive CSS. The <strong>rem</strong> unit (root em) is
+        relative to the root element's font size, typically 16px in browsers. Using rem units
+        instead of pixels ensures your entire layout scales proportionally when users adjust their
+        browser's font size settings for accessibility.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Use rem Units?</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Accessibility</strong> — Users who increase their default font size will see your entire UI scale, not just text.</li>
+        <li><strong>Consistency</strong> — rem units are relative to a single root value, avoiding the compounding issues of em units.</li>
+        <li><strong>Responsive Design</strong> — Change the root font size at different breakpoints and everything scales together.</li>
+        <li><strong>Future-Proof</strong> — WCAG guidelines recommend relative units for better accessibility compliance.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common CSS Values Reference</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
+        At the default 16px base, here are the most common CSS conversions:
+      </p>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">4px = 0.25rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Border radius, small gaps</p>
+        </div>
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">8px = 0.5rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Padding, spacing (xs)</p>
+        </div>
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">12px = 0.75rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Small text, padding (sm)</p>
+        </div>
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">16px = 1rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Base font size, padding (md)</p>
+        </div>
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">24px = 1.5rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Heading h3, padding (lg)</p>
+        </div>
+        <div class="tool-card p-3">
+          <code class="text-xs font-mono">32px = 2rem</code>
+          <p class="text-xs text-on-surface-variant mt-0.5">Heading h2, padding (xl)</p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">rem vs em</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>rem</strong> is always relative to the root (<code class="text-primary">&lt;html&gt;</code>)
+        font size. <strong>em</strong> is relative to the <em>parent element's</em> font size, which
+        causes compounding — a 2em value inside a parent with 1.5em font size becomes 3em total.
+        This makes rem more predictable and easier to reason about. Use rem for font sizes, spacing,
+        and layout dimensions that should scale with the user's preferences.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Enter a pixel value and optionally change the base font size (default 16px). The result
+        displays instantly with the calculation shown below it. The reference table updates
+        automatically to show common px values converted at your chosen base size. Use
+        <strong>Copy Table</strong> to copy the reference table for use in documentation or style guides.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const pxInput = document.getElementById("px-value");
+  const baseInput = document.getElementById("base-size");
+  const resultText = document.getElementById("result-text");
+  const resultDetail = document.getElementById("result-detail");
+  const refTable = document.getElementById("ref-table");
+  const btnCopyTable = document.getElementById("btn-copy-table");
+
+  const COMMON_PX = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96, 128];
+  const USE_LABELS = {
+    1: "Hairline border", 2: "Border width", 4: "Border radius", 6: "Small padding",
+    8: "Padding xs", 10: "Small text", 12: "Caption text", 14: "Body small",
+    16: "Body base", 18: "Body large", 20: "Heading h4", 24: "Heading h3",
+    28: "Heading h2 (sm)", 32: "Heading h2", 36: "Heading h1 (sm)",
+    40: "Heading h1", 48: "Section padding", 56: "Hero spacing",
+    64: "Large section", 72: "Extra large", 80: "Jumbo",
+    96: "Massive", 128: "Giant"
+  };
+
+  function formatRem(px, base) {
+    const rem = px / base;
+    if (Number.isInteger(rem)) return rem + "rem";
+    const rounded = Math.round(rem * 1000) / 1000;
+    return (rounded === Math.floor(rounded) ? rounded : rounded.toFixed(3)) + "rem";
+  }
+
+  function update() {
+    const px = parseFloat(pxInput.value) || 0;
+    const base = parseFloat(baseInput.value) || 16;
+
+    if (px <= 0) {
+      resultText.textContent = "—";
+      resultDetail.textContent = "Enter a pixel value";
+    } else {
+      resultText.textContent = formatRem(px, base);
+      resultDetail.textContent = `${px}px ÷ ${base}px = ${px / base}rem`;
+    }
+
+    refTable.innerHTML = COMMON_PX.map(p => {
+      const rem = formatRem(p, base);
+      const label = USE_LABELS[p] || "";
+      return `<tr class="hover:bg-surface-container-higher/30 transition-colors ${p === 16 ? 'bg-primary/[0.03]' : ''}">
+        <td class="p-3 font-mono text-xs text-on-surface-variant">${p}px</td>
+        <td class="p-3 font-mono text-xs font-medium">${rem}</td>
+        <td class="p-3 text-xs text-on-surface-variant/60">${label}</td>
+      </tr>`;
+    }).join("");
+  }
+
+  btnCopyTable.onclick = async () => {
+    const base = parseFloat(baseInput.value) || 16;
+    const lines = ["Pixels\trem\tCommon Use"];
+    COMMON_PX.forEach(p => {
+      const rem = formatRem(p, base);
+      const label = USE_LABELS[p] || "";
+      lines.push(`${p}px\t${rem}\t${label}`);
+    });
+    try {
+      await navigator.clipboard.writeText(lines.join("\n"));
+      if (window.showToast) showToast("Copied!");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = lines.join("\n");
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+    }
+  };
+
+  pxInput.addEventListener("input", update);
+  baseInput.addEventListener("input", update);
+  update();
+</script>
