@@ -1,0 +1,478 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("github-actions-validator")!;
+---
+
+<ToolLayout
+  tool={tool}
+>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="gh-input" class="text-sm font-medium mb-1.5 block">
+              GitHub Actions Workflow YAML
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="gh-input"
+              class="input-field font-mono text-sm min-h-[280px] resize-y scrollbar-thin"
+              placeholder="Paste your GitHub Actions workflow YAML here...
+name: CI
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm test"
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-validate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Validate
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+            <button id="btn-load-example" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Load Example
+            </button>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Validation Results</label>
+            <div id="gh-results" class="space-y-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a GitHub Actions Validator?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>GitHub Actions validator</strong> checks your workflow YAML files for correct
+        structure, valid trigger events, proper job configuration, and action reference syntax.
+        GitHub Actions workflows are YAML files stored in <code class="text-primary">.github/workflows/</code>
+        that define CI/CD pipelines. Missing required fields, invalid triggers, or incorrect action
+        references can cause workflow failures. Our <strong>GitHub Actions linter</strong> catches
+        these issues before you push to your repository.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">Key GitHub Actions Concepts</h2>
+      <div class="grid sm:grid-cols-3 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Workflows</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">YAML files that define automated processes. Each workflow has a <code class="text-primary">name</code>, <code class="text-primary">on</code> trigger, and <code class="text-primary">jobs</code>.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Jobs</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">A set of steps that run on the same runner. Jobs can run in parallel or sequentially using <code class="text-primary">needs</code>.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Steps</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Individual tasks within a job. Steps use <code class="text-primary">uses</code> (for actions) or <code class="text-primary">run</code> (for shell commands).</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">How to Use This Workflow Validator</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Paste your GitHub Actions workflow YAML into the textarea and click <strong>Validate</strong>.
+        The tool checks for the <code class="text-primary">name</code> field, verifies that
+        <code class="text-primary">on</code> triggers are valid events, confirms <code class="text-primary">jobs</code>
+        are defined with <code class="text-primary">runs-on</code>, and ensures each step has
+        <code class="text-primary">uses</code> or <code class="text-primary">run</code>. Action
+        references are checked for the <code class="text-primary">@version</code> format. Use
+        <strong>Load Example</strong> for a sample CI workflow.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">Tips for Valid GitHub Actions Workflows</h2>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Always pin action versions</strong> — Use <code class="text-primary">@v4</code> or <code class="text-primary">@sha</code> instead of <code class="text-primary">@main</code> to avoid unexpected breaking changes.</li>
+        <li><strong>Use specific trigger events</strong> — Filter pushes and pull requests with <code class="text-primary">branches:</code> to avoid running CI on every branch.</li>
+        <li><strong>Set a runner explicitly</strong> — Each job needs <code class="text-primary">runs-on</code>. Common choices are <code class="text-primary">ubuntu-latest</code>, <code class="text-primary">windows-latest</code>, or <code class="text-primary">macos-latest</code>.</li>
+        <li><strong>Use matrix strategies</strong> — Test across multiple OS or language versions with <code class="text-primary">strategy.matrix</code> to avoid duplicating jobs.</li>
+        <li><strong>Cache dependencies</strong> — Use <code class="text-primary">actions/cache@v4</code> to speed up workflows by caching <code class="text-primary">node_modules</code>, <code class="text-primary">~/.m2</code>, or other dependency directories.</li>
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("gh-input");
+  const results = document.getElementById("gh-results");
+  const stats = document.getElementById("input-stats");
+  const btnValidate = document.getElementById("btn-validate");
+  const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
+
+  const VALID_TRIGGERS = [
+    "push", "pull_request", "pull_request_target", "schedule", "workflow_dispatch",
+    "workflow_run", "repository_dispatch", "release", "issues", "discussion",
+    "create", "delete", "deployment", "deployment_status", "fork",
+    "gollum", "issue_comment", "label", "merge_group", "milestone",
+    "page_build", "project", "project_card", "project_column", "public",
+    "registry_package", "status", "watch", "workflow_call"
+  ];
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  function parseYamlValue(val) {
+    const trimmed = val.trim();
+    if (trimmed === "true") return true;
+    if (trimmed === "false") return false;
+    if (trimmed === "null" || trimmed === "~") return null;
+    if (trimmed === "") return null;
+    if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+      return trimmed.includes(".") ? parseFloat(trimmed) : parseInt(trimmed, 10);
+    }
+    if (/^\[.*\]$/.test(trimmed)) {
+      try { return JSON.parse(trimmed); } catch { return trimmed; }
+    }
+    if (/^".*"$/.test(trimmed) || /^'.*'$/.test(trimmed)) {
+      return trimmed.slice(1, -1);
+    }
+    return trimmed;
+  }
+
+  function parseYamlToObject(yaml) {
+    const lines = yaml.split("\n");
+    const root = {};
+    const stack = [{ indent: -1, obj: root, key: null }];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line.trim() || line.trim().startsWith("#")) continue;
+
+      const match = line.match(/^(\s*)([\w-]+)\s*:\s*(.*)$/);
+      if (!match) {
+        throw new Error(`Invalid YAML syntax at line ${i + 1}: "${line.trim()}"`);
+      }
+
+      const indent = match[1].length;
+      const key = match[2];
+      let val = match[3].trim();
+
+      while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
+        stack.pop();
+      }
+
+      const current = stack[stack.length - 1].obj;
+
+      if (val === "" || val === "|") {
+        const blockLines = [];
+        let j = i + 1;
+        const blockIndent = indent + 2;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim()) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent < blockIndent) break;
+          blockLines.push(nextLine.trim());
+          j++;
+        }
+        current[key] = blockLines.join("\n");
+        i = j - 1;
+      } else if (val.startsWith("- ")) {
+        const items = [parseYamlValue(val.slice(2))];
+        let j = i + 1;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim() || nextLine.trim().startsWith("#")) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent <= indent) break;
+          const listMatch = nextLine.match(/^\s*-\s+(.*)$/);
+          if (listMatch) {
+            items.push(parseYamlValue(listMatch[1]));
+          } else {
+            const kvMatch = nextLine.match(/^\s*([\w-]+)\s*:\s*(.*)$/);
+            if (kvMatch) {
+              const subObj = {};
+              subObj[kvMatch[1]] = parseYamlValue(kvMatch[2]);
+              items.push(subObj);
+            }
+            break;
+          }
+          j++;
+        }
+        current[key] = items;
+        i = j - 1;
+      } else {
+        current[key] = parseYamlValue(val);
+      }
+    }
+
+    return root;
+  }
+
+  function getValue(obj, path) {
+    return path.split(".").reduce((acc, part) => {
+      if (acc && typeof acc === "object" && part in acc) return acc[part];
+      return undefined;
+    }, obj);
+  }
+
+  function validateWorkflow(obj) {
+    const results = [];
+
+    const name = obj.name;
+    if (!name) {
+      results.push({ field: "name", status: "warning", message: "workflow name is recommended" });
+    } else {
+      results.push({ field: "name", status: "ok", message: `name: "${name}"` });
+    }
+
+    const on = obj.on;
+    if (!on) {
+      results.push({ field: "on", status: "error", message: "trigger events ('on') are required" });
+      return results;
+    }
+    if (typeof on === "string") {
+      if (!VALID_TRIGGERS.includes(on)) {
+        results.push({ field: "on", status: "warning", message: `trigger "${on}" is not a standard GitHub event` });
+      } else {
+        results.push({ field: "on", status: "ok", message: `trigger: ${on}` });
+      }
+    } else if (Array.isArray(on)) {
+      const valid = on.filter(e => VALID_TRIGGERS.includes(e));
+      const invalid = on.filter(e => !VALID_TRIGGERS.includes(e));
+      results.push({ field: "on", status: "ok", message: `${on.length} trigger event(s) defined` });
+      if (invalid.length > 0) {
+        results.push({ field: "on", status: "warning", message: `unrecognized trigger(s): ${invalid.join(", ")}` });
+      }
+    } else if (typeof on === "object") {
+      const triggerKeys = Object.keys(on);
+      const valid = triggerKeys.filter(e => VALID_TRIGGERS.includes(e));
+      const invalid = triggerKeys.filter(e => !VALID_TRIGGERS.includes(e));
+      results.push({ field: "on", status: "ok", message: `${triggerKeys.length} trigger event(s) defined: ${valid.join(", ")}` });
+      if (invalid.length > 0) {
+        results.push({ field: "on", status: "warning", message: `unrecognized trigger(s): ${invalid.join(", ")}` });
+      }
+    }
+
+    const jobs = obj.jobs;
+    if (!jobs) {
+      results.push({ field: "jobs", status: "error", message: "'jobs' field is required" });
+      return results;
+    }
+    const jobNames = Object.keys(jobs);
+    if (jobNames.length === 0) {
+      results.push({ field: "jobs", status: "error", message: "at least one job must be defined" });
+      return results;
+    }
+    results.push({ field: "jobs", status: "ok", message: `${jobNames.length} job(s) defined: ${jobNames.join(", ")}` });
+
+    for (const jobName of jobNames) {
+      const job = jobs[jobName];
+
+      if (!job["runs-on"]) {
+        results.push({ field: `jobs.${jobName}.runs-on`, status: "error", message: `job "${jobName}" must specify 'runs-on'` });
+      } else {
+        results.push({ field: `jobs.${jobName}.runs-on`, status: "ok", message: `job "${jobName}" runs on: ${job["runs-on"]}` });
+      }
+
+      const steps = job.steps;
+      if (!steps || !Array.isArray(steps) || steps.length === 0) {
+        results.push({ field: `jobs.${jobName}.steps`, status: "error", message: `job "${jobName}" must have at least one step` });
+      } else {
+        let validSteps = 0;
+        for (const step of steps) {
+          if (step.uses || step.run) {
+            validSteps++;
+            if (step.uses) {
+              if (!/@/.test(step.uses)) {
+                results.push({ field: `jobs.${jobName}.steps`, status: "warning", message: `action "${step.uses}" should use @version format (e.g., actions/checkout@v4)` });
+              }
+            }
+          }
+        }
+        if (validSteps > 0) {
+          results.push({ field: `jobs.${jobName}.steps`, status: "ok", message: `${steps.length} step(s) defined with valid uses/run` });
+        }
+      }
+
+      if (job.strategy && job.strategy.matrix) {
+        const matrixKeys = Object.keys(job.strategy.matrix);
+        results.push({ field: `jobs.${jobName}.strategy.matrix`, status: "ok", message: `matrix defined with dimensions: ${matrixKeys.join(", ")}` });
+      }
+
+      if (job.services) {
+        const svcNames = Object.keys(job.services);
+        results.push({ field: `jobs.${jobName}.services`, status: "ok", message: `${svcNames.length} service(s) defined: ${svcNames.join(", ")}` });
+      }
+
+      if (job.environment) {
+        const envName = typeof job.environment === "string" ? job.environment : job.environment.name;
+        results.push({ field: `jobs.${jobName}.environment`, status: "ok", message: `environment: ${envName}` });
+      }
+
+      if (job.needs) {
+        const needs = Array.isArray(job.needs) ? job.needs : [job.needs];
+        results.push({ field: `jobs.${jobName}.needs`, status: "ok", message: `depends on: ${needs.join(", ")}` });
+      }
+    }
+
+    return results;
+  }
+
+  function renderResults(validationResults) {
+    if (!validationResults || validationResults.length === 0) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">No validation checks performed.</p>`;
+      return;
+    }
+
+    const passCount = validationResults.filter(r => r.status === "ok").length;
+    const warningCount = validationResults.filter(r => r.status === "warning").length;
+    const errorCount = validationResults.filter(r => r.status === "error").length;
+
+    let summaryClass = "text-green-400";
+    let summaryText = "All checks passed!";
+    if (errorCount > 0) {
+      summaryClass = "text-red-400";
+      summaryText = `${errorCount} error(s) found`;
+    } else if (warningCount > 0) {
+      summaryClass = "text-yellow-400";
+      summaryText = `${warningCount} warning(s) found`;
+    }
+
+    results.innerHTML = `
+      <div class="flex items-center gap-2 mb-3 text-sm font-medium ${summaryClass}">
+        <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        ${summaryText}
+        <span class="text-xs text-on-surface-variant/60 font-normal ml-1">(${passCount} passed, ${warningCount} warnings, ${errorCount} errors)</span>
+      </div>
+      <ul class="space-y-1.5">
+        ${validationResults.map((r) => {
+          const icon = r.status === "ok"
+            ? '<svg class="size-4 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+            : r.status === "warning"
+            ? '<svg class="size-4 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.503-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.771.833.192 2.5 1.732 2.5z"/></svg>'
+            : '<svg class="size-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+          return `<li class="flex items-start gap-2 text-sm ${r.status === "ok" ? "text-green-300/80" : r.status === "warning" ? "text-yellow-300/80" : "text-red-300/80"}">
+            ${icon}
+            <span>${r.message}</span>
+          </li>`;
+        }).join("")}
+      </ul>
+    `;
+  }
+
+  function validateWorkflowFile() {
+    const raw = input.value;
+    if (!raw.trim()) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">Enter a GitHub Actions workflow YAML to validate.</p>`;
+      return;
+    }
+    try {
+      const obj = parseYamlToObject(raw);
+      const validationResults = validateWorkflow(obj);
+      renderResults(validationResults);
+    } catch (e) {
+      results.innerHTML = `
+        <div class="rounded-lg border border-red-500/50 bg-red-500/5 p-4">
+          <p class="text-sm text-red-400"><span class="font-medium">Parse error:</span> ${e.message.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+        </div>`;
+    }
+  }
+
+  btnValidate.onclick = validateWorkflowFile;
+
+  btnClear.onclick = () => {
+    input.value = "";
+    results.innerHTML = "";
+    updateStats();
+    input.focus();
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'github-actions-validator' });
+    input.value = `name: CI Pipeline
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - run: npm ci
+      - run: npm run lint
+
+  test:
+    runs-on: ubuntu-latest
+    needs: lint
+    strategy:
+      matrix:
+        node-version: [18, 20, 22]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: \${{ matrix.node-version }}
+      - run: npm ci
+      - run: npm test
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: test
+    if: github.ref == 'refs/heads/main'
+    environment: production
+    steps:
+      - uses: actions/checkout@v4
+      - run: npm ci
+      - run: npm run build
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: ./dist`;
+    updateStats();
+    validateWorkflowFile();
+  };
+
+  btnValidate.onclick = validateWorkflowFile;
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>

@@ -1,0 +1,518 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("kubernetes-yaml-validator")!;
+---
+
+<ToolLayout
+  tool={tool}
+>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="k8s-input" class="text-sm font-medium mb-1.5 block">
+              Kubernetes YAML Manifest
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="k8s-input"
+              class="input-field font-mono text-sm min-h-[280px] resize-y scrollbar-thin"
+              placeholder="Paste your Kubernetes YAML manifest here...
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: my-app
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-app
+  template:
+    metadata:
+      labels:
+        app: my-app
+    spec:
+      containers:
+        - name: my-app
+          image: nginx:latest"
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-validate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Validate
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+            <button id="btn-load-example" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Load Example
+            </button>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Validation Results</label>
+            <div id="k8s-results" class="space-y-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Kubernetes YAML Validator?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>Kubernetes YAML validator</strong> checks the structure and required fields of
+        Kubernetes manifest files before you apply them to a cluster. K8s manifests define the
+        desired state of pods, deployments, services, and other resources. Missing fields like
+        <code class="text-primary">apiVersion</code>, <code class="text-primary">kind</code>, or
+        <code class="text-primary">metadata.name</code> cause apply failures. Our
+        <strong>K8s YAML linter</strong> catches these issues instantly in your browser.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">Common Kubernetes Resource Validations</h2>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Deployment</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Requires <code class="text-primary">spec.replicas</code>,
+            <code class="text-primary">spec.selector.matchLabels</code>,
+            <code class="text-primary">spec.template.metadata.labels</code>, and
+            <code class="text-primary">spec.template.spec.containers</code>.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Service</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Requires <code class="text-primary">spec.ports</code> and
+            <code class="text-primary">spec.selector</code> to route traffic to pods.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Pod</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Requires <code class="text-primary">spec.containers</code> with at least one container definition.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">ConfigMap / Secret</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Requires <code class="text-primary">data</code> (ConfigMap) or <code class="text-primary">data</code>/<code class="text-primary">stringData</code> (Secret).
+          </p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">How to Use This K8s Validator</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Paste your Kubernetes YAML manifest into the textarea and click <strong>Validate</strong>.
+        The tool parses the YAML and checks each resource against Kubernetes schema rules. Valid
+        fields show a green checkmark, while missing or invalid fields show a red cross with an
+        explanation. Use <strong>Load Example</strong> to see a sample Deployment manifest, and
+        <strong>Clear</strong> to reset. All processing is client-side — your manifests never
+        leave your device.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">Tips for Valid K8s Manifests</h2>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Always set apiVersion</strong> — Use the correct version for the resource type (e.g., <code class="text-primary">apps/v1</code> for Deployment, <code class="text-primary">v1</code> for Pod).</li>
+        <li><strong>Use valid kinds</strong> — Common kinds include Pod, Deployment, Service, ConfigMap, Secret, Ingress, PersistentVolumeClaim, Namespace.</li>
+        <li><strong>Match labels correctly</strong> — <code class="text-primary">spec.selector.matchLabels</code> must match <code class="text-primary">spec.template.metadata.labels</code> for Deployments.</li>
+        <li><strong>Container images should be explicit</strong> — Always specify the image tag, not just the image name (e.g., <code class="text-primary">nginx:1.25</code> not <code class="text-primary">nginx</code>).</li>
+        <li><strong>Validate before apply</strong> — Use <code class="text-primary">--dry-run=client</code> or this validator to catch errors before reaching the cluster.</li>
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("k8s-input");
+  const results = document.getElementById("k8s-results");
+  const stats = document.getElementById("input-stats");
+  const btnValidate = document.getElementById("btn-validate");
+  const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
+
+  const VALID_K8S_KINDS = [
+    "Pod", "Deployment", "Service", "ConfigMap", "Secret", "Namespace",
+    "Ingress", "PersistentVolumeClaim", "PersistentVolume", "StatefulSet",
+    "DaemonSet", "Job", "CronJob", "ReplicaSet", "HorizontalPodAutoscaler",
+    "PodDisruptionBudget", "NetworkPolicy", "Role", "RoleBinding",
+    "ClusterRole", "ClusterRoleBinding", "ServiceAccount", "IngressClass",
+    "StorageClass", "VolumeAttachment", "CustomResourceDefinition",
+    "MutatingWebhookConfiguration", "ValidatingWebhookConfiguration",
+    "Endpoints", "Event", "LimitRange", "ResourceQuota"
+  ];
+
+  const VALID_API_GROUPS = [
+    "v1", "apps/v1", "batch/v1", "batch/v1beta1", "networking.k8s.io/v1",
+    "rbac.authorization.k8s.io/v1", "storage.k8s.io/v1",
+    "autoscaling/v1", "autoscaling/v2", "policy/v1",
+    "apiextensions.k8s.io/v1"
+  ];
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  function parseYamlValue(val) {
+    const trimmed = val.trim();
+    if (trimmed === "true") return true;
+    if (trimmed === "false") return false;
+    if (trimmed === "null" || trimmed === "~") return null;
+    if (trimmed === "") return null;
+    if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+      return trimmed.includes(".") ? parseFloat(trimmed) : parseInt(trimmed, 10);
+    }
+    if (/^\[.*\]$/.test(trimmed)) {
+      try { return JSON.parse(trimmed); } catch { return trimmed; }
+    }
+    if (/^".*"$/.test(trimmed) || /^'.*'$/.test(trimmed)) {
+      return trimmed.slice(1, -1);
+    }
+    return trimmed;
+  }
+
+  function parseYamlToObject(yaml) {
+    const lines = yaml.split("\n");
+    const root = {};
+    const stack = [{ indent: -1, obj: root, key: null }];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line.trim() || line.trim().startsWith("#")) continue;
+
+      const match = line.match(/^(\s*)([\w-]+)\s*:\s*(.*)$/);
+      if (!match) {
+        throw new Error(`Invalid YAML syntax at line ${i + 1}: "${line.trim()}"`);
+      }
+
+      const indent = match[1].length;
+      const key = match[2];
+      let val = match[3].trim();
+
+      while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
+        stack.pop();
+      }
+
+      const current = stack[stack.length - 1].obj;
+
+      if (val === "" || val === "|") {
+        const blockLines = [];
+        let j = i + 1;
+        const blockIndent = indent + 2;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim()) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent < blockIndent) break;
+          blockLines.push(nextLine.trim());
+          j++;
+        }
+        current[key] = blockLines.join("\n");
+        i = j - 1;
+      } else if (val.startsWith("- ")) {
+        const items = [parseYamlValue(val.slice(2))];
+        let j = i + 1;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim() || nextLine.trim().startsWith("#")) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent <= indent) break;
+          const listMatch = nextLine.match(/^\s*-\s+(.*)$/);
+          if (listMatch) {
+            items.push(parseYamlValue(listMatch[1]));
+          } else {
+            const kvMatch = nextLine.match(/^\s*([\w-]+)\s*:\s*(.*)$/);
+            if (kvMatch) {
+              const subObj = {};
+              subObj[kvMatch[1]] = parseYamlValue(kvMatch[2]);
+              items.push(subObj);
+            }
+            break;
+          }
+          j++;
+        }
+        current[key] = items;
+        i = j - 1;
+      } else {
+        current[key] = parseYamlValue(val);
+      }
+    }
+
+    return root;
+  }
+
+  function getValue(obj, path) {
+    return path.split(".").reduce((acc, part) => {
+      if (acc && typeof acc === "object" && part in acc) return acc[part];
+      return undefined;
+    }, obj);
+  }
+
+  function validateK8sManifest(obj) {
+    const results = [];
+
+    const apiVersion = obj.apiVersion;
+    const kind = obj.kind;
+    const metadata = obj.metadata;
+    const spec = obj.spec || {};
+
+    if (!apiVersion) {
+      results.push({ field: "apiVersion", status: "error", message: "apiVersion is required (e.g., apps/v1, v1)" });
+    } else {
+      results.push({ field: "apiVersion", status: "ok", message: `apiVersion: ${apiVersion}` });
+    }
+
+    if (!kind) {
+      results.push({ field: "kind", status: "error", message: "kind is required (e.g., Deployment, Pod, Service)" });
+    } else if (!VALID_K8S_KINDS.includes(kind)) {
+      results.push({ field: "kind", status: "warning", message: `kind "${kind}" is not a standard Kubernetes resource kind` });
+    } else {
+      results.push({ field: "kind", status: "ok", message: `kind: ${kind}` });
+    }
+
+    if (!metadata) {
+      results.push({ field: "metadata", status: "error", message: "metadata is required" });
+    } else if (!metadata.name) {
+      results.push({ field: "metadata.name", status: "error", message: "metadata.name is required" });
+    } else {
+      results.push({ field: "metadata.name", status: "ok", message: `metadata.name: ${metadata.name}` });
+    }
+
+    if (kind === "Deployment") {
+      const replicas = getValue(obj, "spec.replicas");
+      const matchLabels = getValue(obj, "spec.selector.matchLabels");
+      const templateLabels = getValue(obj, "spec.template.metadata.labels");
+      const containers = getValue(obj, "spec.template.spec.containers");
+
+      if (replicas === undefined) {
+        results.push({ field: "spec.replicas", status: "warning", message: "spec.replicas is recommended (defaults to 1)" });
+      } else {
+        results.push({ field: "spec.replicas", status: "ok", message: `spec.replicas: ${replicas}` });
+      }
+      if (!matchLabels) {
+        results.push({ field: "spec.selector.matchLabels", status: "error", message: "spec.selector.matchLabels is required" });
+      } else {
+        results.push({ field: "spec.selector.matchLabels", status: "ok", message: "spec.selector.matchLabels is present" });
+      }
+      if (!templateLabels) {
+        results.push({ field: "spec.template.metadata.labels", status: "error", message: "spec.template.metadata.labels is required" });
+      } else {
+        results.push({ field: "spec.template.metadata.labels", status: "ok", message: "spec.template.metadata.labels is present" });
+      }
+      if (!containers || !Array.isArray(containers) || containers.length === 0) {
+        results.push({ field: "spec.template.spec.containers", status: "error", message: "spec.template.spec.containers must have at least one container" });
+      } else {
+        results.push({ field: "spec.template.spec.containers", status: "ok", message: `${containers.length} container(s) defined` });
+      }
+    } else if (kind === "Pod") {
+      const containers = getValue(obj, "spec.containers");
+      if (!containers || !Array.isArray(containers) || containers.length === 0) {
+        results.push({ field: "spec.containers", status: "error", message: "spec.containers must have at least one container" });
+      } else {
+        results.push({ field: "spec.containers", status: "ok", message: `${containers.length} container(s) defined` });
+      }
+    } else if (kind === "Service") {
+      const ports = getValue(obj, "spec.ports");
+      const selector = getValue(obj, "spec.selector");
+      if (!ports || !Array.isArray(ports) || ports.length === 0) {
+        results.push({ field: "spec.ports", status: "error", message: "spec.ports is required for Service" });
+      } else {
+        results.push({ field: "spec.ports", status: "ok", message: `${ports.length} port(s) defined` });
+      }
+      if (!selector) {
+        results.push({ field: "spec.selector", status: "warning", message: "spec.selector is recommended for Service" });
+      } else {
+        results.push({ field: "spec.selector", status: "ok", message: "spec.selector is present" });
+      }
+    } else if (kind === "ConfigMap") {
+      const data = getValue(obj, "data");
+      if (!data) {
+        results.push({ field: "data", status: "warning", message: "data is recommended for ConfigMap" });
+      } else {
+        results.push({ field: "data", status: "ok", message: `${Object.keys(data).length} data key(s) defined` });
+      }
+    } else if (kind === "Secret") {
+      const data = getValue(obj, "data");
+      const stringData = getValue(obj, "stringData");
+      if (!data && !stringData) {
+        results.push({ field: "data/stringData", status: "warning", message: "data or stringData is recommended for Secret" });
+      } else {
+        results.push({ field: "data/stringData", status: "ok", message: "Secret data is present" });
+      }
+    } else if (kind === "Ingress") {
+      const rules = getValue(obj, "spec.rules");
+      const tls = getValue(obj, "spec.tls");
+      if (!rules || !Array.isArray(rules) || rules.length === 0) {
+        results.push({ field: "spec.rules", status: "warning", message: "spec.rules is recommended for Ingress" });
+      } else {
+        results.push({ field: "spec.rules", status: "ok", message: `${rules.length} rule(s) defined` });
+      }
+      if (tls && Array.isArray(tls)) {
+        results.push({ field: "spec.tls", status: "ok", message: `${tls.length} TLS configuration(s) defined` });
+      }
+    } else if (kind === "PersistentVolumeClaim") {
+      const accessModes = getValue(obj, "spec.accessModes");
+      const resources = getValue(obj, "spec.resources");
+      if (!accessModes || !Array.isArray(accessModes) || accessModes.length === 0) {
+        results.push({ field: "spec.accessModes", status: "error", message: "spec.accessModes is required for PVC" });
+      } else {
+        results.push({ field: "spec.accessModes", status: "ok", message: `${accessModes.join(", ")}` });
+      }
+      if (!resources) {
+        results.push({ field: "spec.resources", status: "error", message: "spec.resources is required for PVC" });
+      } else {
+        results.push({ field: "spec.resources", status: "ok", message: "spec.resources is present" });
+      }
+    }
+
+    return results;
+  }
+
+  function renderResults(validationResults) {
+    if (!validationResults || validationResults.length === 0) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">No validation checks performed.</p>`;
+      return;
+    }
+
+    const passCount = validationResults.filter(r => r.status === "ok").length;
+    const warningCount = validationResults.filter(r => r.status === "warning").length;
+    const errorCount = validationResults.filter(r => r.status === "error").length;
+
+    let summaryClass = "text-green-400";
+    let summaryText = "All checks passed!";
+    if (errorCount > 0) {
+      summaryClass = "text-red-400";
+      summaryText = `${errorCount} error(s) found`;
+    } else if (warningCount > 0) {
+      summaryClass = "text-yellow-400";
+      summaryText = `${warningCount} warning(s) found`;
+    }
+
+    results.innerHTML = `
+      <div class="flex items-center gap-2 mb-3 text-sm font-medium ${summaryClass}">
+        <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        ${summaryText}
+        <span class="text-xs text-on-surface-variant/60 font-normal ml-1">(${passCount} passed, ${warningCount} warnings, ${errorCount} errors)</span>
+      </div>
+      <ul class="space-y-1.5">
+        ${validationResults.map((r) => {
+          const icon = r.status === "ok"
+            ? '<svg class="size-4 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+            : r.status === "warning"
+            ? '<svg class="size-4 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.503-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.771.833.192 2.5 1.732 2.5z"/></svg>'
+            : '<svg class="size-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+          return `<li class="flex items-start gap-2 text-sm ${r.status === "ok" ? "text-green-300/80" : r.status === "warning" ? "text-yellow-300/80" : "text-red-300/80"}">
+            ${icon}
+            <span>${r.message}</span>
+          </li>`;
+        }).join("")}
+      </ul>
+    `;
+  }
+
+  function validateManifest() {
+    const raw = input.value;
+    if (!raw.trim()) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">Enter a Kubernetes YAML manifest to validate.</p>`;
+      return;
+    }
+    try {
+      const obj = parseYamlToObject(raw);
+      if (raw.trim().startsWith("---")) {
+        const docs = raw.split(/(?=^---\s*$)/m).filter(d => d.trim());
+        const allResults = [];
+        for (const doc of docs) {
+          const parsed = parseYamlToObject(doc.replace(/^---\s*/, ""));
+          allResults.push(...validateK8sManifest(parsed));
+        }
+        renderResults(allResults);
+      } else {
+        const validationResults = validateK8sManifest(obj);
+        renderResults(validationResults);
+      }
+    } catch (e) {
+      results.innerHTML = `
+        <div class="rounded-lg border border-red-500/50 bg-red-500/5 p-4">
+          <p class="text-sm text-red-400"><span class="font-medium">Parse error:</span> ${e.message.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+        </div>`;
+    }
+  }
+
+  btnValidate.onclick = validateManifest;
+
+  btnClear.onclick = () => {
+    input.value = "";
+    results.innerHTML = "";
+    updateStats();
+    input.focus();
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'kubernetes-yaml-validator' });
+    input.value = `apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: nginx-deployment
+  labels:
+    app: nginx
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: nginx
+  template:
+    metadata:
+      labels:
+        app: nginx
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.25
+          ports:
+            - containerPort: 80
+          resources:
+            requests:
+              memory: "64Mi"
+              cpu: "250m"
+            limits:
+              memory: "128Mi"
+              cpu: "500m"`;
+    updateStats();
+    validateManifest();
+  };
+
+  btnValidate.onclick = validateManifest;
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>

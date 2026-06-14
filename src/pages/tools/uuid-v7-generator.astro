@@ -1,0 +1,213 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("uuid-v7-generator")!;
+---
+
+<ToolLayout tool={tool}>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-5">
+          <div class="flex flex-wrap items-end gap-4">
+            <div class="flex-1 min-w-[160px]">
+              <label for="uuid-v7-count" class="text-sm font-medium mb-1.5 block">Quantity</label>
+              <input
+                type="number"
+                id="uuid-v7-count"
+                class="input-field text-sm"
+                value="1"
+                min="1"
+                max="100"
+              />
+            </div>
+            <button id="btn-generate-v7" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Generate
+            </button>
+            <button id="btn-copy-all" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+              </svg>
+              Copy All
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <pre
+              id="uuid-v7-output"
+              class="input-field font-mono text-sm min-h-[160px] whitespace-pre-wrap overflow-auto scrollbar-thin"
+            >Click Generate to create UUID v7 identifiers.</pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is UUID v7?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        <strong>UUID v7</strong> is a time-ordered UUID format defined in RFC 9562. Unlike UUID v4
+        (which is fully random), UUID v7 embeds a Unix timestamp (milliseconds) in the first 48 bits,
+        followed by version and variant bits and random data. This makes UUID v7 values
+        <strong>monotonically increasing</strong> over time — ideal for database primary keys where
+        index performance matters. Our <strong>UUID v7 generator online</strong> creates these
+        sortable identifiers instantly in your browser.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">UUID v4 vs UUID v7</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">UUID v4</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>122 random bits + 6 version/variant bits</li>
+            <li>Fully random, no temporal ordering</li>
+            <li>Poor database index performance (B-tree fragmentation)</li>
+            <li>Cannot be sorted by creation time</li>
+            <li>Widely supported in all languages</li>
+          </ul>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">UUID v7</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>48-bit timestamp + 74 random bits + 6 version/variant bits</li>
+            <li>Time-ordered, monotonically increasing</li>
+            <li>Excellent database index performance</li>
+            <li>Sortable by creation time</li>
+            <li>Newer standard (RFC 9562), growing adoption</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Use UUID v7 for Database Keys?</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Traditional auto-increment integer keys cause issues in distributed systems — they require
+        coordination to generate unique values. UUID v4 solves uniqueness but creates
+        <strong>index fragmentation</strong> in B-tree databases like PostgreSQL, MySQL, and SQLite
+        because random inserts split pages frequently. <strong>UUID v7</strong> solves both problems:
+        values are globally unique without coordination <em>and</em> they sort chronologically, keeping
+        database indexes compact and efficient. This makes UUID v7 the recommended choice for modern
+        applications using <strong>CUID2</strong>-style identifiers or ULIDs — but with a standardized
+        format.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Generate UUID v7</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Set the <strong>quantity</strong> (1–100) and click <strong>Generate</strong>. Each UUID v7
+        is displayed as a single line in the output area. Use <strong>Copy All</strong> to copy every
+        UUID to your clipboard at once — one per line. UUID v7 values embed the current timestamp,
+        so generating them at different times produces naturally ordered results. This is perfect
+        for database seed scripts, API payloads, and event sourcing systems.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">UUID v7 Format</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        UUID v7 follows the standard 8-4-4-4-12 hex representation:
+        <code class="text-primary text-xs block mt-2 p-3 rounded-lg bg-surface-container font-mono">tttttttt-tttt-7xxx-yxxx-xxxxxxxxxxxx</code>
+        Where <code class="text-primary">t</code> is the timestamp (Unix epoch milliseconds),
+        <code class="text-primary">7</code> is the version number, <code class="text-primary">x</code>
+        is random, and <code class="text-primary">y</code> encodes the variant (10xx). This structure
+        ensures chronological ordering when sorted lexicographically.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  function generateUuidV7() {
+    const timestamp = Date.now();
+    const hexTime = timestamp.toString(16).padStart(12, "0");
+    const rand1 = Math.floor(Math.random() * 0x1000).toString(16).padStart(3, "0");
+    const version = "7";
+    const rand2 = Math.floor(Math.random() * 0x4000).toString(16).padStart(4, "0");
+    const variant = (8 + Math.floor(Math.random() * 4)).toString(16);
+    const rand3 = Math.floor(Math.random() * 0x100000000000).toString(16).padStart(12, "0");
+    return `${hexTime.slice(0, 8)}-${hexTime.slice(8, 12)}-${version}${rand1}-${variant}${rand2.slice(1)}-${rand3}`;
+  }
+
+  const output = document.getElementById("uuid-v7-output");
+  const countInput = document.getElementById("uuid-v7-count");
+  const btnGenerate = document.getElementById("btn-generate-v7");
+  const btnCopyAll = document.getElementById("btn-copy-all");
+  const btnClear = document.getElementById("btn-clear");
+
+  function renderUUIDs(ids) {
+    if (ids.length === 0) {
+      output.textContent = "No UUID v7 identifiers generated yet.";
+      return;
+    }
+    output.textContent = ids.join("\n");
+  }
+
+  let currentUUIDs = [];
+
+  function generateUUIDs() {
+    const count = Math.min(Math.max(parseInt(countInput.value) || 1, 1), 100);
+    currentUUIDs = Array.from({ length: count }, () => generateUuidV7());
+    renderUUIDs(currentUUIDs);
+  }
+
+  btnGenerate.onclick = generateUUIDs;
+
+  countInput.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") generateUUIDs();
+  });
+
+  btnClear.onclick = () => {
+    currentUUIDs = [];
+    renderUUIDs([]);
+    output.className = "input-field font-mono text-sm min-h-[160px] whitespace-pre-wrap overflow-auto scrollbar-thin";
+  };
+
+  btnCopyAll.onclick = async () => {
+    if (currentUUIDs.length === 0) return;
+    const text = currentUUIDs.join("\n");
+    try {
+      gtag('event', 'copy', { tool_id: 'uuid-v7-generator', content_type: 'uuid-v7-generator' });
+      await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
+      btnCopyAll.innerHTML =
+        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopyAll.innerHTML =
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+      btnCopyAll.innerHTML =
+        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopyAll.innerHTML =
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+      }, 2000);
+    }
+  };
+
+  generateUUIDs();
+</script>

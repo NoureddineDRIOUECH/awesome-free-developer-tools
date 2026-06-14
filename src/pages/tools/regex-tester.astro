@@ -5,6 +5,8 @@ import AdSlot from "../../components/AdSlot.astro";
 import { getToolById } from "../../lib/tools";
 
 const tool = getToolById("regex-tester")!;
+const loadExamplePattern = "\\d{3}-\\d{4}";
+const loadExampleTest = "Call 555-1234 or 555-5678 for info";
 ---
 
 <ToolLayout tool={tool}>
@@ -49,7 +51,15 @@ const tool = getToolById("regex-tester")!;
 
           <!-- Test String -->
           <div>
-            <label for="test-string" class="text-sm font-medium mb-1.5 block">Test String</label>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="test-string" class="text-sm font-medium">Test String</label>
+              <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Load Example
+              </button>
+            </div>
             <textarea
               id="test-string"
               class="input-field font-mono text-sm min-h-[160px] resize-y scrollbar-thin"
@@ -73,7 +83,15 @@ const tool = getToolById("regex-tester")!;
           <!-- Matches Output -->
           <div id="matches-output">
             <div class="tool-card p-4 bg-surface-container/50">
-              <h3 class="text-sm font-semibold mb-2">Matches</h3>
+              <div class="flex items-center justify-between mb-2">
+                <h3 class="text-sm font-semibold">Matches</h3>
+                <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                  <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                  </svg>
+                  Copy
+                </button>
+              </div>
               <pre id="matches-text" class="font-mono text-sm whitespace-pre-wrap overflow-auto scrollbar-thin min-h-[80px] leading-relaxed"></pre>
             </div>
           </div>
@@ -186,6 +204,8 @@ const tool = getToolById("regex-tester")!;
   const error = document.getElementById("regex-error");
   const errorMsg = document.getElementById("regex-error-msg");
   const btnClear = document.getElementById("btn-clear");
+  const btnCopy = document.getElementById("btn-copy");
+  const btnLoad = document.getElementById("btn-load-example");
 
   const COLORS = [
     "bg-yellow-500/30 text-yellow-200",
@@ -346,6 +366,32 @@ const tool = getToolById("regex-tester")!;
     matchCount.textContent = "0 matches";
     error.classList.add("hidden");
     patternInput.focus();
+  };
+
+  btnLoad.onclick = () => {
+    patternInput.value = '\\d{3}-\\d{4}';
+    testString.value = 'Call 555-1234 or 555-5678 for info';
+    syncFlagButtons();
+    gtag('event', 'load_example', { tool_id: 'regex-tester' });
+    testRegex();
+  };
+
+  btnCopy.onclick = async () => {
+    const text = matchesText.textContent;
+    if (!text) return;
+    try {
+      gtag('event', 'copy', { tool_id: 'regex-tester', content_type: 'regex-tester' });
+      await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+    }
   };
 
   // Initial test

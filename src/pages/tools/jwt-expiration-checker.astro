@@ -4,10 +4,7 @@ import Toast from "../../components/Toast.astro";
 import AdSlot from "../../components/AdSlot.astro";
 import { getToolById } from "../../lib/tools";
 
-const tool = getToolById("jwt-decoder")!;
-const jwtHeaderExample = `{"alg":"HS256","typ":"JWT"}`;
-const jwtPayloadExample = `{"sub":"1234567890","name":"John Doe","iat":1516239022}`;
-const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c";
+const tool = getToolById("jwt-expiration-checker")!;
 ---
 
 <ToolLayout
@@ -31,17 +28,17 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
             <textarea
               id="jwt-input"
               class="input-field font-mono text-sm min-h-[120px] resize-y scrollbar-thin"
-              placeholder="Paste your JWT token here..."
+              placeholder="Paste your JWT token here to check expiration..."
               spellcheck="false"
-            >eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyLCJleHAiOjk5OTk5OTk5OTl9.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</textarea>
+            ></textarea>
           </div>
 
           <div class="flex flex-wrap gap-2">
-            <button id="btn-decode" class="btn-primary text-sm">
+            <button id="btn-check" class="btn-primary text-sm">
               <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 20l4-16m4 4l4 4-4 4M6 16l-4-4 4-4"/>
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              Decode
+              Check Expiration
             </button>
             <button id="btn-clear" class="btn-secondary text-sm">
               <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -51,10 +48,12 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
             </button>
           </div>
 
-          <!-- Output -->
+          <!-- Results -->
           <div id="jwt-output" class="space-y-4 hidden">
+            <!-- Expiry Status Badge -->
             <div id="expiry-badge" class="hidden"></div>
 
+            <!-- Decoded Sections -->
             <div class="tool-card p-4">
               <div class="flex items-center justify-between mb-2">
                 <h3 class="text-sm font-semibold">Header</h3>
@@ -77,13 +76,8 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
               <pre id="jwt-payload" class="input-field font-mono text-sm min-h-[100px] whitespace-pre-wrap overflow-auto scrollbar-thin"></pre>
             </div>
 
-            <div class="tool-card p-4">
-              <h3 class="text-sm font-semibold mb-2">Signature</h3>
-              <div class="flex items-center gap-2">
-                <pre id="jwt-signature" class="input-field font-mono text-xs min-h-[40px] whitespace-pre-wrap overflow-auto scrollbar-thin flex-1 break-all"></pre>
-              </div>
-              <p class="text-xs text-on-surface-variant/60 mt-1.5">Signature verification requires the secret key and is not performed by this tool.</p>
-            </div>
+            <!-- Time Info Cards -->
+            <div id="time-info" class="grid sm:grid-cols-2 gap-3 hidden"></div>
           </div>
 
           <div id="jwt-error" class="hidden">
@@ -101,77 +95,54 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
   <!-- SEO Content -->
   <section class="container-main py-8 pb-16">
     <div class="max-w-3xl mx-auto">
-      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is JWT?</h2>
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a JWT Expiration Checker?</h2>
       <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
-        <strong>JWT</strong> (JSON Web Token) is an open standard (RFC 7519) for securely transmitting
-        information between parties as a JSON object. A JWT is digitally signed, meaning it can be
-        verified and trusted. Our free <strong>JWT decoder online</strong> lets you inspect the
-        contents of any JWT token without sending it to a server.
+        A <strong>JWT expiration checker</strong> decodes JSON Web Tokens and inspects their time-based
+        claims — specifically <code class="text-primary">exp</code> (expiration) and
+        <code class="text-primary">iat</code> (issued at). JWTs are commonly used for authentication
+        and authorization, and tokens include an expiration time to limit their validity period. Our
+        <strong>JWT token expiry checker</strong> shows you exactly when a token expires, how much
+        time remains, and whether the token is still valid.
       </p>
 
-      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Structure of a JWT</h3>
-      <p class="text-sm text-on-surface-variant leading-relaxed mb-4">
-        A JWT consists of three parts separated by dots:
-        <code class="text-primary text-xs block mt-2 p-3 rounded-lg bg-surface-container font-mono break-all">header.payload.signature</code>
-      </p>
-      <div class="grid sm:grid-cols-3 gap-3 mb-6">
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Token Expiration Matters</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
         <div class="tool-card p-4">
-          <h4 class="font-medium text-sm text-primary">Header</h4>
-          <p class="mt-1 text-xs text-on-surface-variant">Contains the token type and signing algorithm (e.g., HS256, RS256).</p>
+          <h4 class="font-medium text-sm text-primary">Security</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Expired tokens cannot be reused, limiting the damage if a token is leaked. Short expiration times (15–60 minutes) are standard practice.</p>
         </div>
         <div class="tool-card p-4">
-          <h4 class="font-medium text-sm text-primary">Payload</h4>
-          <p class="mt-1 text-xs text-on-surface-variant">Contains the claims — statements about an entity and additional data. Standard claims include <code class="text-primary">sub</code>, <code class="text-primary">iat</code>, <code class="text-primary">exp</code>.</p>
-        </div>
-        <div class="tool-card p-4">
-          <h4 class="font-medium text-sm text-primary">Signature</h4>
-          <p class="mt-1 text-xs text-on-surface-variant">Verifies the token hasn't been tampered with. Created by signing the encoded header and payload with a secret key.</p>
+          <h4 class="font-medium text-sm text-primary">Refresh Tokens</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">Access tokens expire quickly; refresh tokens have longer lifespans. The <code class="text-primary">exp</code> claim controls when re-authentication is required.</p>
         </div>
       </div>
 
-      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">What Is Base64Url Encoding?</h3>
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This JWT Expiration Checker</h3>
       <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
-        JWT uses <strong>Base64Url</strong> encoding, which is a URL-safe variant of Base64.
-        Unlike standard Base64, it uses <code class="text-primary">-</code> instead of
-        <code class="text-primary">+</code> and <code class="text-primary">_</code> instead of
-        <code class="text-primary">/</code>, and omits padding <code class="text-primary">=</code>
-        characters. This <strong>JWT payload decoder</strong> automatically handles this encoding
-        when decoding tokens.
+        Paste your JWT token into the input field and click <strong>Check Expiration</strong>. The
+        tool decodes the header and payload, displays the expiration and issued-at timestamps as
+        human-readable dates, and shows a color-coded status badge — <span class="text-green-400">green</span>
+        for valid tokens with time remaining, <span class="text-red-400">red</span> for expired tokens.
+        Use <strong>Load Example</strong> to see a sample token with an active expiration. All
+        processing is client-side; your tokens are never transmitted.
       </p>
 
-      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common JWT Use Cases</h3>
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Understanding JWT Time Claims</h3>
       <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
-        <li><strong>Authentication</strong> — Users receive a JWT after logging in, which they send with each request to verify their identity.</li>
-        <li><strong>API Authorization</strong> — Backend services use JWTs to authorize access to protected API endpoints.</li>
-        <li><strong>SaaS Sessions</strong> — SaaS platforms use JWTs to maintain session state across distributed microservices.</li>
-        <li><strong>Single Sign-On</strong> — SSO protocols like OpenID Connect use JWTs to transmit identity information.</li>
-        <li><strong>Password Reset</strong> — Time-limited JWTs encode password reset tokens with expiration claims.</li>
+        <li><strong>exp (Expiration)</strong> — Unix timestamp (seconds since epoch) when the token expires. The token is invalid after this time.</li>
+        <li><strong>iat (Issued At)</strong> — Unix timestamp when the token was created. Used to calculate token age.</li>
+        <li><strong>nbf (Not Before)</strong> — Unix timestamp before which the token is not yet valid.</li>
+        <li><strong>auth_time</strong> — Unix timestamp of when the user authenticated (commonly used in OpenID Connect).</li>
       </ul>
 
-      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Is JWT Secure?</h3>
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Is Checking JWT Expiration Locally Safe?</h3>
       <p class="text-sm text-on-surface-variant leading-relaxed">
-        JWT tokens are signed, not encrypted. The header and payload are Base64Url-encoded, not
-        encrypted — anyone with the token can decode and read them. <strong>Never put sensitive data
-        in a JWT payload.</strong> The signature ensures the token hasn't been modified, but it does
-        not protect the contents from being viewed. Our <strong>JWT token decoder</strong> shows
-        exactly what data is visible in any JWT.
+        Yes. This <strong>JWT expiry checker</strong> runs entirely in your browser. JWT tokens are
+        Base64Url-encoded, not encrypted — anyone with the token can decode and read the header and
+        payload. However, the <strong>signature cannot be verified</strong> without the secret key.
+        Never share your secret key or put sensitive data in a JWT payload. Use this tool to inspect
+        and debug your tokens safely.
       </p>
-
-      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-10">JWT Token Example</h3>
-      <div class="space-y-4 mb-6">
-        <div class="tool-card p-4">
-          <h4 class="font-medium text-sm mb-2">Encoded JWT</h4>
-          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto break-all">eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c</pre>
-        </div>
-        <div class="tool-card p-4">
-          <h4 class="font-medium text-sm mb-2">Decoded Header</h4>
-          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{jwtHeaderExample}</pre>
-        </div>
-        <div class="tool-card p-4">
-          <h4 class="font-medium text-sm mb-2">Decoded Payload</h4>
-          <pre class="text-xs font-mono text-on-surface-variant bg-surface-container p-3 rounded-lg overflow-x-auto">{jwtPayloadExample}</pre>
-        </div>
-      </div>
     </div>
   </section>
 
@@ -182,44 +153,48 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
 
 <script>
   const input = document.getElementById("jwt-input");
-  const btnDecode = document.getElementById("btn-decode");
+  const btnCheck = document.getElementById("btn-check");
   const btnClear = document.getElementById("btn-clear");
   const output = document.getElementById("jwt-output");
   const error = document.getElementById("jwt-error");
   const errorMsg = document.getElementById("jwt-error-msg");
   const headerEl = document.getElementById("jwt-header");
   const payloadEl = document.getElementById("jwt-payload");
-  const signatureEl = document.getElementById("jwt-signature");
   const copyHeader = document.getElementById("copy-header");
   const copyPayload = document.getElementById("copy-payload");
   const expiryBadge = document.getElementById("expiry-badge");
+  const timeInfo = document.getElementById("time-info");
   const btnLoad = document.getElementById("btn-load-example");
 
   function base64UrlDecode(str) {
     str = str.replace(/-/g, "+").replace(/_/g, "/");
     const padding = str.length % 4;
     if (padding) str += "=".repeat(4 - padding);
-    const decoded = atob(str);
-    return decodeURIComponent(
-      decoded
-        .split("")
-        .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
-        .join("")
-    );
+    try {
+      const decoded = atob(str);
+      return decodeURIComponent(
+        decoded
+          .split("")
+          .map((c) => "%" + c.charCodeAt(0).toString(16).padStart(2, "0"))
+          .join("")
+      );
+    } catch {
+      return "";
+    }
   }
 
-  function decodeJWT(token) {
+  function decodeJWTPayload(token) {
     const parts = token.trim().split(".");
     if (parts.length !== 3) {
-      throw new Error("Invalid JWT: A JWT must have exactly 3 parts separated by dots (header.payload.signature).");
+      throw new Error("Invalid JWT: A JWT must have 3 parts separated by dots (header.payload.signature).");
     }
-    const [headerEnc, payloadEnc, sigEnc] = parts;
-    if (!headerEnc || !payloadEnc || !sigEnc) {
+    const [headerEnc, payloadEnc] = parts;
+    if (!headerEnc || !payloadEnc) {
       throw new Error("Invalid JWT: Token parts cannot be empty.");
     }
     const header = JSON.parse(base64UrlDecode(headerEnc));
     const payload = JSON.parse(base64UrlDecode(payloadEnc));
-    return { header, payload, signature: sigEnc };
+    return { header, payload };
   }
 
   function formatTime(ts) {
@@ -235,22 +210,24 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
     });
   }
 
-  function timeRemaining(ts) {
-    const now = Math.floor(Date.now() / 1000);
-    const diff = ts - now;
-    if (diff <= 0) return { expired: true, text: "Expired" };
-    const mins = Math.floor(diff / 60);
-    const hours = Math.floor(mins / 60);
-    const days = Math.floor(hours / 24);
-    if (days > 0) return { expired: false, text: `${days}d ${hours % 24}h remaining` };
-    if (hours > 0) return { expired: false, text: `${hours}h ${mins % 60}m remaining` };
-    return { expired: false, text: `${mins}m remaining` };
+  function formatDuration(seconds) {
+    const abs = Math.abs(seconds);
+    const days = Math.floor(abs / 86400);
+    const hours = Math.floor((abs % 86400) / 3600);
+    const mins = Math.floor((abs % 3600) / 60);
+    const secs = Math.floor(abs % 60);
+    const parts = [];
+    if (days > 0) parts.push(`${days}d`);
+    if (hours > 0) parts.push(`${hours}h`);
+    if (mins > 0) parts.push(`${mins}m`);
+    if (secs > 0 || parts.length === 0) parts.push(`${secs}s`);
+    return parts.join(" ");
   }
 
   function copyText(text, btnEl) {
     if (!text) return;
     const orig = btnEl.innerHTML;
-    gtag('event', 'copy', { tool_id: 'jwt-decoder', content_type: 'jwt-decoder' });
+    gtag('event', 'copy', { tool_id: 'jwt-expiration-checker', content_type: 'jwt-expiration-checker' });
     navigator.clipboard.writeText(text).then(() => {
       if (window.showToast) showToast("Copied!");
       btnEl.innerHTML =
@@ -270,10 +247,10 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
     });
   }
 
-  btnDecode.onclick = () => {
+  btnCheck.onclick = () => {
     const raw = input.value.trim();
     if (!raw) {
-      errorMsg.textContent = "Paste a JWT token to decode.";
+      errorMsg.textContent = "Paste a JWT token to check.";
       error.classList.remove("hidden");
       output.classList.add("hidden");
       return;
@@ -281,27 +258,31 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
 
     error.classList.add("hidden");
     try {
-      const { header, payload, signature } = decodeJWT(raw);
+      const { header, payload } = decodeJWTPayload(raw);
       headerEl.textContent = JSON.stringify(header, null, 2);
       payloadEl.textContent = JSON.stringify(payload, null, 2);
-      signatureEl.textContent = signature;
 
       copyHeader.onclick = () => copyText(headerEl.textContent, copyHeader);
       copyPayload.onclick = () => copyText(payloadEl.textContent, copyPayload);
 
+      const now = Math.floor(Date.now() / 1000);
       const exp = payload.exp;
       const iat = payload.iat;
+      const nbf = payload.nbf;
+
       let badgeHTML = "";
+
       if (exp) {
-        const status = timeRemaining(exp);
-        if (status.expired) {
+        const diff = exp - now;
+        const expired = diff <= 0;
+        if (expired) {
           badgeHTML +=
             `<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-red-500/10 border border-red-500/30 text-sm">
               <svg class="size-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.503-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.771.833.192 2.5 1.732 2.5z"/>
               </svg>
-              <span class="text-red-300 font-medium">Expired</span>
-              <span class="text-red-400/70">(expired ${formatTime(exp)})</span>
+              <span class="text-red-300 font-medium">EXPIRED</span>
+              <span class="text-red-400/70">(expired ${formatDuration(Math.abs(diff))} ago · ${formatTime(exp)})</span>
             </div>`;
         } else {
           badgeHTML +=
@@ -309,29 +290,36 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
               <svg class="size-4 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
               </svg>
-              <span class="text-green-300 font-medium">Valid · ${status.text}</span>
-              <span class="text-green-400/70">(expires ${formatTime(exp)})</span>
+              <span class="text-green-300 font-medium">VALID</span>
+              <span class="text-green-400/70">(${formatDuration(diff)} remaining · expires ${formatTime(exp)})</span>
             </div>`;
         }
       }
+
+      let timeInfoHTML = "";
       if (iat) {
-        badgeHTML +=
-          `<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/10 border border-primary/20 text-sm mt-2">
-            <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"/>
-            </svg>
-            <span class="text-primary font-medium">Issued</span>
-            <span class="text-on-surface-variant">${formatTime(iat)}</span>
+        const age = now - iat;
+        timeInfoHTML +=
+          `<div class="tool-card p-3">
+            <h4 class="text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider mb-1">Issued At (iat)</h4>
+            <p class="text-sm font-medium">${formatTime(iat)}</p>
+            <p class="text-xs text-on-surface-variant/60 mt-0.5">Token age: ${formatDuration(age)}</p>
           </div>`;
       }
-      if (payload.sub) {
-        badgeHTML +=
-          `<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10 text-sm mt-2">
-            <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
-            </svg>
-            <span class="text-primary font-medium">Subject</span>
-            <span class="text-on-surface-variant font-mono text-xs">${payload.sub}</span>
+      if (exp) {
+        timeInfoHTML +=
+          `<div class="tool-card p-3">
+            <h4 class="text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider mb-1">Expiration (exp)</h4>
+            <p class="text-sm font-medium">${formatTime(exp)}</p>
+            <p class="text-xs text-on-surface-variant/60 mt-0.5">${exp - now > 0 ? `${formatDuration(exp - now)} remaining` : `Expired ${formatDuration(now - exp)} ago`}</p>
+          </div>`;
+      }
+      if (nbf) {
+        timeInfoHTML +=
+          `<div class="tool-card p-3">
+            <h4 class="text-xs font-medium text-on-surface-variant/60 uppercase tracking-wider mb-1">Not Before (nbf)</h4>
+            <p class="text-sm font-medium">${formatTime(nbf)}</p>
+            <p class="text-xs text-on-surface-variant/60 mt-0.5">${now >= nbf ? "Token is active" : "Token is not yet valid"}</p>
           </div>`;
       }
 
@@ -340,6 +328,13 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
         expiryBadge.classList.remove("hidden");
       } else {
         expiryBadge.classList.add("hidden");
+      }
+
+      if (timeInfoHTML) {
+        timeInfo.innerHTML = timeInfoHTML;
+        timeInfo.classList.remove("hidden");
+      } else {
+        timeInfo.classList.add("hidden");
       }
 
       output.classList.remove("hidden");
@@ -358,19 +353,22 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
     output.classList.add("hidden");
     error.classList.add("hidden");
     expiryBadge.classList.add("hidden");
+    timeInfo.classList.add("hidden");
     headerEl.textContent = "";
     payloadEl.textContent = "";
-    signatureEl.textContent = "";
     input.focus();
   };
 
   btnLoad.onclick = () => {
-    input.value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c';
-    gtag('event', 'load_example', { tool_id: 'jwt-decoder' });
-    btnDecode.click();
+    gtag('event', 'load_example', { tool_id: 'jwt-expiration-checker' });
+    input.value = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNzE4MDAwMDAwLCJleHAiOjk5OTk5OTk5OTl9.dGhpcyBpcyBhIGZha2Ugc2lnbmF0dXJl';
+    btnCheck.click();
   };
 
-  if (input.value.trim()) {
-    btnDecode.click();
-  }
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter" && !e.shiftKey) {
+      e.preventDefault();
+      btnCheck.click();
+    }
+  });
 </script>

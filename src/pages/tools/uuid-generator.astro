@@ -158,7 +158,9 @@ const tool = getToolById("uuid-generator")!;
       btn.onclick = async () => {
         const uuid = btn.getAttribute("data-uuid");
         try {
+          gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
           await navigator.clipboard.writeText(uuid);
+          if (window.showToast) showToast("Copied!");
           btn.textContent = "Copied!";
           setTimeout(() => { btn.textContent = "Copy"; }, 2000);
         } catch {
@@ -168,6 +170,7 @@ const tool = getToolById("uuid-generator")!;
           ta.select();
           document.execCommand("copy");
           ta.remove();
+          if (window.showToast) showToast("Copied!");
           btn.textContent = "Copied!";
           setTimeout(() => { btn.textContent = "Copy"; }, 2000);
         }
@@ -198,7 +201,9 @@ const tool = getToolById("uuid-generator")!;
     if (currentUUIDs.length === 0) return;
     const text = currentUUIDs.join("\n");
     try {
+      gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
       await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
       btnCopyAll.innerHTML =
         '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
       setTimeout(() => {
@@ -212,6 +217,7 @@ const tool = getToolById("uuid-generator")!;
       ta.select();
       document.execCommand("copy");
       ta.remove();
+      if (window.showToast) showToast("Copied!");
       btnCopyAll.innerHTML =
         '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
       setTimeout(() => {

@@ -5,6 +5,7 @@ import AdSlot from "../../components/AdSlot.astro";
 import { getToolById } from "../../lib/tools";
 
 const tool = getToolById("color-converter")!;
+const loadExample = "#7e51e0";
 ---
 
 <ToolLayout
@@ -18,7 +19,23 @@ const tool = getToolById("color-converter")!;
           <div class="flex items-center gap-4">
             <input type="color" id="color-picker" value="#8b5cf6" class="size-16 rounded-lg cursor-pointer border border-surface-container-highest shrink-0" />
             <div class="flex-1">
-              <label for="color-hex" class="text-sm font-medium mb-1.5 block">HEX</label>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="color-hex" class="text-sm font-medium">HEX</label>
+                <div class="flex items-center gap-2">
+                  <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                    </svg>
+                    Load Example
+                  </button>
+                  <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                    </svg>
+                    Copy
+                  </button>
+                </div>
+              </div>
               <input type="text" id="color-hex" value="#8b5cf6" class="input-field font-mono" spellcheck="false" />
             </div>
           </div>
@@ -175,4 +192,32 @@ const tool = getToolById("color-converter")!;
   };
 
   updateFromHex("#8b5cf6");
+
+  const btnCopy = document.getElementById("btn-copy");
+  const btnLoad = document.getElementById("btn-load-example");
+
+  btnLoad.onclick = () => {
+    colorHex.value = '#7e51e0';
+    colorPicker.value = '#7e51e0';
+    updateFromHex('#7e51e0');
+    gtag('event', 'load_example', { tool_id: 'color-converter' });
+  };
+
+  btnCopy.onclick = async () => {
+    const text = colorHex.value;
+    if (!text) return;
+    gtag('event', 'copy', { tool_id: 'color-converter', content_type: 'color-converter' });
+    try {
+      await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+    }
+  };
 </script>

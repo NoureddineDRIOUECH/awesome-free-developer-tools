@@ -14,7 +14,15 @@ const tool = getToolById("px-to-rem")!;
         <div class="grid gap-6">
           <div class="grid sm:grid-cols-2 gap-4">
             <div>
-              <label for="px-value" class="text-sm font-medium mb-1.5 block">Pixel Value (px)</label>
+              <div class="flex items-center justify-between mb-1.5">
+                <label for="px-value" class="text-sm font-medium">Pixel Value (px)</label>
+                <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                  <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                  </svg>
+                  Load Example
+                </button>
+              </div>
               <input
                 id="px-value"
                 type="number"
@@ -152,6 +160,7 @@ const tool = getToolById("px-to-rem")!;
   const resultDetail = document.getElementById("result-detail");
   const refTable = document.getElementById("ref-table");
   const btnCopyTable = document.getElementById("btn-copy-table");
+  const btnLoad = document.getElementById("btn-load-example");
 
   const COMMON_PX = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96, 128];
   const USE_LABELS = {
@@ -194,6 +203,12 @@ const tool = getToolById("px-to-rem")!;
     }).join("");
   }
 
+  btnLoad.onclick = () => {
+    pxInput.value = '16';
+    gtag('event', 'load_example', { tool_id: 'px-to-rem' });
+    pxInput.dispatchEvent(new Event('input'));
+  };
+
   btnCopyTable.onclick = async () => {
     const base = parseFloat(baseInput.value) || 16;
     const lines = ["Pixels\trem\tCommon Use"];
@@ -203,6 +218,7 @@ const tool = getToolById("px-to-rem")!;
       lines.push(`${p}px\t${rem}\t${label}`);
     });
     try {
+      gtag('event', 'copy', { tool_id: 'px-to-rem', content_type: 'px-to-rem' });
       await navigator.clipboard.writeText(lines.join("\n"));
       if (window.showToast) showToast("Copied!");
     } catch {

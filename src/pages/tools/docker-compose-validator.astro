@@ -1,0 +1,446 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("docker-compose-validator")!;
+---
+
+<ToolLayout
+  tool={tool}
+>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <label for="compose-input" class="text-sm font-medium mb-1.5 block">
+              Docker Compose YAML
+              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+            </label>
+            <textarea
+              id="compose-input"
+              class="input-field font-mono text-sm min-h-[280px] resize-y scrollbar-thin"
+              placeholder="Paste your docker-compose.yml here...
+version: '3.8'
+services:
+  web:
+    image: nginx:latest
+    ports:
+      - '80:80'"
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex items-center gap-2">
+            <button id="btn-validate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+              </svg>
+              Validate
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+            <button id="btn-load-example" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Load Example
+            </button>
+          </div>
+
+          <div>
+            <label class="text-sm font-medium mb-1.5 block">Validation Results</label>
+            <div id="compose-results" class="space-y-0"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Docker Compose Validator?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>Docker Compose validator</strong> checks your <code class="text-primary">docker-compose.yml</code>
+        files for correct syntax, structure, and required fields. Docker Compose defines multi-container
+        applications with services, networks, and volumes. Common mistakes like missing image references,
+        invalid port mappings, or misconfigured environment variables can cause deployment failures.
+        Our <strong>Compose file linter</strong> helps you catch these issues before running
+        <code class="text-primary">docker compose up</code>.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">What We Check in Your Compose File</h2>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Services</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">The top-level <code class="text-primary">services</code> field must exist and contain at least one service definition.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Image / Build</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Each service must specify <code class="text-primary">image</code> or <code class="text-primary">build</code> to define how the container is created.</p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Port Mappings</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Port mappings should use the <code class="text-primary">"host:container"</code> format (e.g., <code class="text-primary">"8080:80"</code>).</p>
+        </div>
+        <div class="tool-card p-4">
+          <h3 class="font-medium text-sm text-primary">Environment</h3>
+          <p class="mt-1 text-xs text-on-surface-variant">Environment variables can be a mapping or an array of <code class="text-primary">KEY=VALUE</code> strings.</p>
+        </div>
+      </div>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">How to Use This Docker Compose Validator</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Paste your <code class="text-primary">docker-compose.yml</code> content into the textarea and
+        click <strong>Validate</strong>. The tool checks for the <code class="text-primary">version</code>
+        field, verifies that <code class="text-primary">services</code> is defined, validates each
+        service has an <code class="text-primary">image</code> or <code class="text-primary">build</code>,
+        and inspects port mappings, environment variables, and volume/network references. Results show
+        green checkmarks for valid fields and red crosses for issues. Use <strong>Load Example</strong>
+        for a sample with web and database services. All processing is done client-side.
+      </p>
+
+      <h2 class="text-2xl font-semibold tracking-tight mb-4 mt-10">Tips for Valid Docker Compose Files</h2>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Use the correct version</strong> — Version 3.8+ is recommended for modern Docker Compose features.</li>
+        <li><strong>Always quote port mappings</strong> — Use <code class="text-primary">"8080:80"</code> (quoted) to prevent YAML parsing issues with colons.</li>
+        <li><strong>Define networks explicitly</strong> — If services communicate, define a custom network at the top level and reference it in each service.</li>
+        <li><strong>Use .env files for secrets</strong> — Reference environment variables via <code class="text-primary">env_file</code> rather than embedding secrets in the Compose file.</li>
+        <li><strong>Pin image versions</strong> — Always specify image tags (e.g., <code class="text-primary">postgres:16-alpine</code>) instead of using <code class="text-primary">latest</code>.</li>
+      </ul>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("compose-input");
+  const results = document.getElementById("compose-results");
+  const stats = document.getElementById("input-stats");
+  const btnValidate = document.getElementById("btn-validate");
+  const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
+
+  function updateStats() {
+    const chars = input.value.length;
+    const lines = input.value ? input.value.split("\n").length : 0;
+    stats.textContent = `${chars} chars · ${lines} lines`;
+  }
+
+  function parseYamlValue(val) {
+    const trimmed = val.trim();
+    if (trimmed === "true") return true;
+    if (trimmed === "false") return false;
+    if (trimmed === "null" || trimmed === "~") return null;
+    if (trimmed === "") return null;
+    if (/^-?\d+(\.\d+)?$/.test(trimmed)) {
+      return trimmed.includes(".") ? parseFloat(trimmed) : parseInt(trimmed, 10);
+    }
+    if (/^\[.*\]$/.test(trimmed)) {
+      try { return JSON.parse(trimmed); } catch { return trimmed; }
+    }
+    if (/^".*"$/.test(trimmed) || /^'.*'$/.test(trimmed)) {
+      return trimmed.slice(1, -1);
+    }
+    return trimmed;
+  }
+
+  function parseYamlToObject(yaml) {
+    const lines = yaml.split("\n");
+    const root = {};
+    const stack = [{ indent: -1, obj: root, key: null }];
+
+    for (let i = 0; i < lines.length; i++) {
+      const line = lines[i];
+      if (!line.trim() || line.trim().startsWith("#")) continue;
+
+      const match = line.match(/^(\s*)([\w-]+)\s*:\s*(.*)$/);
+      if (!match) {
+        throw new Error(`Invalid YAML syntax at line ${i + 1}: "${line.trim()}"`);
+      }
+
+      const indent = match[1].length;
+      const key = match[2];
+      let val = match[3].trim();
+
+      while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
+        stack.pop();
+      }
+
+      const current = stack[stack.length - 1].obj;
+
+      if (val === "" || val === "|") {
+        const blockLines = [];
+        let j = i + 1;
+        const blockIndent = indent + 2;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim()) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent < blockIndent) break;
+          blockLines.push(nextLine.trim());
+          j++;
+        }
+        current[key] = blockLines.join("\n");
+        i = j - 1;
+      } else if (val.startsWith("- ")) {
+        const items = [parseYamlValue(val.slice(2))];
+        let j = i + 1;
+        while (j < lines.length) {
+          const nextLine = lines[j];
+          if (!nextLine.trim() || nextLine.trim().startsWith("#")) { j++; continue; }
+          const nextIndent = nextLine.search(/\S/);
+          if (nextIndent <= indent) break;
+          const listMatch = nextLine.match(/^\s*-\s+(.*)$/);
+          if (listMatch) {
+            items.push(parseYamlValue(listMatch[1]));
+          } else {
+            const kvMatch = nextLine.match(/^\s*([\w-]+)\s*:\s*(.*)$/);
+            if (kvMatch) {
+              const subObj = {};
+              subObj[kvMatch[1]] = parseYamlValue(kvMatch[2]);
+              items.push(subObj);
+            }
+            break;
+          }
+          j++;
+        }
+        current[key] = items;
+        i = j - 1;
+      } else {
+        current[key] = parseYamlValue(val);
+      }
+    }
+
+    return root;
+  }
+
+  function getValue(obj, path) {
+    return path.split(".").reduce((acc, part) => {
+      if (acc && typeof acc === "object" && part in acc) return acc[part];
+      return undefined;
+    }, obj);
+  }
+
+  function validateComposeFile(obj) {
+    const results = [];
+
+    const version = obj.version;
+    if (!version) {
+      results.push({ field: "version", status: "warning", message: "version field is recommended (e.g., '3.8')" });
+    } else {
+      results.push({ field: "version", status: "ok", message: `version: ${version}` });
+    }
+
+    const services = obj.services;
+    if (!services) {
+      results.push({ field: "services", status: "error", message: "top-level 'services' field is required" });
+      return results;
+    }
+    const serviceNames = Object.keys(services);
+    if (serviceNames.length === 0) {
+      results.push({ field: "services", status: "error", message: "at least one service must be defined" });
+      return results;
+    }
+    results.push({ field: "services", status: "ok", message: `${serviceNames.length} service(s) defined: ${serviceNames.join(", ")}` });
+
+    for (const name of serviceNames) {
+      const svc = services[name];
+      if (!svc.image && !svc.build) {
+        results.push({ field: `services.${name}.image/build`, status: "error", message: `service "${name}" must have 'image' or 'build'` });
+      } else if (svc.image) {
+        results.push({ field: `services.${name}.image`, status: "ok", message: `service "${name}" uses image: ${svc.image}` });
+      } else {
+        results.push({ field: `services.${name}.build`, status: "ok", message: `service "${name}" uses build: ${typeof svc.build === "string" ? svc.build : svc.build.context || "(context)"}` });
+      }
+
+      if (svc.ports && Array.isArray(svc.ports)) {
+        let validPorts = 0;
+        for (const port of svc.ports) {
+          const p = String(port);
+          if (/^\d+:\d+$/.test(p) || /^"\d+:\d+"$/.test(p)) {
+            validPorts++;
+          } else {
+            results.push({ field: `services.${name}.ports`, status: "warning", message: `port "${p}" may use invalid format (use "host:container")` });
+          }
+        }
+        if (validPorts > 0) {
+          results.push({ field: `services.${name}.ports`, status: "ok", message: `${svc.ports.length} port(s) defined` });
+        }
+      }
+
+      if (svc.environment) {
+        if (Array.isArray(svc.environment)) {
+          const validEnv = svc.environment.every(e => typeof e === "string" && e.includes("="));
+          if (validEnv) {
+            results.push({ field: `services.${name}.environment`, status: "ok", message: `${svc.environment.length} env var(s) defined (array format)` });
+          } else {
+            results.push({ field: `services.${name}.environment`, status: "warning", message: "some env entries may use invalid KEY=VALUE format" });
+          }
+        } else if (typeof svc.environment === "object") {
+          results.push({ field: `services.${name}.environment`, status: "ok", message: `${Object.keys(svc.environment).length} env var(s) defined (mapping format)` });
+        }
+      }
+
+      if (svc.volumes && Array.isArray(svc.volumes)) {
+        results.push({ field: `services.${name}.volumes`, status: "ok", message: `${svc.volumes.length} volume mount(s) defined` });
+      }
+
+      if (svc.networks) {
+        results.push({ field: `services.${name}.networks`, status: "ok", message: `service "${name}" is connected to network(s)` });
+      }
+    }
+
+    if (obj.volumes) {
+      const volNames = Object.keys(obj.volumes);
+      results.push({ field: "volumes", status: "ok", message: `${volNames.length} top-level volume(s) defined: ${volNames.join(", ")}` });
+    }
+
+    if (obj.networks) {
+      const netNames = Object.keys(obj.networks);
+      results.push({ field: "networks", status: "ok", message: `${netNames.length} top-level network(s) defined: ${netNames.join(", ")}` });
+    }
+
+    return results;
+  }
+
+  function renderResults(validationResults) {
+    if (!validationResults || validationResults.length === 0) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">No validation checks performed.</p>`;
+      return;
+    }
+
+    const passCount = validationResults.filter(r => r.status === "ok").length;
+    const warningCount = validationResults.filter(r => r.status === "warning").length;
+    const errorCount = validationResults.filter(r => r.status === "error").length;
+
+    let summaryClass = "text-green-400";
+    let summaryText = "All checks passed!";
+    if (errorCount > 0) {
+      summaryClass = "text-red-400";
+      summaryText = `${errorCount} error(s) found`;
+    } else if (warningCount > 0) {
+      summaryClass = "text-yellow-400";
+      summaryText = `${warningCount} warning(s) found`;
+    }
+
+    results.innerHTML = `
+      <div class="flex items-center gap-2 mb-3 text-sm font-medium ${summaryClass}">
+        <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+        </svg>
+        ${summaryText}
+        <span class="text-xs text-on-surface-variant/60 font-normal ml-1">(${passCount} passed, ${warningCount} warnings, ${errorCount} errors)</span>
+      </div>
+      <ul class="space-y-1.5">
+        ${validationResults.map((r) => {
+          const icon = r.status === "ok"
+            ? '<svg class="size-4 text-green-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>'
+            : r.status === "warning"
+            ? '<svg class="size-4 text-yellow-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.503-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L3.34 16.5c-.771.833.192 2.5 1.732 2.5z"/></svg>'
+            : '<svg class="size-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
+          return `<li class="flex items-start gap-2 text-sm ${r.status === "ok" ? "text-green-300/80" : r.status === "warning" ? "text-yellow-300/80" : "text-red-300/80"}">
+            ${icon}
+            <span>${r.message}</span>
+          </li>`;
+        }).join("")}
+      </ul>
+    `;
+  }
+
+  function validateCompose() {
+    const raw = input.value;
+    if (!raw.trim()) {
+      results.innerHTML = `<p class="text-sm text-on-surface-variant">Enter a Docker Compose YAML to validate.</p>`;
+      return;
+    }
+    try {
+      const obj = parseYamlToObject(raw);
+      const validationResults = validateComposeFile(obj);
+      renderResults(validationResults);
+    } catch (e) {
+      results.innerHTML = `
+        <div class="rounded-lg border border-red-500/50 bg-red-500/5 p-4">
+          <p class="text-sm text-red-400"><span class="font-medium">Parse error:</span> ${e.message.replace(/</g, "&lt;").replace(/>/g, "&gt;")}</p>
+        </div>`;
+    }
+  }
+
+  btnValidate.onclick = validateCompose;
+
+  btnClear.onclick = () => {
+    input.value = "";
+    results.innerHTML = "";
+    updateStats();
+    input.focus();
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'docker-compose-validator' });
+    input.value = `version: '3.8'
+
+services:
+  web:
+    image: nginx:1.25-alpine
+    ports:
+      - "80:80"
+    volumes:
+      - ./html:/usr/share/nginx/html
+    networks:
+      - frontend
+
+  api:
+    build:
+      context: ./api
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - DB_HOST=db
+    depends_on:
+      - db
+    networks:
+      - frontend
+      - backend
+
+  db:
+    image: postgres:16-alpine
+    environment:
+      POSTGRES_DB: myapp
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: secret
+    volumes:
+      - pgdata:/var/lib/postgresql/data
+    networks:
+      - backend
+
+volumes:
+  pgdata:
+
+networks:
+  frontend:
+  backend:`;
+    updateStats();
+    validateCompose();
+  };
+
+  btnValidate.onclick = validateCompose;
+
+  input.addEventListener("input", updateStats);
+
+  updateStats();
+</script>

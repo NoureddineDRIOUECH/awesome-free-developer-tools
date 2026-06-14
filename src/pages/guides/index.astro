@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getBlogPosts } from "../../data/blog";
+
+const posts = getBlogPosts();
+
+const categories = [...new Set(posts.map((p) => p.category))].sort();
+
+const guidesSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "WebUtil Developer Guides",
+  description: "Step-by-step developer guides organized by category. Learn how to format JSON, encode URLs, generate passwords, convert colors, and more.",
+  url: `${String(Astro.site).replace(/\/$/, "")}/guides`,
+};
+---
+
+<BaseLayout
+  title="Developer Guides - Step-by-Step Tutorials by Category"
+  description="Comprehensive developer guides organized by category. Learn JSON formatting, URL encoding, password security, color conversion, text diff, and more with practical examples."
+  jsonLd={guidesSchema}
+  breadcrumbs={[
+    { label: "Home", href: "/" },
+    { label: "Guides" },
+  ]}
+>
+  <div class="container-main py-10">
+    <div class="max-w-4xl mx-auto">
+      <div class="mb-10">
+        <h1 class="text-3xl sm:text-4xl font-bold tracking-tight">Developer Guides</h1>
+        <p class="mt-2 text-on-surface-variant text-lg">
+          Step-by-step tutorials organized by category. Master every WebUtil tool with practical guides.
+        </p>
+      </div>
+
+      {categories.map((category) => {
+        const catPosts = posts.filter((p) => p.category === category);
+        return (
+          <section class="mb-10">
+            <h2 class="text-xl font-semibold mb-4 flex items-center gap-2">
+              <a href={`/tools/category/${category.toLowerCase()}`} class="text-primary hover:underline">
+                {category}
+              </a>
+            </h2>
+            <div class="grid gap-4 sm:grid-cols-2">
+              {catPosts.map((post) => (
+                <a href={`/blog/${post.slug}`} class="tool-card group block p-4">
+                  <div class="flex items-center gap-2 text-xs text-on-surface-variant mb-2">
+                    <span>{post.date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" })}</span>
+                    <span>&middot;</span>
+                    <span>{post.readTime}</span>
+                  </div>
+                  <h3 class="font-medium group-hover:text-primary transition-colors">{post.title}</h3>
+                  <p class="mt-1 text-sm text-on-surface-variant leading-relaxed line-clamp-2">{post.description}</p>
+                </a>
+              ))}
+            </div>
+          </section>
+        );
+      })}
+
+      <AdSlot format="in-article" class="mt-8" />
+    </div>
+  </div>
+</BaseLayout>

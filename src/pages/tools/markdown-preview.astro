@@ -5,6 +5,7 @@ import AdSlot from "../../components/AdSlot.astro";
 import { getToolById } from "../../lib/tools";
 
 const tool = getToolById("markdown-preview")!;
+const loadExample = "# Hello WebUtil\n\nThis is **Markdown** preview with:\n- Lists\n- `code blocks`\n- [Links](https://webutil.tech)\n\n> Blockquote\n\n| Col1 | Col2 |\n|------|------|\n| A    | B    |";
 ---
 
 <ToolLayout
@@ -16,9 +17,17 @@ const tool = getToolById("markdown-preview")!;
       <div class="tool-card p-4 sm:p-6">
         <div class="grid gap-4">
           <div>
-            <label for="md-input" class="text-sm font-medium mb-1.5 block">
-              Markdown Input
-            </label>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="md-input" class="text-sm font-medium">
+                Markdown Input
+              </label>
+              <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Load Example
+              </button>
+            </div>
             <textarea
               id="md-input"
               class="input-field font-mono text-sm min-h-[250px] resize-y scrollbar-thin"
@@ -162,6 +171,7 @@ const tool = getToolById("markdown-preview")!;
   const btnPreview = document.getElementById("btn-preview");
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
+  const btnLoad = document.getElementById("btn-load-example");
 
   const sampleMarkdown = `# Welcome to Markdown
 
@@ -305,6 +315,12 @@ Inline code: \`console.log("hello")\`
 
   btnPreview.onclick = updatePreview;
 
+  btnLoad.onclick = () => {
+    input.value = '# Hello WebUtil\n\nThis is **Markdown** preview with:\n- Lists\n- `code blocks`\n- [Links](https://webutil.tech)\n\n> Blockquote\n\n| Col1 | Col2 |\n|------|------|\n| A    | B    |';
+    gtag('event', 'load_example', { tool_id: 'markdown-preview' });
+    btnPreview.click();
+  };
+
   btnClear.onclick = () => {
     input.value = "";
     output.innerHTML = "";
@@ -315,7 +331,9 @@ Inline code: \`console.log("hello")\`
     const html = output.innerHTML;
     if (!html) return;
     try {
+      gtag('event', 'copy', { tool_id: 'markdown-preview', content_type: 'markdown-preview' });
       await navigator.clipboard.writeText(html);
+      if (window.showToast) showToast("Copied!");
       btnCopy.innerHTML =
         '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
       setTimeout(() => {
@@ -329,6 +347,7 @@ Inline code: \`console.log("hello")\`
       ta.select();
       document.execCommand("copy");
       ta.remove();
+      if (window.showToast) showToast("Copied!");
       btnCopy.innerHTML =
         '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
       setTimeout(() => {

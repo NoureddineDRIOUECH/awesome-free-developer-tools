@@ -250,6 +250,7 @@ const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "feature
   };
 
   btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'json-formatter' });
     input.value = '{"name":"WebUtil","type":"tool","features":["formatter","validator","minifier"],"version":1.0,"nested":{"enabled":true,"count":42,"tags":["dev","tools","json"]}}';
     updateStats();
     btnFormat.click();
@@ -259,6 +260,7 @@ const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "feature
     const text = output.textContent;
     if (!text) return;
     try {
+      gtag('event', 'copy', { tool_id: 'json-formatter', content_type: 'json-formatter' });
       await navigator.clipboard.writeText(text);
       if (window.showToast) showToast("Copied!");
     } catch {

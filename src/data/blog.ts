@@ -1,0 +1,545 @@
+export interface BlogPost {
+  slug: string;
+  title: string;
+  description: string;
+  date: Date;
+  category: string;
+  readTime: string;
+}
+
+export interface BlogSection {
+  heading: string;
+  body: string;
+}
+
+export interface BlogContent {
+  title: string;
+  description: string;
+  date: Date;
+  sections: BlogSection[];
+}
+
+export const blogPosts: BlogPost[] = [
+  {
+    slug: "json-formatting-guide",
+    title: "How to Format JSON Properly: A Complete Guide",
+    description: "Learn how to format JSON data correctly with best practices, common patterns, and troubleshooting tips for developers.",
+    date: new Date("2025-12-15"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "common-json-errors",
+    title: "Common JSON Errors and How to Fix Them",
+    description: "A comprehensive guide to the most frequent JSON errors developers encounter and step-by-step solutions to fix them.",
+    date: new Date("2025-12-10"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "url-encoding-decoding",
+    title: "URL Encoding and Decoding: What Every Developer Should Know",
+    description: "Understand how URL encoding works, why it matters for web development, and how to properly encode and decode URLs.",
+    date: new Date("2025-12-05"),
+    category: "Encoders",
+    readTime: "4 min read",
+  },
+  {
+    slug: "base64-encoding-methods",
+    title: "Base64 Encoding: Methods, Use Cases, and Best Practices",
+    description: "A deep dive into Base64 encoding, when to use it, common pitfalls, and how it works under the hood.",
+    date: new Date("2025-11-28"),
+    category: "Encoders",
+    readTime: "5 min read",
+  },
+  {
+    slug: "password-security-best-practices",
+    title: "Password Security Best Practices for 2026",
+    description: "Learn how to create and manage secure passwords, understand password strength metrics, and protect against common attacks.",
+    date: new Date("2025-11-20"),
+    category: "Security",
+    readTime: "7 min read",
+  },
+  {
+    slug: "color-converter-guide",
+    title: "Color Converter Guide: HEX, RGB, and HSL Explained",
+    description: "A complete guide to understanding color models in web development, and how to convert between HEX, RGB, and HSL formats.",
+    date: new Date("2025-11-15"),
+    category: "Converters",
+    readTime: "4 min read",
+  },
+  {
+    slug: "uuid-guide",
+    title: "UUIDs Explained: What They Are and How to Use Them",
+    description: "Everything you need to know about UUIDs — how they work, different versions, and when to use each type in your applications.",
+    date: new Date("2025-11-10"),
+    category: "Generators",
+    readTime: "5 min read",
+  },
+  {
+    slug: "online-tools-security",
+    title: "Understanding Online Tool Security: Why Client-Side Matters",
+    description: "Discover the security implications of using online developer tools and why client-side processing is crucial for data privacy.",
+    date: new Date("2025-11-05"),
+    category: "Security",
+    readTime: "6 min read",
+  },
+  {
+    slug: "json-vs-xml",
+    title: "JSON vs XML: Which Data Format Should You Use in 2026?",
+    description: "Compare JSON and XML data formats for APIs, configuration, and data exchange. Learn when to use JSON vs XML and why JSON dominates modern web development.",
+    date: new Date("2026-03-01"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "json-schema-guide",
+    title: "JSON Schema Guide: Validate Your JSON Data Structure",
+    description: "Learn JSON Schema fundamentals — how to define validation rules, enforce data types, and ensure your JSON data meets structural requirements.",
+    date: new Date("2026-02-15"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "how-apis-use-json",
+    title: "How APIs Use JSON: REST, GraphQL, and WebSocket Data Formats",
+    description: "A developer-focused guide to how modern APIs use JSON for request/response payloads, error handling, pagination, and real-time communication.",
+    date: new Date("2026-01-20"),
+    category: "Formatters",
+    readTime: "7 min read",
+  },
+  {
+    slug: "hash-generator-guide",
+    title: "Hash Generator Guide: MD5, SHA-1, SHA-256, and SHA-512 Explained",
+    description: "Learn how cryptographic hash functions work, the differences between MD5, SHA-1, SHA-256, and SHA-512, and when to use each.",
+    date: new Date("2026-04-01"),
+    category: "Security",
+    readTime: "6 min read",
+  },
+  {
+    slug: "sql-formatting-guide",
+    title: "SQL Formatter Guide: Write Clean, Readable SQL Queries",
+    description: "Learn how to format SQL queries for better readability, maintainability, and team collaboration.",
+    date: new Date("2026-04-05"),
+    category: "Formatters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "xml-formatting-guide",
+    title: "XML Formatter Guide: How to Format, Validate, and Beautify XML",
+    description: "Master XML formatting with best practices for indentation, validation, and comparing XML vs JSON.",
+    date: new Date("2026-04-10"),
+    category: "Formatters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "yaml-converter-guide",
+    title: "YAML Converter Guide: Convert Between YAML and JSON",
+    description: "Learn how to convert YAML to JSON and JSON to YAML, understand YAML syntax, and when to use each format.",
+    date: new Date("2026-04-15"),
+    category: "Converters",
+    readTime: "5 min read",
+  },
+  {
+    slug: "html-entities-guide",
+    title: "HTML Entities Guide: Encode Special Characters for Safe Web Rendering",
+    description: "Learn how HTML entities work, why they matter for security, and how to encode and decode special characters.",
+    date: new Date("2026-04-20"),
+    category: "Encoders",
+    readTime: "5 min read",
+  },
+  {
+    slug: "case-converter-guide",
+    title: "Case Converter Guide: camelCase, snake_case, kebab-case and More",
+    description: "Master text case conversion between camelCase, PascalCase, snake_case, kebab-case, and other naming conventions.",
+    date: new Date("2026-04-25"),
+    category: "Text",
+    readTime: "5 min read",
+  },
+  {
+    slug: "markdown-guide",
+    title: "Markdown Preview Guide: Write and Preview Markdown Like a Pro",
+    description: "Learn Markdown syntax from basics to advanced — headings, lists, tables, code blocks, and more.",
+    date: new Date("2026-05-01"),
+    category: "Text",
+    readTime: "6 min read",
+  },
+  {
+    slug: "text-diff-guide",
+    title: "Text Diff Guide: Compare Texts and Find Differences Like a Developer",
+    description: "Learn how text diff checkers work for comparing code and documents, and how to interpret diff output.",
+    date: new Date("2026-05-05"),
+    category: "Text",
+    readTime: "5 min read",
+  },
+  {
+    slug: "image-converter-guide",
+    title: "Image Converter Guide: Convert Between PNG, JPEG, WebP, and GIF",
+    description: "Learn how to convert images between formats in your browser, and compare PNG vs JPEG vs WebP.",
+    date: new Date("2026-05-10"),
+    category: "Images",
+    readTime: "5 min read",
+  },
+  {
+    slug: "lorem-ipsum-guide",
+    title: "Lorem Ipsum Generator Guide: Generate Placeholder Text for Designs",
+    description: "Learn how to use Lorem Ipsum placeholder text in web design, print layout, and UI mockups.",
+    date: new Date("2026-05-15"),
+    category: "Generators",
+    readTime: "4 min read",
+  },
+  {
+    slug: "jwt-authentication-explained",
+    title: "JWT Authentication Explained: How JSON Web Tokens Work",
+    description: "A complete guide to JWT authentication — learn how JSON Web Tokens work, their structure, how they secure APIs, and best practices for implementation.",
+    date: new Date("2026-06-01"),
+    category: "Security",
+    readTime: "7 min read",
+  },
+  {
+    slug: "json-vs-yaml-for-apis",
+    title: "JSON vs YAML for APIs: Choosing the Right Data Format",
+    description: "Compare JSON and YAML for API development — learn when to use each format, their strengths and weaknesses, and best practices for API design.",
+    date: new Date("2026-06-05"),
+    category: "Converters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "uuid-v4-vs-uuid-v7",
+    title: "UUID v4 vs UUID v7: Choosing the Right UUID for Your Application",
+    description: "Compare UUID v4 and UUID v7 — understand the differences between random and time-ordered UUIDs, database performance implications, and when to use each version.",
+    date: new Date("2026-06-10"),
+    category: "Generators",
+    readTime: "5 min read",
+  },
+];
+
+export const blogContent: Record<string, BlogContent> = {
+  "json-formatting-guide": {
+    title: "How to Format JSON Properly: A Complete Guide",
+    description: "Learn how to format JSON data correctly with best practices, common patterns, and troubleshooting tips for developers.",
+    date: new Date("2025-12-15"),
+    sections: [
+      { heading: "What is JSON Formatting?", body: "JSON (JavaScript Object Notation) is a lightweight data interchange format that is easy for humans to read and write and easy for machines to parse and generate. Proper JSON formatting involves correctly structuring your data with appropriate indentation, spacing, and syntax to ensure it is both valid and readable." },
+      { heading: "Why Proper JSON Formatting Matters", body: "Well-formatted JSON is crucial for debugging, collaboration, and maintaining APIs. Proper formatting helps developers quickly understand data structures, identify errors, and ensure consistent communication between services. Unformatted or minified JSON can hide syntax errors and make debugging significantly more difficult." },
+      { heading: "JSON Formatting Best Practices", body: "Always use consistent indentation (2 or 4 spaces), avoid trailing commas, use double quotes for strings and property names, and keep nested structures organized. Our JSON Formatter tool automatically handles all of these best practices for you." },
+      { heading: "Common JSON Formatting Errors", body: "Trailing commas, missing quotes, unescaped special characters, and mismatched brackets are among the most common JSON formatting errors. Always validate your JSON after formatting to catch these issues early." },
+      { heading: "Using WebUtil's JSON Formatter", body: "Our free online JSON Formatter allows you to format, validate, and beautify your JSON data instantly. Simply paste your JSON, click format, and get properly indented, validated output. All processing happens in your browser — nothing is uploaded to any server." },
+    ],
+  },
+  "common-json-errors": {
+    title: "Common JSON Errors and How to Fix Them",
+    description: "A comprehensive guide to the most frequent JSON errors developers encounter and step-by-step solutions to fix them.",
+    date: new Date("2025-12-10"),
+    sections: [
+      { heading: "Trailing Commas", body: "One of the most common JSON errors is trailing commas at the end of arrays or objects. Unlike JavaScript, JSON does not allow trailing commas. Remove any extra commas after the last element in an array or property in an object." },
+      { heading: "Missing or Incorrect Quotes", body: "JSON requires double quotes around all strings and property names. Single quotes are not valid in JSON. Always use double quotes for consistency and validity." },
+      { heading: "Unescaped Special Characters", body: "Characters like newlines, tabs, and backslashes need to be properly escaped in JSON strings. Use \\n for newlines, \\t for tabs, and \\\\ for backslashes to ensure valid JSON." },
+      { heading: "Mismatched Brackets", body: "Ensure every opening bracket {, [, or ( has a matching closing bracket }, ], or ). Use a JSON validator to automatically detect mismatched brackets." },
+      { heading: "Invalid Data Types", body: "JSON supports strings, numbers, booleans, null, arrays, and objects. Undefined, NaN, Infinity, and functions are not valid JSON values. Ensure all values are valid JSON types." },
+    ],
+  },
+  "json-vs-xml": {
+    title: "JSON vs XML: Which Data Format Should You Use in 2026?",
+    description: "Compare JSON and XML data formats for APIs, configuration, and data exchange. Learn when to use JSON vs XML and why JSON dominates modern web development.",
+    date: new Date("2026-03-01"),
+    sections: [
+      { heading: "JSON vs XML: Key Differences", body: "JSON (JavaScript Object Notation) and XML (eXtensible Markup Language) are both data interchange formats, but they serve different use cases. JSON is lightweight, uses key-value pairs, and is native to JavaScript. XML is markup language with custom tags, supports attributes, and has mature schema validation. JSON has largely replaced XML in modern web APIs due to its simplicity and native browser support." },
+      { heading: "Why JSON Wins for APIs", body: "JSON is the default format for REST APIs, GraphQL, and most modern web services. It parses faster than XML, produces smaller payloads, and integrates seamlessly with JavaScript. Major platforms like Twitter, GitHub, and Stripe use JSON exclusively for their APIs. JSON responses are typically 30-40% smaller than equivalent XML responses, reducing bandwidth costs." },
+      { heading: "When XML Still Makes Sense", body: "Despite JSON's dominance, XML remains relevant for document-centric formats like SVG, RSS/Atom feeds, SOAP APIs, and legacy enterprise systems. XML's support for namespaces, attributes, and mixed content makes it better suited for complex document structures. If you need to represent documents with metadata at multiple levels, XML may be the better choice." },
+      { heading: "JSON vs XML Performance Comparison", body: "JSON generally outperforms XML in parsing speed and data size. A typical JSON parser can process 2-3x more data per second than an equivalent XML parser. JSON's simpler syntax means less overhead — no closing tags, no attributes, no namespace processing. This makes JSON ideal for high-throughput scenarios like real-time APIs and data pipelines." },
+      { heading: "Migration Path: XML to JSON", body: "If you're maintaining legacy XML systems, consider a gradual migration to JSON. Start with new endpoints using JSON responses, add JSON support alongside existing XML endpoints, then migrate internal data processing. Tools like our JSON Formatter can help you inspect and validate JSON data during the transition. Our XML Formatter handles XML-to-JSON conversion when needed." },
+    ],
+  },
+  "json-schema-guide": {
+    title: "JSON Schema Guide: Validate Your JSON Data Structure",
+    description: "Learn JSON Schema fundamentals — how to define validation rules, enforce data types, and ensure your JSON data meets structural requirements.",
+    date: new Date("2026-02-15"),
+    sections: [
+      { heading: "What is JSON Schema?", body: "JSON Schema is a specification for describing the structure of JSON data. It allows you to define validation rules for your JSON documents, including required fields, data types, allowed values, and nested structures. JSON Schema is written in JSON itself, making it easy to understand and integrate into existing toolchains." },
+      { heading: "Why Use JSON Schema?", body: "JSON Schema catches data quality issues before they reach production. It serves as living documentation for your API contracts, enables automatic validation in CI/CD pipelines, and helps generated code and documentation stay in sync. Teams using JSON Schema report 50-70% fewer data-related bugs in production because validation happens at the API boundary." },
+      { heading: "JSON Schema Keywords You Need to Know", body: "Core keywords include: type, required, properties, items, minimum/maximum, enum, pattern (for regex), allOf/anyOf/oneOf (for composition), and $ref (for references). The type keyword supports string, number, integer, boolean, array, object, and null. The format keyword provides additional semantic validation like email, uri, date, and regex patterns." },
+      { heading: "JSON Schema Example: User Profile", body: "A simple user profile schema might require name (string), email (string with format: email), age (integer between 13 and 120), and roles (array of strings from an allowed set). Our JSON Formatter can help you prepare and validate JSON data against your schemas, though dedicated JSON Schema validators offer full draft-07/2020-12 support." },
+      { heading: "JSON Schema Drafts and Tooling", body: "JSON Schema has evolved through drafts 04, 07, and 2020-12. Draft-07 is the most widely supported version in open-source tools. Popular validators include Ajv (JavaScript), jsonschema (Python), and everit-json-schema (Java). Many API design tools like Swagger/OpenAPI and Postman integrate JSON Schema natively for request/response validation." },
+    ],
+  },
+  "how-apis-use-json": {
+    title: "How APIs Use JSON: REST, GraphQL, and WebSocket Data Formats",
+    description: "A developer-focused guide to how modern APIs use JSON for request/response payloads, error handling, pagination, and real-time communication.",
+    date: new Date("2026-01-20"),
+    sections: [
+      { heading: "JSON in REST APIs", body: "REST APIs use JSON as the primary data format for both requests and responses. A typical REST response includes status, data, and metadata. JSON's lightweight syntax and native browser support make it the default choice for RESTful services. Most major web APIs — from GitHub to Stripe to Google — use JSON as their primary data format." },
+      { heading: "JSON in GraphQL APIs", body: "GraphQL uses a JSON-like query syntax and always returns JSON responses. Unlike REST, GraphQL lets clients specify exactly which fields they need, reducing over-fetching and under-fetching of data. GraphQL responses follow a standard envelope pattern with data and errors fields, making error handling predictable and consistent across all queries and mutations." },
+      { heading: "JSON API Error Handling Patterns", body: "Standardized error responses help client applications handle failures gracefully. The JSON:API specification defines a standard error format with title, detail, status, and source fields. Many APIs include an errors array in their JSON response body with a code, message, and optional details for each error, making debugging straightforward for client developers." },
+      { heading: "JSON Pagination Strategies for APIs", body: "APIs serving large datasets implement pagination to avoid overwhelming clients. Common JSON pagination patterns include cursor-based (using a next_cursor field), offset-based (page/limit parameters), and page-based (page_number/page_size). Each approach has trade-offs for consistency, performance, and ease of client implementation." },
+      { heading: "Real-Time JSON with WebSockets", body: "WebSocket APIs use JSON frames for real-time bidirectional communication. JSON's self-describing nature makes it ideal for messaging protocols where different message types carry different data structures. Common patterns include a type field to dispatch messages, a data payload for the actual content, and optional metadata fields for timestamps and correlation IDs." },
+    ],
+  },
+  "url-encoding-decoding": {
+    title: "URL Encoding and Decoding: What Every Developer Should Know",
+    description: "Understand how URL encoding works, why it matters for web development, and how to properly encode and decode URLs.",
+    date: new Date("2025-12-05"),
+    sections: [
+      { heading: "What is URL Encoding?", body: "URL encoding, also known as percent-encoding, converts characters into a format that can be transmitted over the internet. Special characters are replaced with a % followed by two hexadecimal digits representing the ASCII code of the character." },
+      { heading: "Why URL Encoding is Necessary", body: "URLs can only contain certain characters from the ASCII set. Characters like spaces, quotes, and non-ASCII characters must be encoded to ensure reliable transmission. URL encoding ensures that data in URLs is correctly interpreted by web servers." },
+      { heading: "Common URL Encoding Examples", body: "Spaces become %20, exclamation marks become %21, and non-ASCII characters like é become %C3%A9. Our URL Encoder tool handles all of these conversions automatically." },
+      { heading: "Difference Between encodeURI and encodeURIComponent", body: "encodeURI encodes a complete URI but preserves characters that are part of the URI syntax. encodeURIComponent encodes everything, making it safe for use as a query parameter value." },
+      { heading: "URL Decoding Best Practices", body: "Always decode URL parameters on the server side. When building URLs dynamically, always encode user-provided values to prevent URL injection and malformed URLs." },
+    ],
+  },
+  "base64-encoding-methods": {
+    title: "Base64 Encoding: Methods, Use Cases, and Best Practices",
+    description: "A deep dive into Base64 encoding, when to use it, common pitfalls, and how it works under the hood.",
+    date: new Date("2025-11-28"),
+    sections: [
+      { heading: "What is Base64 Encoding?", body: "Base64 is a binary-to-text encoding scheme that represents binary data in an ASCII string format. It is commonly used to transmit data over media designed to handle textual data, such as email or HTTP." },
+      { heading: "Common Use Cases for Base64", body: "Base64 is widely used for embedding images in HTML/CSS, attaching files to emails, storing binary data in JSON, and transmitting data in APIs where binary formats are not supported." },
+      { heading: "How Base64 Encoding Works", body: "Base64 converts every 3 bytes of binary data into 4 ASCII characters using a specific alphabet of 64 characters (A-Z, a-z, 0-9, +, /). Padding with = characters is used to ensure the output length is a multiple of 4." },
+      { heading: "Base64 Best Practices", body: "Base64 increases data size by approximately 33%, so avoid using it for large data transfers when alternatives exist. Always consider whether Base64 is the right solution, or if a binary format would be more efficient." },
+      { heading: "Using WebUtil's Base64 Tool", body: "Our Base64 Encoder/Decoder tool allows you to instantly convert text to and from Base64 format. Everything runs in your browser, ensuring your data never leaves your computer." },
+    ],
+  },
+  "password-security-best-practices": {
+    title: "Password Security Best Practices for 2026",
+    description: "Learn how to create and manage secure passwords, understand password strength metrics, and protect against common attacks.",
+    date: new Date("2025-11-20"),
+    sections: [
+      { heading: "What Makes a Strong Password?", body: "A strong password is long (at least 12 characters), includes a mix of uppercase letters, lowercase letters, numbers, and symbols, does not contain dictionary words or personal information, and is unique for each account." },
+      { heading: "Understanding Password Strength", body: "Password strength is measured by entropy — a measure of unpredictability. Entropy is affected by length and character variety. A password with 80+ bits of entropy is generally considered secure against offline attacks." },
+      { heading: "Common Password Attacks", body: "Brute force attacks try every possible combination. Dictionary attacks use common words and patterns. Phishing attacks trick users into revealing passwords. Rainbow table attacks use precomputed hash values." },
+      { heading: "Password Manager Benefits", body: "Use a password manager to generate and store strong, unique passwords for every account. This eliminates password reuse and makes it practical to use truly random passwords for every service." },
+      { heading: "Using WebUtil's Password Generator", body: "Our free Password Generator creates cryptographically secure random passwords with customizable length and character sets. All generation happens in your browser using the Web Crypto API." },
+    ],
+  },
+  "color-converter-guide": {
+    title: "Color Converter Guide: HEX, RGB, and HSL Explained",
+    description: "A complete guide to understanding color models in web development, and how to convert between HEX, RGB, and HSL formats.",
+    date: new Date("2025-11-15"),
+    sections: [
+      { heading: "Understanding Color Models", body: "Color models are mathematical representations of colors. HEX uses hexadecimal values, RGB uses red/green/blue components, and HSL uses hue/saturation/lightness. Each has its own advantages for different use cases." },
+      { heading: "HEX Colors Explained", body: "HEX colors use six hexadecimal digits (#RRGGBB) to represent 16.7 million colors. They are compact and widely used in web development. A three-digit shorthand (#RGB) is also available for certain colors." },
+      { heading: "RGB Colors Explained", body: "RGB uses three values from 0-255 representing red, green, and blue components. It's the native color model for computer displays and is intuitive for specifying exact color values." },
+      { heading: "HSL Colors Explained", body: "HSL represents colors by hue (0-360 degrees on the color wheel), saturation (0-100%), and lightness (0-100%). HSL is more intuitive for creating color schemes because it separates the color from its intensity." },
+      { heading: "Color Accessibility and Contrast", body: "When designing for the web, ensure sufficient contrast between text and background colors. The WCAG guidelines require a contrast ratio of at least 4.5:1 for normal text and 3:1 for large text." },
+    ],
+  },
+  "uuid-guide": {
+    title: "UUIDs Explained: What They Are and How to Use Them",
+    description: "Everything you need to know about UUIDs — how they work, different versions, and when to use each type in your applications.",
+    date: new Date("2025-11-10"),
+    sections: [
+      { heading: "What is a UUID?", body: "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUIDs are designed to be unique across space and time, making them ideal for distributed systems where IDs must not conflict." },
+      { heading: "UUID v4 — Random UUIDs", body: "UUID v4 is the most commonly used version. It generates IDs using random numbers, with 122 bits of randomness. The probability of collision is extremely low, making it suitable for most applications." },
+      { heading: "UUID v7 — Time-Ordered UUIDs", body: "UUID v7 is a newer version that combines a timestamp with random bits. This makes UUIDs sortable by creation time, improving database index performance compared to v4." },
+      { heading: "When to Use UUIDs", body: "UUIDs are ideal for distributed systems, database primary keys, API identifiers, and any scenario where you need globally unique identifiers without a central authority." },
+      { heading: "Using WebUtil's UUID Generator", body: "Our free UUID Generator creates UUID v4 identifiers instantly. You can generate single or multiple UUIDs at once, with bulk generation supporting up to 100 IDs at a time." },
+    ],
+  },
+  "online-tools-security": {
+    title: "Understanding Online Tool Security: Why Client-Side Matters",
+    description: "Discover the security implications of using online developer tools and why client-side processing is crucial for data privacy.",
+    date: new Date("2025-11-05"),
+    sections: [
+      { heading: "The Problem with Server-Side Tools", body: "Many online tools send your data to a server for processing. This means your sensitive data — passwords, API keys, personal information — is transmitted and potentially stored on third-party servers." },
+      { heading: "Client-Side Processing Benefits", body: "Client-side processing keeps your data on your device. All computation happens in your browser using JavaScript. No data is uploaded, no logs are kept, and no third-party ever sees your information." },
+      { heading: "WebUtil's Privacy Commitment", body: "Every tool on WebUtil runs 100% in your browser. We never upload your data, never track your usage, and never store your information. Your privacy is built into our platform from the ground up." },
+      { heading: "How to Verify Client-Side Processing", body: "You can verify client-side processing by using your browser's developer tools. Check the Network tab — if no requests are made when you use a tool, it's running entirely client-side." },
+      { heading: "The Future of Online Privacy", body: "As privacy concerns grow, client-side processing is becoming the standard for online tools. WebUtil is committed to this privacy-first approach, ensuring you can use our tools with complete confidence." },
+    ],
+  },
+  "hash-generator-guide": {
+    title: "Hash Generator Guide: MD5, SHA-1, SHA-256, and SHA-512 Explained",
+    description: "Learn how cryptographic hash functions work, the differences between MD5, SHA-1, SHA-256, and SHA-512, and when to use each hash algorithm.",
+    date: new Date("2026-04-01"),
+    sections: [
+      { heading: "What Is a Cryptographic Hash?", body: "A cryptographic hash function takes an input of any size and produces a fixed-size output called a digest or hash. Hash functions are one-way — you cannot reverse a hash back to the original input. They are deterministic, meaning the same input always produces the same hash. Properties include preimage resistance, second preimage resistance, and collision resistance." },
+      { heading: "MD5 — Fast but Broken", body: "MD5 produces 128-bit hashes and was once widely used for file integrity checking. However, MD5 is cryptographically broken — collision attacks are practical and can be computed in seconds on consumer hardware. Never use MD5 for security purposes. It should only be used for non-cryptographic checksums like file deduplication." },
+      { heading: "SHA-1 — Deprecated and Unsafe", body: "SHA-1 produces 160-bit hashes and replaced MD5 in many protocols. In 2017, Google demonstrated a practical collision attack (SHAttered). Major browsers now reject SHA-1 certificates. SHA-1 should not be used for any security application. Migrate to SHA-256 or SHA-512 for all use cases." },
+      { heading: "SHA-256 and SHA-512 — Current Standards", body: "SHA-256 (256-bit) and SHA-512 (512-bit) are part of the SHA-2 family and are currently considered secure. SHA-256 is widely used in TLS certificates, digital signatures, and blockchain technology. SHA-512 is faster on 64-bit processors and provides a larger hash size. Both are recommended for modern applications." },
+      { heading: "Using the WebUtil Hash Generator", body: "Our free Hash Generator lets you compute MD5, SHA-1, SHA-256, and SHA-512 hashes instantly in your browser. All computation uses the Web Crypto API and happens client-side. Your input never leaves your device. Use it to verify file integrity, generate checksums, or experiment with hash functions." },
+    ],
+  },
+  "sql-formatting-guide": {
+    title: "SQL Formatter Guide: Write Clean, Readable SQL Queries",
+    description: "Learn how to format SQL queries for better readability, maintainability, and team collaboration. Best practices for SQL formatting and beautification.",
+    date: new Date("2026-04-05"),
+    sections: [
+      { heading: "Why SQL Formatting Matters", body: "Well-formatted SQL is easier to read, debug, and maintain. Consistent formatting helps teams collaborate on database queries, reduces syntax errors, and makes it easier to spot logic issues. Poorly formatted SQL with mixed capitalization and no indentation hides bugs and slows down development." },
+      { heading: "SQL Formatting Best Practices", body: "Use uppercase for SQL keywords (SELECT, FROM, WHERE, JOIN), lowercase for column and table names. Indent clauses consistently, put each major clause on a new line, and align related items. Use meaningful table aliases and avoid SELECT * in production queries. Break complex queries into CTEs (WITH clauses) for clarity." },
+      { heading: "Common SQL Formatting Patterns", body: "Short queries can stay on one line: SELECT name FROM users WHERE active = 1. Longer queries should break after each clause. JOIN conditions can be indented under the JOIN clause. Subqueries should be indented one level. Use AS for column aliases for explicit readability." },
+      { heading: "Formatting Different SQL Statements", body: "SELECT, INSERT, UPDATE, DELETE, and CREATE statements each have their own formatting conventions. INSERT statements should list columns explicitly. UPDATE statements should have WHERE clauses on a separate line. Complex JOIN chains benefit from consistent indentation and explicit join type keywords." },
+      { heading: "Using the WebUtil SQL Formatter", body: "Our free SQL Formatter beautifies your SQL queries with customizable indentation and keyword casing. Paste your raw SQL and get properly formatted output instantly. All processing happens client-side — your queries never leave your browser." },
+    ],
+  },
+  "xml-formatting-guide": {
+    title: "XML Formatter Guide: How to Format, Validate, and Beautify XML",
+    description: "Master XML formatting with best practices for indentation, validation, and structure. Learn how XML compares to JSON and when to use each format.",
+    date: new Date("2026-04-10"),
+    sections: [
+      { heading: "What Is XML Formatting?", body: "XML (eXtensible Markup Language) is a markup language for encoding documents in a format that is both human-readable and machine-readable. Proper XML formatting involves consistent indentation, correct nesting, and valid syntax. Unlike JSON, XML supports attributes, namespaces, and mixed content, making it more flexible for complex documents." },
+      { heading: "XML vs JSON: Formatting Differences", body: "XML uses opening and closing tags (<tag></tag>) while JSON uses braces and colons. XML supports attributes within tags, which has no direct JSON equivalent. XML is more verbose — a typical XML document is 2-3x larger than the equivalent JSON. XML's schema validation (XSD) is more mature than JSON Schema." },
+      { heading: "XML Formatting Best Practices", body: "Use consistent indentation (2 or 4 spaces), include XML declaration at the top, use meaningful tag names, avoid deeply nested structures, and always close all tags. Use self-closing tags for empty elements. Validate your XML against a schema (XSD) when working with structured data exchange." },
+      { heading: "Common XML Validation Errors", body: "Mismatched tags, missing closing tags, invalid characters in tag names, improperly nested elements, and duplicate attributes are the most common XML errors. Unlike JSON, XML is strict about closing tags — every opening tag must have a matching closing tag or be self-closing." },
+      { heading: "Using the WebUtil XML Formatter", body: "Our free XML Formatter beautifies, validates, and minifies XML documents. Paste your XML and get properly indented output with syntax highlighting. All processing runs client-side in your browser with no data uploads." },
+    ],
+  },
+  "yaml-converter-guide": {
+    title: "YAML Converter Guide: Convert Between YAML and JSON",
+    description: "Learn how to convert YAML to JSON and JSON to YAML. Understand YAML syntax, indentation rules, and when to use YAML over JSON for configuration files.",
+    date: new Date("2026-04-15"),
+    sections: [
+      { heading: "What Is YAML?", body: "YAML (YAML Ain't Markup Language) is a human-readable data serialization format that relies on indentation for structure. It is commonly used for configuration files, CI/CD pipelines (GitHub Actions, GitLab CI), and infrastructure-as-code (Docker Compose, Kubernetes, Ansible). YAML is more readable than JSON for humans but requires careful indentation." },
+      { heading: "YAML vs JSON: Key Differences", body: "YAML uses indentation instead of brackets, supports comments with #, and has more data types including dates and timestamps. YAML is more concise for nested data but whitespace-sensitive — incorrect indentation causes parse errors. JSON is stricter and more predictable, making it better for machine-to-machine communication." },
+      { heading: "Converting YAML to JSON", body: "Converting YAML to JSON is straightforward — the hierarchical structure maps directly. Indentation becomes nested objects, YAML arrays with - become JSON arrays, and key-value pairs become JSON properties. The conversion is lossy — YAML features like comments and anchors are not preserved in JSON output." },
+      { heading: "Converting JSON to YAML", body: "Converting JSON to YAML produces clean, indentation-based output. JSON objects become YAML mappings, arrays become YAML lists, and strings remain strings. The JSON-to-YAML conversion is lossless — all JSON data is preserved. Our tool handles nested structures and mixed types correctly." },
+      { heading: "Using the WebUtil YAML Converter", body: "Our free YAML to JSON Converter lets you convert between YAML and JSON with live preview. Paste data in either format and see the converted output instantly. All processing runs client-side — your data never leaves your browser." },
+    ],
+  },
+  "html-entities-guide": {
+    title: "HTML Entities Guide: Encode Special Characters for Safe Web Rendering",
+    description: "Learn how HTML entities work, why they matter for security, and how to encode and decode special characters for safe web development.",
+    date: new Date("2026-04-20"),
+    sections: [
+      { heading: "What Are HTML Entities?", body: "HTML entities are special codes that represent characters that have special meaning in HTML. For example, < is written as &lt; and > is written as &gt;. Entities prevent browsers from interpreting special characters as HTML markup. They also enable displaying characters not available on standard keyboards, like &copy; for the copyright symbol." },
+      { heading: "Why HTML Encoding Matters for Security", body: "HTML encoding is critical for preventing Cross-Site Scripting (XSS) attacks. When user input is inserted into a web page without proper encoding, attackers can inject malicious scripts. Always encode user-generated content before displaying it. Our HTML Entities tool helps developers safely encode and decode content." },
+      { heading: "Common HTML Entities", body: "Common entities include &amp; (&), &lt; (<), &gt; (>), &quot; (\"), &apos; ('), &nbsp; (non-breaking space), &copy; (©), &reg; (®), &trade; (™), &mdash; (—), and &hellip; (…). Named entities are supported for common characters, while numeric entities (&#NNNN;) work for any Unicode character." },
+      { heading: "HTML Entities vs URL Encoding", body: "HTML entities and URL encoding serve different purposes. HTML entities encode characters for safe display in HTML documents. URL encoding (percent-encoding) encodes characters for safe transmission in URLs. A space is &nbsp; in HTML but %20 in a URL. Use our HTML Entities tool for HTML and our URL Encoder for URLs." },
+      { heading: "Using the WebUtil HTML Entities Tool", body: "Our free HTML Entities Encoder/Decoder converts special characters to HTML entities and back. Paste text, choose encode or decode, and get the result instantly. All processing happens client-side in your browser with no data uploads." },
+    ],
+  },
+  "case-converter-guide": {
+    title: "Case Converter Guide: camelCase, snake_case, kebab-case and More",
+    description: "Master text case conversion for programming — convert between camelCase, PascalCase, snake_case, kebab-case, and other naming conventions used in code.",
+    date: new Date("2026-04-25"),
+    sections: [
+      { heading: "Why Case Conversion Matters in Programming", body: "Different programming languages and frameworks use different naming conventions. JavaScript uses camelCase for variables, Python uses snake_case, HTML attributes use kebab-case, and C# uses PascalCase for classes. A Case Converter helps you transform text between these formats instantly without manual editing." },
+      { heading: "camelCase vs PascalCase vs snake_case", body: "camelCase starts with a lowercase letter and capitalizes each subsequent word (e.g., firstName). PascalCase capitalizes every word (e.g., FirstName). snake_case uses underscores between lowercase words (e.g., first_name). kebab-case uses hyphens (e.g., first-name). UPPER CASE converts everything to uppercase, and Title Case capitalizes the first letter of each word." },
+      { heading: "Common Use Cases for Case Conversion", body: "Developers use case converters when migrating code between languages, renaming API response fields, converting database column names to JavaScript properties, creating CSS class names from component names, and standardizing naming conventions across a codebase." },
+      { heading: "Programming Language Conventions", body: "JavaScript/TypeScript: camelCase for variables, PascalCase for classes. Python: snake_case for everything. Java: camelCase for methods, PascalCase for classes. Ruby: snake_case. Go: camelCase for exported, PascalCase for unexported. Rust: snake_case. PHP: camelCase for methods, snake_case for functions." },
+      { heading: "Using the WebUtil Case Converter", body: "Our free Case Converter instantly transforms text between camelCase, PascalCase, snake_case, kebab-case, UPPER CASE, lower case, and Title Case. Paste your text, select the target format, and get the result instantly. All processing runs client-side." },
+    ],
+  },
+  "markdown-guide": {
+    title: "Markdown Preview Guide: Write and Preview Markdown Like a Pro",
+    description: "Learn Markdown syntax from basics to advanced — headings, lists, tables, code blocks, and more. How to use a Markdown previewer for real-time editing.",
+    date: new Date("2026-05-01"),
+    sections: [
+      { heading: "What Is Markdown?", body: "Markdown is a lightweight markup language that uses plain text formatting to create structured documents. It was designed to be easy to read and write in its raw form while converting to valid HTML. Markdown is widely used for README files, documentation, forum posts, note-taking, and static site generators." },
+      { heading: "Markdown Syntax Basics", body: "Headings use # (## for H2, ### for H3), bold uses **text**, italic uses *text*, links use [text](url), images use ![alt](url), unordered lists use -, ordered lists use 1., inline code uses backticks, and code blocks use triple backticks. Tables use pipes and dashes, and blockquotes use >." },
+      { heading: "Advanced Markdown Features", body: "Extended Markdown supports tables, task lists (- [ ]), footnotes, definition lists, strikethrough (~~text~~), emoji (:smile:), and math expressions ($\\LaTeX$). GitHub Flavored Markdown adds syntax highlighting for code blocks with language identifiers like ```javascript." },
+      { heading: "Markdown Use Cases in Development", body: "Markdown is the standard for GitHub README files, project documentation (MkDocs, Docusaurus), technical blog posts, API documentation (Swagger/OpenAPI use Markdown for descriptions), note-taking apps (Obsidian, Notion), and static site generators (Astro, Hugo, Jekyll)." },
+      { heading: "Using the WebUtil Markdown Preview", body: "Our free Markdown Preview lets you write Markdown and see the rendered HTML output in real-time. Perfect for testing Markdown syntax before publishing. All rendering happens client-side using your browser — no data is uploaded to any server." },
+    ],
+  },
+  "text-diff-guide": {
+    title: "Text Diff Guide: Compare Texts and Find Differences Like a Developer",
+    description: "Learn how text diff checkers work, common use cases for comparing code and documents, and how to interpret diff output for debugging and code review.",
+    date: new Date("2026-05-05"),
+    sections: [
+      { heading: "What Is a Text Diff?", body: "A text diff (difference) is the result of comparing two sequences of text to find the changes between them. Diff algorithms identify additions, deletions, and modifications at the line and character level. The most common algorithm is the Myers diff algorithm, used by Git and most diff tools." },
+      { heading: "Common Diff Use Cases for Developers", body: "Code reviews — compare pull request changes before merging. Debugging — compare working code with broken code to isolate the issue. Configuration management — track changes in config files across environments. Version comparison — see what changed between software versions. Document revision tracking — find edits in text documents." },
+      { heading: "How to Read Diff Output", body: "Diff output typically shows two panes side by side or a single unified view. Additions are shown in green (new lines), deletions in red (removed lines), and unchanged lines in gray. Some tools highlight character-level changes within lines for precise comparison." },
+      { heading: "Diff in Version Control", body: "Git uses diff extensively — git diff shows unstaged changes, git diff --staged shows staged changes, and git log -p shows the patch for each commit. Understanding diff output is essential for effective Git usage and collaborative development." },
+      { heading: "Using the WebUtil Text Diff Checker", body: "Our free Text Diff Checker compares two texts side-by-side and highlights additions, deletions, and changes. Paste your original and modified text, and see the differences highlighted instantly. Perfect for code reviews, document comparison, and debugging. All processing runs client-side." },
+    ],
+  },
+  "image-converter-guide": {
+    title: "Image Converter Guide: Convert Images Between PNG, JPEG, WebP, and GIF",
+    description: "Learn how to convert images between formats using your browser. Compare PNG vs JPEG vs WebP for quality, file size, and use cases.",
+    date: new Date("2026-05-10"),
+    sections: [
+      { heading: "Image Format Comparison", body: "PNG offers lossless compression with transparency support, ideal for screenshots, logos, and graphics with text. JPEG offers lossy compression with smaller file sizes, ideal for photographs. WebP offers both lossy and lossless compression with transparency, providing 25-35% smaller files than PNG/JPEG. GIF supports animation but has a limited 256-color palette." },
+      { heading: "When to Use Each Format", body: "Use PNG for images with text, sharp edges, or transparency needs. Use JPEG for photographs and complex images where small file size matters more than perfect quality. Use WebP for web performance — it delivers the best quality-to-size ratio. Use GIF only for simple animations — consider MP4 or WebM for video content." },
+      { heading: "Image Conversion Best Practices", body: "Always keep an original copy before converting. Choose the output format based on your use case, not habit. WebP is supported by all modern browsers and recommended for web use. Resize images before converting for better performance. Lossy formats like JPEG lose quality each time they are re-saved." },
+      { heading: "Browser-Based Image Processing", body: "Modern browsers can process images using the Canvas API without uploading them to a server. This means your images remain private and processing is instant. The Canvas API supports reading PNG, JPEG, WebP, GIF, and BMP formats and exporting to PNG, JPEG, and WebP." },
+      { heading: "Using the WebUtil Image Converter", body: "Our free Image Converter converts images between PNG, JPEG, WebP, and GIF formats using your browser's Canvas API. No uploads — your images stay on your device. Select a file, choose the output format, and download the converted image instantly." },
+    ],
+  },
+  "lorem-ipsum-guide": {
+    title: "Lorem Ipsum Generator Guide: Generate Placeholder Text for Designs",
+    description: "Learn how to use Lorem Ipsum placeholder text in web design, print layout, and UI mockups. Generate custom dummy text for your projects.",
+    date: new Date("2026-05-15"),
+    sections: [
+      { heading: "What Is Lorem Ipsum?", body: "Lorem Ipsum is dummy text derived from a scrambled Latin passage by Cicero dating from 45 BC. It has been the standard placeholder text in the printing and typesetting industry since the 1500s. The text approximates the distribution of letters in English, creating a natural visual block of text for layout mockups." },
+      { heading: "Why Use Placeholder Text?", body: "Placeholder text lets designers and developers focus on layout, typography, and visual hierarchy without being distracted by meaningful content. It reveals how much space text occupies, how headings and paragraphs relate visually, and whether the overall design achieves the desired balance." },
+      { heading: "Lorem Ipsum Variations", body: "Classic Lorem Ipsum uses the standard passage. Variations include shortened versions (just the first few words), customized lengths (by paragraphs, sentences, or words), and themed generators that produce text in specific styles or topics." },
+      { heading: "Using Placeholder Text in Web Design", body: "Use Lorem Ipsum when wireframing new pages, designing UI components, creating template layouts, and presenting mockups to clients. Real content should replace placeholder text before launch — search engines penalize pages with Latin filler text." },
+      { heading: "Using the WebUtil Lorem Ipsum Generator", body: "Our free Lorem Ipsum Generator creates placeholder text in paragraphs, sentences, or words. Choose the amount of text you need and copy it instantly. All generation runs client-side in your browser." },
+    ],
+  },
+  "jwt-authentication-explained": {
+    title: "JWT Authentication Explained: How JSON Web Tokens Work",
+    description: "A complete guide to JWT authentication — learn how JSON Web Tokens work, their structure, how they secure APIs, and best practices for implementation.",
+    date: new Date("2026-06-01"),
+    sections: [
+      { heading: "What is JWT Authentication?", body: "JWT (JSON Web Token) authentication is a token-based authentication method where a server issues a signed JSON token that clients include in subsequent requests. The token contains encoded claims about the user (identity, permissions, expiration) and is digitally signed to prevent tampering. Unlike session-based auth, JWT is stateless — the server doesn't need to store session data, making it ideal for distributed systems and microservices architectures. JWTs are widely used in OAuth 2.0, OpenID Connect, and REST API authentication. Our JWT Decoder and JWT Expiration Checker tools help you inspect and debug your tokens during development." },
+      { heading: "JWT Structure: Header, Payload, and Signature", body: "A JWT consists of three Base64URL-encoded parts separated by dots: Header, Payload, and Signature. The header typically contains the token type (JWT) and signing algorithm (HS256, RS256). The payload contains claims — registered claims (iss, sub, exp, iat, nbf), public claims, and private custom claims. The signature is computed by signing the header + payload with a secret key (HMAC) or private key (RSA/ECDSA). Use our JWT Decoder to inspect each part of your tokens." },
+      { heading: "How JWT Works in API Authentication", body: "The authentication flow: 1) User logs in with credentials. 2) Server validates credentials and returns a JWT (access token) plus optional refresh token. 3) Client stores the token and includes it in the Authorization header as Bearer <token> for subsequent API requests. 4) Server verifies the token's signature and expiration on each request without querying a database. 5) When the access token expires, the client uses the refresh token to get a new one. This stateless flow scales horizontally because any server instance can verify any token independently." },
+      { heading: "JWT Security Best Practices", body: "Always use HTTPS to prevent token interception. Set short expiration times (15-60 minutes) for access tokens. Use refresh tokens with longer lifetimes stored securely. Never store JWTs in localStorage — use httpOnly cookies for browser apps. Validate the signature, expiration (exp), not-before (nbf), issuer (iss), and audience (aud) on every request. Use RS256 (asymmetric) instead of HS256 (symmetric) in microservice environments so services can verify without knowing the signing key. Rotate signing keys regularly." },
+      { heading: "Common JWT Pitfalls to Avoid", body: "Storing sensitive data in the payload (JWTs are encoded, not encrypted). Not validating the expiration claim, allowing expired tokens to be reused. Using a weak or leaked signing secret. Setting excessively long expiration times. Not implementing a token revocation strategy (JWT is stateless — revocation requires a blocklist). Missing the audience (aud) claim validation allows token reuse across different services. Forgetting that JWTs increase request size — keep claims minimal for performance." },
+    ],
+  },
+  "json-vs-yaml-for-apis": {
+    title: "JSON vs YAML for APIs: Choosing the Right Data Format",
+    description: "Compare JSON and YAML for API development — learn when to use each format, their strengths and weaknesses, and best practices for API design.",
+    date: new Date("2026-06-05"),
+    sections: [
+      { heading: "JSON vs YAML for APIs: Key Differences", body: "JSON (JavaScript Object Notation) and YAML (YAML Ain't Markup Language) are both data serialization formats used in API development, but they serve different primary purposes. JSON is the dominant format for REST and GraphQL API payloads because it is compact, natively parsable by browsers, and has strict syntax that prevents ambiguity. YAML excels in configuration files (Docker Compose, Kubernetes, CI/CD) where human readability is prioritized over machine efficiency. JSON uses braces and brackets with explicit syntax; YAML uses indentation with minimal punctuation. Our JSON Formatter and YAML Converter tools help you work with both formats interchangeably." },
+      { heading: "When to Use JSON for APIs", body: "JSON should be your default choice for API request/response bodies. It is the standard for REST APIs, GraphQL queries, and webhook payloads. JSON's native support in JavaScript means no parsing overhead in browsers. Every major programming language has built-in JSON libraries. JSON is also the required format for many cloud services, serverless functions, and NoSQL databases (MongoDB, Firebase). If you're building a public API, JSON is the expected format. Our JSON Formatter helps you prepare and validate JSON payloads during API development." },
+      { heading: "When to Use YAML for APIs", body: "YAML shines in API documentation (OpenAPI/Swagger specifications are YAML by default), configuration-driven APIs, and infrastructure-as-code. If your API is primarily consumed by developers writing configuration files (like deployment pipelines or internal tools), YAML provides better readability. YAML supports comments, which JSON does not — a significant advantage for configuration files that need inline documentation. Tools like Docker Compose, Kubernetes, Ansible, and GitHub Actions all use YAML. Our YAML Converter helps you convert between YAML and JSON when needed." },
+      { heading: "Performance Comparison", body: "JSON parsing is generally 2-5x faster than YAML parsing because JSON has simpler syntax rules and no indentation-based structure. JSON payloads are typically 10-30% smaller than equivalent YAML. For high-throughput APIs serving millions of requests, JSON's parsing speed advantage matters. YAML's parser needs to track indentation levels, handle anchors/aliases, and support multiple document types, adding overhead. For low-traffic internal configuration APIs, YAML's readability may outweigh the performance cost." },
+      { heading: "Converting Between JSON and YAML", body: "Conversion between JSON and YAML is straightforward because both represent hierarchical data structures. When converting JSON to YAML, objects become mappings, arrays become sequences, and values maintain their types. When converting YAML to JSON, mappings become objects, sequences become arrays, and YAML-specific features (comments, anchors, multi-document files) are lost. Our free YAML to JSON Converter handles both directions with live preview, making it easy to work across both formats." },
+    ],
+  },
+  "uuid-v4-vs-uuid-v7": {
+    title: "UUID v4 vs UUID v7: Choosing the Right UUID for Your Application",
+    description: "Compare UUID v4 and UUID v7 — understand the differences between random and time-ordered UUIDs, database performance implications, and when to use each version.",
+    date: new Date("2026-06-10"),
+    sections: [
+      { heading: "UUID v4 vs UUID v7: The Core Difference", body: "UUID v4 (RFC 4122) generates identifiers using 122 random bits, producing IDs that are uniformly distributed across the entire keyspace. UUID v7 (RFC 9562) embeds a Unix millisecond timestamp in the first 48 bits, with the remaining 74 bits being random. This seemingly small change has profound implications for database performance: UUID v4 causes random insertions into B-tree indexes (page splits, fragmentation), while UUID v7 appends new IDs sequentially, matching auto-increment performance. Our UUID Generator (v4) and UUID v7 Generator let you create and compare both formats." },
+      { heading: "Database Performance: UUID v4 vs UUID v7", body: "UUID v4's random distribution causes each new row to be inserted at a random index position, forcing the B-tree to split pages and reorganize frequently. This increases write latency, bloats index size, and degrades cache locality. UUID v7's time-prefixed design appends new rows near the end of the index, reducing page splits by 80-90% and improving insert throughput by 2-5x on PostgreSQL and MySQL benchmarks. For tables with millions of rows, the performance gap widens significantly. UUID v7 also improves range queries — SELECT * FROM users WHERE id BETWEEN ? AND ? benefits from sequential storage." },
+      { heading: "When to Use UUID v4", body: "UUID v4 remains the better choice when you need unpredictability — for example, generating opaque public identifiers for API resources, creating session tokens, or preventing sequential ID enumeration by users. UUID v4 is also the most widely supported UUID version across languages, libraries, and databases. If you have an existing system using UUID v4, the migration cost to v7 often outweighs the performance benefit for small-to-medium databases (under 10 million rows). For distributed tracing and event sourcing where ID order is irrelevant, v4's simplicity wins." },
+      { heading: "When to Use UUID v7", body: "UUID v7 is ideal for primary keys in OLTP databases, time-ordered event streams, chat message IDs, financial transaction IDs, time-series data, and any use case where insert performance and B-tree index health matter. PostgreSQL users benefit most — CockroachDB has adopted UUID v7 as its default key encoding. If you're starting a new project with a relational database, UUID v7 should be your default choice for primary keys. The time component also enables chronological sortability without a separate created_at column." },
+      { heading: "UUID v7 Implementation and Support", body: "UUID v7 support is growing rapidly. Python 3.14+ includes uuid.uuid7() in the standard library. Go's google/uuid package supports v7 via uuid.NewV7(). Node.js needs a polyfill (uuidv7 npm package). PostgreSQL doesn't natively generate UUID v7 but can use extensions or application-layer generation. MySQL 8.0+ accepts UUID v7 values in BINARY(16) columns. Most UUID libraries still default to v4, so you may need to explicitly request v7. Our UUID v7 Generator provides client-side v7 generation that works in any browser." },
+    ],
+  },
+};
+
+export const blogToolMapping: Record<string, string> = {
+  "json-formatting-guide": "json-formatter",
+  "common-json-errors": "json-formatter",
+  "url-encoding-decoding": "url-encoder",
+  "base64-encoding-methods": "base64-encoder",
+  "password-security-best-practices": "password-generator",
+  "color-converter-guide": "color-converter",
+  "uuid-guide": "uuid-generator",
+  "online-tools-security": "jwt-decoder",
+  "json-vs-xml": "json-formatter",
+  "json-schema-guide": "json-formatter",
+  "how-apis-use-json": "json-formatter",
+  "hash-generator-guide": "hash-generator",
+  "sql-formatting-guide": "sql-formatter",
+  "xml-formatting-guide": "xml-formatter",
+  "yaml-converter-guide": "yaml-converter",
+  "html-entities-guide": "html-entities",
+  "case-converter-guide": "case-converter",
+  "markdown-guide": "markdown-preview",
+  "text-diff-guide": "text-diff",
+  "image-converter-guide": "image-converter",
+  "lorem-ipsum-guide": "lorem-ipsum",
+  "jwt-authentication-explained": "jwt-expiration-checker",
+  "json-vs-yaml-for-apis": "yaml-converter",
+  "uuid-v4-vs-uuid-v7": "uuid-v7-generator",
+};
+
+export function getBlogPost(slug: string): BlogContent | undefined {
+  return blogContent[slug];
+}
+
+export function getBlogPosts(): BlogPost[] {
+  return blogPosts;
+}
+
+export function getToolLink(slug: string): string {
+  return blogToolMapping[slug] || slug;
+}

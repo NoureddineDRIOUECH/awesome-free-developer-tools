@@ -16,10 +16,18 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
       <div class="tool-card p-4 sm:p-6">
         <div class="grid gap-4">
           <div>
-            <label for="csv-input" class="text-sm font-medium mb-1.5 block">
-              JSON Input
-              <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
-            </label>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="csv-input" class="text-sm font-medium">
+                JSON Input
+                <span id="input-stats" class="text-on-surface-variant/60 font-normal text-xs ml-2"></span>
+              </label>
+              <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Load Example
+              </button>
+            </div>
             <textarea
               id="csv-input"
               class="input-field font-mono text-sm min-h-[220px] resize-y scrollbar-thin"
@@ -134,6 +142,7 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
   const btnCopy = document.getElementById("btn-copy");
   const btnDownload = document.getElementById("btn-download");
   const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
 
   function updateStats() {
     const chars = input.value.length;
@@ -213,6 +222,7 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
     const text = output.textContent;
     if (!text || text.startsWith("Invalid")) return;
     try {
+      gtag('event', 'copy', { tool_id: 'json-to-csv', content_type: 'json-to-csv' });
       await navigator.clipboard.writeText(text);
       if (window.showToast) showToast("Copied!");
     } catch {
@@ -245,6 +255,13 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
     info.textContent = "";
     updateStats();
     input.focus();
+  };
+
+  btnLoad.onclick = () => {
+    input.value = '[{"name":"Alice","age":30,"city":"New York"},{"name":"Bob","age":25,"city":"London"}]';
+    updateStats();
+    gtag('event', 'load_example', { tool_id: 'json-to-csv' });
+    btnConvert.click();
   };
 
   input.addEventListener("input", updateStats);
