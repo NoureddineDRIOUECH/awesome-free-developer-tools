@@ -19,6 +19,7 @@
     "@tailwindcss/vite": "^4.3.0",
     "@vercel/analytics": "^2.0.1",
     "astro": "^6.4.4",
+    "daisyui": "^5.5.23",
     "geist": "^1.7.2",
     "qrcode-generator": "^2.0.4",
     "tailwindcss": "^4.3.0",
