@@ -8,21 +8,44 @@ import { getToolCategoryPairs } from "../lib/tools";
 const allPairs = getToolCategoryPairs();
 const totalTools = allPairs.reduce((sum, p) => sum + p.tools.length, 0);
 
-const homeSchema = {
-  "@context": "https://schema.org",
-  "@type": "WebApplication",
-  name: "WebUtil - Free Online Web Tools",
-  description: "Free online developer tools including JSON formatter, Base64 encoder, password generator, color converter, and more. All tools run client-side.",
-  url: String(Astro.site).replace(/\/$/, "") + "/",
-  applicationCategory: "UtilitiesApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  offers: {
-    "@type": "Offer",
-    price: "0",
-    priceCurrency: "USD",
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+
+const homeSchema = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebApplication",
+    name: "WebUtil - Free Online Web Tools",
+    description: "Free online developer tools including JSON formatter, Base64 encoder, password generator, color converter, and more. All tools run client-side.",
+    url: siteUrl + "/",
+    applicationCategory: "UtilitiesApplication",
+    operatingSystem: "All",
+    browserRequirements: "Requires JavaScript",
+    offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   },
-};
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: "WebUtil",
+    url: siteUrl,
+    description: "Free online developer tools that run entirely in your browser. Nothing uploaded. Nothing tracked.",
+    foundingDate: "2026",
+    sameAs: ["https://github.com/NoureddineDRIOUECH/WebUtil"],
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: "WebUtil - Free Online Web Tools",
+    url: siteUrl,
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: siteUrl + "/tools?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
+  },
+];
 ---
 
 <BaseLayout

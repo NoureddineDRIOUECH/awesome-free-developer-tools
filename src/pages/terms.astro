@@ -1,10 +1,25 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+
+const termsSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebPage",
+  name: "Terms of Service - WebUtil",
+  description: "WebUtil terms of service. Free online developer tools. All tools provided as-is, use at your own risk. No warranties or guarantees.",
+  url: siteUrl + "/terms",
+  about: {
+    "@type": "Organization",
+    name: "WebUtil",
+  },
+};
 ---
 
 <BaseLayout
   title="Terms of Service"
   description="WebUtil terms of service. Free online developer tools. All tools provided as-is, use at your own risk. No warranties or guarantees."
+  jsonLd={termsSchema}
 >
   <div class="container-main py-10 max-w-3xl mx-auto">
     <h1 class="text-3xl sm:text-4xl font-bold tracking-tight mb-2">Terms of Service</h1>

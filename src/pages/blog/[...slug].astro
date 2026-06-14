@@ -26,6 +26,7 @@ const articleSchema = {
   description: post.description,
   author: { "@type": "Organization", name: "WebUtil" },
   datePublished: post.date.toISOString(),
+  dateModified: post.date.toISOString(),
   publisher: { "@type": "Organization", name: "WebUtil" },
 };
 ---

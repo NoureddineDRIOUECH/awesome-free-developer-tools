@@ -15,6 +15,30 @@ export default defineConfig({
     mdx(),
     sitemap({
       filter: (page) => !page.includes('/404'),
+      serialize: (item) => {
+        const url = new URL(item.url);
+        const path = url.pathname;
+        if (path === '/') {
+          item.priority = 1.0;
+          item.changefreq = 'weekly';
+        } else if (/^\/(tools|dev|generate|text)\//.test(path)) {
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
+        } else if (/^\/blog\//.test(path)) {
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
+        } else if (/^\/(about|contact|faq|privacy|terms)$/.test(path)) {
+          item.priority = 0.5;
+          item.changefreq = 'monthly';
+        } else if (/^\/(tools|blog|guides)/.test(path)) {
+          item.priority = 0.8;
+          item.changefreq = 'weekly';
+        } else {
+          item.priority = 0.7;
+          item.changefreq = 'monthly';
+        }
+        return item;
+      },
     })
   ]
 });
