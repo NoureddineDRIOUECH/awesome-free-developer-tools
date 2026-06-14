@@ -212,6 +212,46 @@ export const blogPosts: BlogPost[] = [
     category: "Generators",
     readTime: "5 min read",
   },
+  {
+    slug: "regex-tutorial",
+    title: "Regex Tutorial for Beginners: Learn Regular Expressions with Examples",
+    description: "A complete regex tutorial for beginners. Learn how to use regular expressions for pattern matching, text search, and data validation with practical examples.",
+    date: new Date("2026-06-14"),
+    category: "Text",
+    readTime: "6 min read",
+  },
+  {
+    slug: "css-units-guide",
+    title: "CSS Units Guide: px, rem, em, vh, vw, and More Explained",
+    description: "A complete guide to CSS units. Learn the difference between px, rem, em, vh, vw, and other CSS units. Understand when to use each unit for responsive web design.",
+    date: new Date("2026-06-14"),
+    category: "Converters",
+    readTime: "6 min read",
+  },
+  {
+    slug: "docker-compose-tutorial",
+    title: "Docker Compose Tutorial for Beginners: Define and Run Multi-Container Apps",
+    description: "Learn Docker Compose from scratch. Define multi-container applications, manage services, networks, and volumes with docker-compose.yml files.",
+    date: new Date("2026-06-14"),
+    category: "Web",
+    readTime: "6 min read",
+  },
+  {
+    slug: "rest-api-design",
+    title: "REST API Design Best Practices: Build Better Web APIs in 2026",
+    description: "Learn REST API design best practices including resource naming, HTTP methods, status codes, pagination, error handling, and versioning strategies.",
+    date: new Date("2026-06-14"),
+    category: "Web",
+    readTime: "7 min read",
+  },
+  {
+    slug: "how-qr-codes-work",
+    title: "How QR Codes Work: A Complete Guide to QR Code Technology",
+    description: "Learn how QR codes work — from error correction and data encoding to structure and generation. Understand the technology behind every QR code you scan.",
+    date: new Date("2026-06-14"),
+    category: "Generators",
+    readTime: "5 min read",
+  },
 ];
 
 export const blogContent: Record<string, BlogContent> = {
@@ -503,6 +543,66 @@ export const blogContent: Record<string, BlogContent> = {
       { heading: "UUID v7 Implementation and Support", body: "UUID v7 support is growing rapidly. Python 3.14+ includes uuid.uuid7() in the standard library. Go's google/uuid package supports v7 via uuid.NewV7(). Node.js needs a polyfill (uuidv7 npm package). PostgreSQL doesn't natively generate UUID v7 but can use extensions or application-layer generation. MySQL 8.0+ accepts UUID v7 values in BINARY(16) columns. Most UUID libraries still default to v4, so you may need to explicitly request v7. Our UUID v7 Generator provides client-side v7 generation that works in any browser." },
     ],
   },
+  "regex-tutorial": {
+    title: "Regex Tutorial for Beginners: Learn Regular Expressions with Examples",
+    description: "A complete regex tutorial for beginners. Learn how to use regular expressions for pattern matching, text search, and data validation with practical examples.",
+    date: new Date("2026-06-14"),
+    sections: [
+      { heading: "What is a Regular Expression?", body: "A regular expression (regex) is a sequence of characters that defines a search pattern. Regex is used for pattern matching in strings — finding, replacing, and validating text. Every programming language supports regex in some form: JavaScript has RegExp, Python has re module, Go has regexp package, and bash has grep/sed/awk. Regex syntax is standardized across languages with minor differences. Our Regex Tester lets you experiment with patterns in real-time." },
+      { heading: "Regex Basic Syntax: Characters and Anchors", body: "Literal characters match themselves: /hello/ matches 'hello' in any string. The dot . matches any single character except newline. Anchors ^ and $ match the start and end of a string (or line with multiline flag). Word boundary \\b matches between a word character and non-word character. Examples: /^hello/ matches 'hello' only at the start, /world$/ matches 'world' only at the end, /\\bword\\b/ matches the exact word 'word' but not 'sword' or 'words'." },
+      { heading: "Character Classes and Quantifiers", body: "Character classes let you match sets of characters: [aeiou] matches any vowel, [a-z] matches any lowercase letter, [0-9] matches any digit. Negated classes use ^ inside brackets: [^0-9] matches any non-digit. Predefined classes include \\d (digit), \\w (word char), \\s (whitespace). Quantifiers control repetition: * (zero or more), + (one or more), ? (zero or one), {3} (exactly 3), {2,4} (2 to 4). Example: /\\d{3}-\\d{4}/ matches phone-like patterns like '555-1234'." },
+      { heading: "Groups, Capturing, and Alternation", body: "Parentheses () create capturing groups that extract matched substrings: /(\\w+)@(\\w+)\\.(\\w+)/ captures email parts. Non-capturing groups (?:...) group without capturing. Alternation | matches one of several patterns: /cat|dog|bird/ matches any of the three words. Backreferences like \\1 reference captured groups within the pattern. Named groups (?<name>...) make patterns self-documenting. Example: /(?<year>\\d{4})-(?<month>\\d{2})-(?<day>\\d{2})/ extracts date components." },
+      { heading: "Practical Regex Examples and Use Cases", body: "Email validation: /^[\\w.-]+@[\\w.-]+\\.\\w{2,}$/. URL matching: /https?:\\/\\/[\\w.-]+(?:\\/[\\w.-]*)*\\/?/. Phone numbers: /^\\+?1?[\\s.-]?\\(?\\d{3}\\)?[\\s.-]?\\d{3}[\\s.-]?\\d{4}$/. Password strength: /^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[^\\w\\s]).{8,}$/ requires uppercase, lowercase, digit, and special character. IP addresses: /^(?:\\d{1,3}\\.){3}\\d{1,3}$/. Use our Regex Tester to build and test your patterns interactively." },
+    ],
+  },
+  "css-units-guide": {
+    title: "CSS Units Guide: px, rem, em, vh, vw, and More Explained",
+    description: "A complete guide to CSS units. Learn the difference between px, rem, em, vh, vw, and other CSS units. Understand when to use each unit for responsive web design.",
+    date: new Date("2026-06-14"),
+    sections: [
+      { heading: "Why CSS Units Matter", body: "CSS units determine how elements are sized and positioned on the web. Choosing the right unit affects responsiveness, accessibility, and maintainability. Absolute units (px, cm, in) have fixed sizes. Relative units (rem, em, vh, vw, %) adapt to the viewport, parent element, or root font size. Modern responsive design relies primarily on relative units so layouts work across devices of all sizes. Use our px to rem Converter to translate between absolute and relative units easily." },
+      { heading: "px: The Pixel Unit", body: "The px (pixel) unit is the most common absolute unit in CSS. One pixel equals one dot on the screen. Pixels are reliable for precise layouts like borders (1px solid), box shadows, and fine details. However, px units do not scale when users change their browser's default font size for accessibility. This makes px problematic for font sizes and spacing in accessible design. Use px for visual details that must stay sharp — borders, outlines, and media queries for specific breakpoints." },
+      { heading: "rem and em: Relative Font Units", body: "rem (root em) is relative to the root element's font size (default 16px in browsers). 1rem = 16px, 2rem = 32px. rem units respect user accessibility settings — if a user increases their base font size, everything scales proportionally. em is relative to the parent element's font size, which can compound (a 2em child inside a 2em parent is 4x the base). Use rem for most sizing (fonts, spacing, padding, margins) and em sparingly for components that should scale relative to their own font size, like buttons with padding that grows with text size. Our px to rem Converter helps you transition from px to rem." },
+      { heading: "vw, vh, vmin, vmax: Viewport Units", body: "Viewport units are relative to the browser viewport: vw (1% of viewport width), vh (1% of viewport height), vmin (1% of the smaller dimension), vmax (1% of the larger dimension). Use 100vw for full-width elements, 100vh for full-height hero sections, and vmin/vmax for responsive font sizes that adapt to both portrait and landscape orientations. Caution: 100vw includes scrollbar width, which may cause horizontal overflow. Combine vw with clamp() for fluid typography: font-size: clamp(1rem, 2.5vw, 3rem) creates text that scales smoothly between min and max sizes." },
+      { heading: "Percentage, ch, and Other CSS Units", body: "Percentage (%) is relative to the parent element's same property — width: 50% takes half the parent's width. The ch unit equals the width of the '0' character, useful for setting max-width on text containers (max-width: 60ch improves readability). The ex unit equals the x-height of the font. The fr unit in CSS Grid distributes available space (grid-template-columns: 1fr 2fr gives the second column twice the space). For modern responsive design, use rem for sizing and spacing, vw for full-width layouts, % for flexible layouts, ch for text containers, and px only for borders and fine details. Our CSS px to rem Converter helps you migrate legacy px values to rem." },
+    ],
+  },
+  "docker-compose-tutorial": {
+    title: "Docker Compose Tutorial for Beginners: Define and Run Multi-Container Apps",
+    description: "Learn Docker Compose from scratch. Define multi-container applications, manage services, networks, and volumes with docker-compose.yml files.",
+    date: new Date("2026-06-14"),
+    sections: [
+      { heading: "What is Docker Compose?", body: "Docker Compose is a tool for defining and running multi-container Docker applications. With a single docker-compose.yml file, you define your application's services, networks, and volumes. One command — docker compose up — starts everything. Compose eliminates the need to memorize complex docker run commands and ensures consistent environments across development, testing, and production. Use our Docker Compose Validator to check your YAML syntax before deploying." },
+      { heading: "Docker Compose File Structure", body: "A docker-compose.yml file starts with version (optional in modern Compose), then defines services, networks, and volumes. The services section is required — each service defines a container with an image (from Docker Hub) or build context (local Dockerfile). Key service fields: image (nginx:alpine), build (./app), ports (80:80), environment (NODE_ENV=production), volumes (./data:/data), depends_on (db), and restart (always). Networks connect services, volumes persist data. Example: a basic LAMP stack defines web (Apache), db (MySQL), and php (PHP-FPM) services with appropriate connections." },
+      { heading: "Common Docker Compose Commands", body: "docker compose up -d starts all services in detached mode. docker compose down stops and removes containers, networks, and default volumes. docker compose logs -f follows all service logs. docker compose ps shows running containers. docker compose exec service_name bash opens a shell inside a running container. docker compose build rebuilds service images. docker compose pull fetches latest images. docker compose restart service_name restarts a specific service. docker compose config validates your YAML and shows the resolved configuration — use our Docker Compose Validator for quick client-side checks." },
+      { heading: "Docker Compose for Development vs Production", body: "For development, Compose provides hot-reloading by mounting code as volumes (./app:/app), using environment files (.env), and exposing debug ports. Override files (docker-compose.override.yml) add development-specific config without modifying the base file. For production, use docker compose -f docker-compose.yml -f docker-compose.prod.yml to layer configurations. Production adjustments include removing volume mounts for code (use image builds instead), adding restart policies, configuring resource limits, using named volumes, and setting up health checks. Always validate your production config with our Docker Compose Validator before deployment." },
+      { heading: "Docker Compose Best Practices", body: "Use specific image tags (not :latest) to ensure reproducible builds. Keep services small and focused — one process per container. Use depends_on with condition: service_healthy to control startup order. Set resource limits with deploy.resources for production. Use .env files for environment-specific variables. Define custom networks instead of relying on the default bridge network. Use named volumes for persistent data (databases) and bind mounts for development. Validate your YAML files with our Docker Compose Validator before every deployment to catch syntax errors early." },
+    ],
+  },
+  "rest-api-design": {
+    title: "REST API Design Best Practices: Build Better Web APIs in 2026",
+    description: "Learn REST API design best practices including resource naming, HTTP methods, status codes, pagination, error handling, and versioning strategies.",
+    date: new Date("2026-06-14"),
+    sections: [
+      { heading: "What Makes a Good REST API?", body: "A well-designed REST API is intuitive, consistent, and predictable. Good API design reduces development time, minimizes integration errors, and creates a developer experience that people enjoy working with. Key principles: resource-oriented URLs, proper HTTP method usage, meaningful status codes, consistent error formats, and comprehensive documentation. Whether you're building a public API or internal microservice, following REST conventions makes your API easier to adopt. Use our JSON Formatter to inspect and debug API responses during development." },
+      { heading: "Resource Naming Conventions", body: "Use nouns for resources, not verbs: /users instead of /getUsers. Use plural nouns for collections: /users, /orders, /products. Use nested routes for relationships: /users/123/orders, /orders/456/items. Keep URLs lowercase with hyphens: /order-items not /orderItems. Use query parameters for filtering, sorting, and pagination: /users?role=admin&sort=created_at&order=desc. Avoid deep nesting — limit to two levels, then use query parameters or dedicated endpoints. Consistent naming is the foundation of a usable API." },
+      { heading: "HTTP Methods and Status Codes", body: "GET for retrieval (200 OK), POST for creation (201 Created), PUT for full replacement (200 OK), PATCH for partial updates (200 OK), DELETE for removal (204 No Content). Common status codes: 400 Bad Request (invalid input), 401 Unauthorized (missing auth), 403 Forbidden (insufficient permissions), 404 Not Found (resource doesn't exist), 409 Conflict (duplicate resource), 422 Unprocessable Entity (validation failed), 429 Too Many Requests (rate limited), 500 Internal Server Error (server fault). Always return the most specific status code — it helps client developers debug integration issues." },
+      { heading: "Error Handling and Pagination", body: "Standardized error responses: return a consistent JSON structure with error code, message, and optional details. Example: { error: 'validation_error', message: 'Email is required', details: [{ field: 'email', issue: 'required' }] }. For pagination, support cursor-based pagination for large datasets (cursor-based is more reliable than offset-based when data changes). Response format: { data: [...], pagination: { cursor: 'abc123', has_more: true, total: 1000 } }. Include rate limiting headers (X-RateLimit-Remaining, X-RateLimit-Reset) so clients can self-regulate. Our JSON Formatter helps you prettify API responses during development." },
+      { heading: "API Versioning and Documentation", body: "Version your API from day one. Use URL-based versioning (/v1/users, /v2/users) for simplicity, or accept-header versioning (Accept: application/vnd.api+json;version=2) for cleaner URLs. Document versions clearly and maintain migration guides. Use OpenAPI/Swagger (YAML format) for API documentation — it generates interactive docs, client SDKs, and server stubs automatically. Include request/response examples, authentication requirements, and error codes. Deprecate old versions with clear timelines and Sunset HTTP headers. Our URL Encoder tool helps you properly encode query parameters and API URLs." },
+    ],
+  },
+  "how-qr-codes-work": {
+    title: "How QR Codes Work: A Complete Guide to QR Code Technology",
+    description: "Learn how QR codes work — from error correction and data encoding to structure and generation. Understand the technology behind every QR code you scan.",
+    date: new Date("2026-06-14"),
+    sections: [
+      { heading: "What Is a QR Code?", body: "A QR Code (Quick Response Code) is a two-dimensional barcode invented by Denso Wave in 1994. Unlike traditional barcodes that store data in one dimension (width of bars), QR codes store data in two dimensions using black and white squares arranged in a grid. This allows QR codes to hold significantly more data — up to 3KB versus 20-25 bytes for a standard barcode. QR codes can encode numeric data, alphanumeric characters, bytes/binary data, and Japanese Kanji/Kana characters. Use our QR Code Generator to create your own codes instantly in your browser." },
+      { heading: "QR Code Structure and Components", body: "A QR code has several structural elements: the finder patterns (three large squares in corners) let scanners detect position and orientation. Timing patterns (alternating black/white lines) help the scanner determine module size. Alignment patterns (smaller squares) aid scanning on curved or angled surfaces. The format information encodes error correction level and mask pattern. The data area stores the actual content. The quiet zone (white border) separates the QR code from surrounding text. Understanding this structure helps when printing QR codes — never crop the quiet zone or alter the finder patterns." },
+      { heading: "Error Correction in QR Codes", body: "QR codes use Reed-Solomon error correction, allowing them to be read even when partially damaged or obscured. Four levels: L (Low, 7% recovery), M (Medium, 15%), Q (Quartile, 25%), H (High, 30%). Higher error correction means more redundant data is stored, resulting in a denser QR code. For maximum scan reliability, use level H — logos and designs can cover up to 30% of the code while remaining scannable. For simple black-and-white QR codes on stable surfaces (business cards, posters), level M provides good balance between density and durability. Our QR Code Generator creates codes optimized for reliable scanning." },
+      { heading: "QR Code Data Capacity and Encoding Modes", body: "QR codes support four encoding modes: numeric (up to 7,089 characters), alphanumeric (up to 4,296 characters — includes digits, uppercase letters, and symbols), byte/binary (up to 2,953 bytes — supports UTF-8 text and URLs), and Kanji/Kana (up to 1,817 characters for Japanese text). QR codes automatically select the most efficient encoding mode based on the data. Version determines the grid size — version 1 is 21x21 modules, version 40 is 177x177 modules. Higher versions hold more data but require higher printing resolution. For most URLs, version 2-4 (25x25 to 33x33) is sufficient." },
+      { heading: "QR Code Use Cases and Best Practices", body: "Common use cases: URLs (link to websites, app stores), vCard contacts (scan to save to phone), Wi-Fi credentials (scan to connect), payment links (scan to pay), event check-in (tickets with QR codes), and product packaging (scan for info). Best practices: always test your QR code with multiple devices and apps. Ensure minimum print size of 2cm x 2cm (0.8 inches) for reliable scanning. Maintain high contrast between modules and background. Test with your QR Code Generator before mass printing — verify the data is correct and all URLs use HTTPS for security." },
+    ],
+  },
 };
 
 export const blogToolMapping: Record<string, string> = {
@@ -530,6 +630,11 @@ export const blogToolMapping: Record<string, string> = {
   "jwt-authentication-explained": "jwt-expiration-checker",
   "json-vs-yaml-for-apis": "yaml-converter",
   "uuid-v4-vs-uuid-v7": "uuid-v7-generator",
+  "regex-tutorial": "regex-tester",
+  "css-units-guide": "px-to-rem",
+  "docker-compose-tutorial": "docker-compose-validator",
+  "rest-api-design": "json-formatter",
+  "how-qr-codes-work": "qr-code-generator",
 };
 
 export function getBlogPost(slug: string): BlogContent | undefined {
