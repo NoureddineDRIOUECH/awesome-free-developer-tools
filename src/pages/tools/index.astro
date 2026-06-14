@@ -133,7 +133,17 @@ const allSchema = {
     )}
   </div>
 
-  <script is:inline>
+</BaseLayout>
+
+<script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
+  title: t.title,
+  description: t.description,
+  category: t.category,
+  keywords: t.keywords
+})))
+}</script>
+
+<script>
 document.addEventListener("astro:page-load", function () {
   var dataEl = document.getElementById("tools-data");
   if (!dataEl) return;
@@ -195,12 +205,3 @@ document.addEventListener("astro:page-load", function () {
   }
 });
 </script>
-
-  <script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
-    title: t.title,
-    description: t.description,
-    category: t.category,
-    keywords: t.keywords
-  })))
-  }</script>
-</BaseLayout>

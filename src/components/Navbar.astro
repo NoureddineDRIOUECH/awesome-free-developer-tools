@@ -205,9 +205,14 @@ const allToolItems = tools.map((t) => ({ id: t.id, title: t.title, category: t.c
 </style>
 
 <script>
-const NAV_DATA = {
-  tools: JSON.parse(document.getElementById("nav-tools-data")?.textContent || "[]"),
-};
+var NAV_DATA = { tools: [] };
+
+function loadNavData() {
+  var el = document.getElementById("nav-tools-data");
+  if (el && el.textContent) {
+    try { NAV_DATA.tools = JSON.parse(el.textContent); } catch (e) {}
+  }
+}
 
 function closeMobileMenu() {
   const m = document.getElementById("mobile-menu");
@@ -220,6 +225,7 @@ function openMobileMenu() {
 }
 
 document.addEventListener("astro:page-load", function () {
+  loadNavData();
   const toggle = document.getElementById("nav-toggle");
   const menu = document.getElementById("mobile-menu");
   const overlay = document.getElementById("nav-overlay");
@@ -307,6 +313,7 @@ function toggleCmdK() {
 }
 
 function setupCmdK() {
+  loadNavData();
   var trigger = document.getElementById("cmd-k-trigger");
   var modal = document.getElementById("cmd-k-modal");
   var overlay = document.getElementById("cmd-k-overlay");
@@ -327,6 +334,7 @@ function setupCmdK() {
 }
 
 function searchCmdK() {
+  loadNavData();
   var q = this.value.toLowerCase().trim();
   var results = document.getElementById("cmd-k-results");
   var tools = NAV_DATA.tools;
