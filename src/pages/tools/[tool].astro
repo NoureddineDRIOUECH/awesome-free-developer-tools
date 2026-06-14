@@ -1,68 +1,35 @@
 ---
-import ToolLayout from "../../layouts/ToolLayout.astro";
-import { getToolById, getRelatedTools, getCategoryInfo, tools } from "../../lib/tools";
-import type { ToolDefinition } from "../../lib/tools";
+import { tools } from "../../lib/tools";
 
 export function getStaticPaths() {
-  return tools.filter((t) => t.id !== "json-formatter" && t.id !== "base64-encoder" && t.id !== "url-encoder" && t.id !== "uuid-generator" && t.id !== "jwt-decoder" && t.id !== "hash-generator" && t.id !== "html-entities" && t.id !== "password-generator" && t.id !== "lorem-ipsum" && t.id !== "yaml-converter" && t.id !== "color-converter" && t.id !== "case-converter" && t.id !== "markdown-preview" && t.id !== "text-diff" && t.id !== "image-converter" && t.id !== "sql-formatter" && t.id !== "xml-formatter" && t.id !== "regex-tester" && t.id !== "json-to-csv" && t.id !== "px-to-rem" && t.id !== "kubernetes-yaml-validator" && t.id !== "docker-compose-validator" && t.id !== "github-actions-validator" && t.id !== "jwt-expiration-checker" && t.id !== "uuid-v7-generator").map((tool) => ({
+  return tools.map((tool) => ({
     params: { tool: tool.id },
     props: { tool },
   }));
 }
 
-const { tool } = Astro.props as { tool: ToolDefinition };
-const relatedTools = getRelatedTools(tool.id);
-const category = getCategoryInfo(tool.category);
+const { tool } = Astro.props;
 
-const toolSchema = {
-  "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: tool.title,
-  description: tool.metaDescription,
-  url: `${String(Astro.site).replace(/\/$/, "")}/tools/${tool.id}`,
-  applicationCategory: "UtilitiesApplication",
-  operatingSystem: "All",
-  browserRequirements: "Requires JavaScript",
-  offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  author: { "@type": "Organization", name: "WebUtil" },
+const categoryMap: Record<string, string> = {
+  formatters: "dev", encoders: "dev", converters: "dev",
+  text: "text", generators: "generate",
+  images: "dev", security: "dev", web: "dev",
 };
 
-const breadcrumbSchema = {
-  "@context": "https://schema.org",
-  "@type": "BreadcrumbList",
-  itemListElement: [
-    { "@type": "ListItem", position: 1, name: "Home", item: String(Astro.site).replace(/\/$/, "") },
-    { "@type": "ListItem", position: 2, name: "Tools", item: `${String(Astro.site).replace(/\/$/, "")}/tools` },
-    { "@type": "ListItem", position: 3, name: tool.title, item: `${String(Astro.site).replace(/\/$/, "")}/tools/${tool.id}` },
-  ],
-};
+const prefix = categoryMap[tool.category] || "dev";
+const target = `/${prefix}/${tool.id}`;
+const siteUrl = String(Astro.site).replace(/\/$/, "");
+const canonical = `${siteUrl}${target}`;
 ---
-
-<ToolLayout
-  title={tool.title}
-  description={tool.metaDescription}
-  tool={tool}
-  relatedTools={relatedTools}
-  jsonLd={[toolSchema, breadcrumbSchema]}
->
-  <div id="tool-root" class="p-4 sm:p-6">
-    <div class="flex items-center gap-4 mb-6">
-      <div class="size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center text-lg font-semibold">
-        {tool.title.charAt(0)}
-      </div>
-      <div>
-        <p class="text-sm text-on-surface-variant">{category?.name || "Tool"}</p>
-      </div>
-    </div>
-    <div id="tool-ui" class="space-y-4">
-      <p class="text-sm text-on-surface-variant">Loading tool interface...</p>
-    </div>
-  </div>
-</ToolLayout>
-
-<script>
-  const toolId = window.location.pathname.split("/").pop();
-  if (toolId && window.setupTool) {
-    window.setupTool(toolId);
-  }
-</script>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>{tool.title} - WebUtil</title>
+    <link rel="canonical" href={canonical} />
+    <meta http-equiv="refresh" content={`0; url=${target}`} />
+    <script>window.location.replace(`/${prefix}/${tool.id}`);</script>
+  </head>
+  <body>
+    <p>Moved to <a href={target}>{canonical}</a></p>
+  </body>
+</html>

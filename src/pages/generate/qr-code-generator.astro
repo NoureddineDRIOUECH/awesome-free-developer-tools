@@ -1,0 +1,281 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("qr-code-generator")!;
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-5">
+          <div>
+            <label for="qr-input" class="text-sm font-medium mb-1.5 block">Text or URL</label>
+            <input
+              type="text"
+              id="qr-input"
+              class="input-field text-sm w-full"
+              placeholder="Enter text or URL to encode..."
+            />
+          </div>
+
+          <div class="flex flex-wrap items-end gap-4">
+            <div class="min-w-[140px]">
+              <label for="qr-size" class="text-sm font-medium mb-1.5 block">Size</label>
+              <select id="qr-size" class="input-field text-sm">
+                <option value="128">128 × 128</option>
+                <option value="256" selected>256 × 256</option>
+                <option value="512">512 × 512</option>
+                <option value="1024">1024 × 1024</option>
+              </select>
+            </div>
+
+            <button id="btn-generate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Generate
+            </button>
+
+            <button id="btn-download-svg" class="btn-secondary text-sm hidden">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download SVG
+            </button>
+            <button id="btn-download-png" class="btn-secondary text-sm hidden">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download PNG
+            </button>
+
+            <button id="btn-load-example" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+              Load Example
+            </button>
+
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div id="qr-output" class="flex flex-col items-center justify-center min-h-[220px] rounded-lg bg-surface-container p-4">
+            <p class="text-sm text-on-surface-variant">Enter text or URL to generate a QR code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a QR Code?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>QR Code</strong> (Quick Response Code) is a two-dimensional barcode that stores data
+        as a matrix of black and white modules. Unlike traditional barcodes, QR codes can hold
+        thousands of alphanumeric characters and are readable from any angle. Our <strong>free QR code
+        generator</strong> creates vector SVG QR codes directly in your browser — no data is sent to any server.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common QR Code Use Cases</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Marketing & Advertising</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>Print ads linking to landing pages</li>
+            <li>Product packaging with instructions</li>
+            <li>Business cards with contact info</li>
+            <li>Restaurant menus and reviews</li>
+          </ul>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Technical & Development</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>App download links (App Store / Play Store)</li>
+            <li>Wi-Fi network credentials</li>
+            <li>API documentation URLs</li>
+            <li>Event check-in and ticketing</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Use a QR Code Generator?</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>No Account Required</strong> — Generate QR codes instantly, no sign-up or login needed.</li>
+        <li><strong>100% Private</strong> — All QR code generation happens in your browser. Nothing is uploaded.</li>
+        <li><strong>SVG Download</strong> — Get a crisp vector SVG that scales to any size without quality loss.</li>
+        <li><strong>Unlimited Use</strong> — Generate as many QR codes as you want, completely free.</li>
+        <li><strong>No Expiry</strong> — Generated QR codes do not expire or require a subscription.</li>
+      </ul>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How QR Codes Work</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        QR codes use <strong>Reed-Solomon error correction</strong> to store data redundantly, allowing
+        them to be read even when partially damaged or obscured. The three large squares in the corners
+        act as alignment markers, while the smaller timing patterns help the scanner determine the grid
+        size. This tool uses the <strong>qrcode-generator</strong> library with <strong>M-level error
+        correction</strong> (15% data recovery), balancing capacity with reliability.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Generate a QR Code</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Type or paste any text or URL into the input field, optionally select the output size, then click
+        <strong>Generate</strong>. Your QR code will appear instantly as an SVG graphic. Use
+        <strong>Download SVG</strong> to save it as a vector file for print or digital use. The
+        <strong>Load Example</strong> button fills in a sample URL so you can test the tool right away.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  import qrcode from 'qrcode-generator';
+
+  const input = document.getElementById("qr-input");
+  const btnGenerate = document.getElementById("btn-generate");
+  const btnDownloadSvg = document.getElementById("btn-download-svg");
+  const btnDownloadPng = document.getElementById("btn-download-png");
+  const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
+  const qrOutput = document.getElementById("qr-output");
+  const sizeSelect = document.getElementById("qr-size");
+
+  let lastQrData = null;
+
+  function generateQR() {
+    const text = input.value.trim();
+    if (!text) {
+      qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Enter text or URL to generate a QR code.</p>';
+      btnDownloadSvg.classList.add("hidden");
+      btnDownloadPng.classList.add("hidden");
+      lastQrData = null;
+      return;
+    }
+
+    try {
+      const qr = qrcode(0, 'M');
+      qr.addData(text);
+      qr.make();
+
+      const modCount = qr.getModuleCount();
+      const cellSize = 4;
+      const margin = 2;
+      const size = modCount * cellSize + margin * 2 * cellSize;
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
+      svg += `<rect width="100%" height="100%" fill="white"/>`;
+
+      for (let r = 0; r < modCount; r++) {
+        for (let c = 0; c < modCount; c++) {
+          if (qr.isDark(r, c)) {
+            const x = (c + margin) * cellSize;
+            const y = (r + margin) * cellSize;
+            svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="black"/>`;
+          }
+        }
+      }
+
+      svg += '</svg>';
+      qrOutput.innerHTML = svg;
+
+      const svgEl = qrOutput.querySelector('svg');
+      const displaySize = parseInt(sizeSelect.value);
+      svgEl.style.width = displaySize + 'px';
+      svgEl.style.height = displaySize + 'px';
+      svgEl.style.maxWidth = '100%';
+
+      qrOutput.dataset.svg = svg;
+      lastQrData = { text, qr, modCount, margin, cellSize };
+      btnDownloadSvg.classList.remove("hidden");
+      btnDownloadPng.classList.remove("hidden");
+
+      gtag('event', 'tool_action', { tool_id: 'qr-code-generator', action: 'generate' });
+    } catch (e) {
+      qrOutput.innerHTML = `<p class="text-sm text-red-400">Error: ${e.message}</p>`;
+      btnDownloadSvg.classList.add("hidden");
+      btnDownloadPng.classList.add("hidden");
+      lastQrData = null;
+    }
+  }
+
+  btnGenerate.onclick = generateQR;
+
+  btnDownloadSvg.onclick = () => {
+    const svg = qrOutput.dataset.svg;
+    if (!svg) return;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'qrcode.svg';
+    a.click();
+    URL.revokeObjectURL(url);
+    if (window.showToast) showToast("Downloaded SVG!");
+  };
+
+  btnDownloadPng.onclick = () => {
+    if (!lastQrData) return;
+    const { qr, modCount, margin, cellSize } = lastQrData;
+    const pngSize = parseInt(sizeSelect.value) || 256;
+    const canvas = document.createElement('canvas');
+    canvas.width = pngSize;
+    canvas.height = pngSize;
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
+    const scale = pngSize / (modCount + margin * 2);
+    ctx.fillStyle = '#ffffff';
+    ctx.fillRect(0, 0, pngSize, pngSize);
+    ctx.fillStyle = '#000000';
+    for (let r = 0; r < modCount; r++) {
+      for (let c = 0; c < modCount; c++) {
+        if (qr.isDark(r, c)) {
+          ctx.fillRect((c + margin) * scale, (r + margin) * scale, scale, scale);
+        }
+      }
+    }
+    canvas.toBlob(function(blob) {
+      if (!blob) return;
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'qrcode.png';
+      a.click();
+      URL.revokeObjectURL(url);
+      if (window.showToast) showToast("Downloaded PNG!");
+    }, 'image/png');
+  };
+
+  btnClear.onclick = () => {
+    input.value = "";
+    qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Enter text or URL to generate a QR code.</p>';
+    btnDownloadSvg.classList.add("hidden");
+    btnDownloadPng.classList.add("hidden");
+    lastQrData = null;
+    input.focus();
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'qr-code-generator' });
+    input.value = "https://webutil.tech";
+    generateQR();
+  };
+
+  input.addEventListener("keydown", (e) => {
+    if (e.key === "Enter") generateQR();
+  });
+</script>

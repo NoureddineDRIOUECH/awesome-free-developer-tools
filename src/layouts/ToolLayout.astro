@@ -1,7 +1,8 @@
 ---
 import BaseLayout from "./BaseLayout.astro";
 import PopularTools from "../components/PopularTools.astro";
-import { tools, getRelatedTools, getCategoryInfo, type ToolDefinition } from "../lib/tools";
+import AffiliateBlock from "../components/AffiliateBlock.astro";
+import { tools, getRelatedTools, getCategoryInfo, getToolUrl, type ToolDefinition } from "../lib/tools";
 import { getToolDataById } from "../data/tools";
 
 export interface Props {
@@ -16,7 +17,7 @@ const toolData = getToolDataById(tool.id);
 const codeSnippets = inlineCodeSnippets ?? toolData?.codeSnippets ?? [];
 const faqItems = inlineFaqItems ?? toolData?.faqItems ?? [];
 const siteUrl = String(Astro.site).replace(/\/$/, "");
-const pageUrl = `${siteUrl}/tools/${tool.id}`;
+const pageUrl = `${siteUrl}${getToolUrl(tool)}`;
 const category = getCategoryInfo(tool.category);
 
 const softwareSchema = {
@@ -126,13 +127,15 @@ const related = getRelatedTools(tool.id);
     </div>
   </section>
 
+  <AffiliateBlock category={tool.category} />
+
   {related.length > 0 && (
     <section class="container-main py-8 pb-4">
       <div class="max-w-4xl mx-auto">
         <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Tools</h2>
         <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
           {related.map((rt) => (
-            <a href={`/tools/${rt.id}`} class="tool-card block p-4 group transition-all duration-200 hover:border-primary/30 hover:-translate-y-0.5">
+            <a href={getToolUrl(rt)} class="tool-card block p-4 group transition-all duration-200 hover:border-primary/30 hover:-translate-y-0.5">
               <h3 class="font-semibold text-sm group-hover:text-primary transition-colors">{rt.title}</h3>
               <p class="mt-1 text-xs text-on-surface-variant leading-relaxed">{rt.description}</p>
             </a>

@@ -468,6 +468,159 @@ export const toolsData: ToolData[] = [
       { question: "What databases support UUID v7?", answer: "PostgreSQL, MySQL 8.0+, and SQLite support UUID types that work well with UUID v7. The sequential nature of UUID v7 reduces index fragmentation compared to v4." },
     ],
   },
+  {
+    id: "word-counter",
+    title: "Word & Character Counter",
+    description: "Count words, characters, sentences, and paragraphs in real-time as you type. Perfect for writers, students, and SEO professionals.",
+    metaDescription: "Free online word and character counter. Count words, characters (with and without spaces), sentences, paragraphs, and reading time in real-time. 100% client-side, no data uploads.",
+    category: "text",
+    keywords: ["word counter", "character counter", "word count", "character count", "word count tool", "text counter"],
+    relatedTools: ["case-converter", "remove-duplicate-lines", "text-diff"],
+    examplePayload: "The quick brown fox jumps over the lazy dog.",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: `function wordCount(text) {
+  const words = text.trim().split(/\\s+/).filter(Boolean);
+  return { words: words.length, chars: text.length, charsNoSpace: text.replace(/\\s/g, '').length };
+}` },
+      { lang: "python", label: "Python", code: `def word_count(text):
+  words = [w for w in text.split() if w]
+  return {
+    "words": len(words),
+    "chars": len(text),
+    "chars_no_space": len(text.replace(" ", ""))
+  }` },
+      { lang: "go", label: "Go", code: `import "strings"\n\nfunc WordCount(s string) map[string]int {\n  return map[string]int{\n    "words": len(strings.Fields(s)),\n    "chars": len(s),\n  }\n}` },
+      { lang: "bash", label: "Bash", code: `wc -w file.txt  # word count\nwc -c file.txt  # byte count\nwc -m file.txt  # character count` },
+    ],
+    faqItems: [
+      { question: "What does a word counter do?", answer: "A word counter counts the number of words, characters, sentences, and paragraphs in a text. It's essential for writers meeting word count requirements, students writing essays, and SEO professionals optimizing meta descriptions." },
+      { question: "Is my text data safe?", answer: "Yes. All processing happens client-side in your browser. Your text never leaves your device." },
+      { question: "What's the difference between characters with and without spaces?", answer: "Characters with spaces includes every character including spaces. Without spaces excludes whitespace. This is useful for character-limited fields like SMS messages or meta descriptions." },
+    ],
+  },
+  {
+    id: "remove-duplicate-lines",
+    title: "Remove Duplicate Lines",
+    description: "Remove duplicate lines from any text, sort alphabetically or reverse, and get a clean unique list. Perfect for cleaning up lists and data.",
+    metaDescription: "Free online tool to remove duplicate lines from text. Remove duplicates, sort alphabetically (A-Z or Z-A), trim whitespace, and ignore empty lines. 100% client-side.",
+    category: "text",
+    keywords: ["remove duplicate lines", "duplicate line remover", "deduplicate text", "remove duplicate text", "unique lines"],
+    relatedTools: ["case-converter", "word-counter", "text-diff"],
+    examplePayload: "apple\nbanana\napple\ncherry\nbanana\ndate",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: `function removeDuplicates(text) {
+  const lines = text.split('\\n').map(l => l.trim()).filter(Boolean);
+  return [...new Set(lines)].join('\\n');
+}` },
+      { lang: "python", label: "Python", code: `def remove_duplicates(text):
+  lines = [l.strip() for l in text.split('\\n') if l.strip()]
+  return '\\n'.join(dict.fromkeys(lines))` },
+      { lang: "go", label: "Go", code: `import "strings"\n\nfunc RemoveDups(s string) string {\n  seen := map[string]bool{}\n  var result []string\n  for _, line := range strings.Split(s, "\\n") {\n    line = strings.TrimSpace(line)\n    if line != "" && !seen[line] {\n      seen[line] = true\n      result = append(result, line)\n    }\n  }\n  return strings.Join(result, "\\n")\n}` },
+      { lang: "bash", label: "Bash", code: "sort file.txt | uniq\nawk '!seen[$0]++' file.txt\nsort -u file.txt" },
+    ],
+    faqItems: [
+      { question: "How does the duplicate line remover work?", answer: "It splits your text into lines, removes any that are identical, and gives you a clean list. You can sort the result alphabetically (A-Z or Z-A) and optionally trim whitespace and ignore empty lines." },
+      { question: "Is this case-sensitive?", answer: "Yes, by default. Lines are compared exactly. 'Apple' and 'apple' are treated as different lines. You can use the Case Converter first to normalize case." },
+      { question: "Can I process large files?", answer: "Since everything runs in your browser, performance depends on your device. For very large files, the browser may become slow. For typical use (up to 100,000 lines), it works smoothly." },
+    ],
+  },
+  {
+    id: "wi-fi-qr-code-generator",
+    title: "Wi-Fi QR Code Generator",
+    description: "Generate a QR code that smartphones can scan to instantly join your Wi-Fi network. Enter SSID, password, and encryption type.",
+    metaDescription: "Free online Wi-Fi QR code generator. Create a QR code for your Wi-Fi network — anyone can scan it with their phone to connect instantly. Supports WPA, WEP, and open networks. 100% client-side.",
+    category: "generators",
+    keywords: ["wi-fi qr code", "wifi qr code generator", "qr code wifi", "wifi qr code maker", "qr code for wifi password"],
+    relatedTools: ["qr-code-generator", "password-generator", "uuid-generator"],
+    examplePayload: "",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: `function wifiQR(ssid, password, encryption) {
+  const str = \`WIFI:T:\${encryption};S:\${ssid};P:\${password};;\`;
+  const qr = qrcode(0, 'M');
+  qr.addData(str);
+  qr.make();
+  return qr;
+}` },
+      { lang: "python", label: "Python", code: `import qrcode
+ssid, password, enc = "MyNetwork", "Pass123", "WPA"
+data = f"WIFI:T:{enc};S:{ssid};P:{password};;"
+img = qrcode.make(data)
+img.save("wifi_qr.png")` },
+      { lang: "go", label: "Go", code: `import "github.com/skip2/go-qrcode"\n\nstr := fmt.Sprintf("WIFI:T:%s;S:%s;P:%s;;", enc, ssid, pwd)\nqr, _ := qrcode.New(str, qrcode.Medium)\nqr.WriteFile(256, "wifi_qr.png")` },
+      { lang: "bash", label: "Bash", code: `qrencode -o wifi_qr.png "WIFI:T:WPA;S:MyNetwork;P:MyPassword;;"` },
+    ],
+    faqItems: [
+      { question: "What is a Wi-Fi QR code?", answer: "A Wi-Fi QR code encodes your network credentials (SSID, password, and encryption type) in a standard format. Smartphones with built-in QR scanners can read it and connect to your network automatically without typing the password." },
+      { question: "Which devices support Wi-Fi QR codes?", answer: "All modern smartphones: iPhones (iOS 11+), Android (Android 10+), and most tablets. Just point the camera at the QR code and tap the notification to connect." },
+      { question: "Is the Wi-Fi password visible in the QR code?", answer: "The password is encoded in the QR code but not visible to the naked eye. However, anyone who can scan the QR code can read the password. Only share Wi-Fi QR codes with people you trust." },
+      { question: "What encryption types are supported?", answer: "WPA/WPA2 (most common for modern routers), WEP (older routers), and WPA2-Enterprise or None (open networks). Select the correct type matching your router configuration." },
+      { question: "Does this store my Wi-Fi credentials?", answer: "No. Everything runs client-side in your browser. Your SSID and password never leave your device." },
+    ],
+  },
+  {
+    id: "secure-wpa2-password-generator",
+    title: "Secure WPA2 Password Generator",
+    description: "Generate strong Wi-Fi passwords for routers — exactly 16-20 characters, no ambiguous characters like l, 1, O, 0 that are hard to type.",
+    metaDescription: "Free online secure Wi-Fi password generator. Create strong WPA2-compatible passwords (16-20 chars) without ambiguous characters l, 1, O, 0. Easy to type, hard to crack. 100% client-side.",
+    category: "generators",
+    keywords: ["wpa2 password generator", "wifi password generator", "secure wifi password", "wpa2 key generator", "router password generator"],
+    relatedTools: ["password-generator", "wi-fi-qr-code-generator", "uuid-generator"],
+    examplePayload: "",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: `function generateWPA2Key(length = 16) {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%^&*';
+  const array = new Uint32Array(length);
+  crypto.getRandomValues(array);
+  return Array.from(array).map(v => chars[v % chars.length]).join('');
+}` },
+      { lang: "python", label: "Python", code: `import secrets, string
+chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%^&*'
+password = ''.join(secrets.choice(chars) for _ in range(16))
+print(password)` },
+      { lang: "go", label: "Go", code: `import "crypto/rand"\n\nfunc genWPA2() string {\n  chars := []byte("ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$")\n  b := make([]byte, 16)\n  rand.Read(b)\n  for i := range b { b[i] = chars[b[i] % byte(len(chars))] }\n  return string(b)\n}` },
+      { lang: "bash", label: "Bash", code: `< /dev/urandom tr -dc 'A-HJKMNP-Za-hjkmnp-z2-9!@#$%^&*' | head -c16` },
+    ],
+    faqItems: [
+      { question: "What is a WPA2 password?", answer: "A WPA2 password (also called a Wi-Fi passphrase or pre-shared key) is the password used to secure a wireless network with WPA2 encryption. Strong WPA2 passwords are at least 8 characters, but 16-20 characters is recommended for maximum security." },
+      { question: "Why avoid ambiguous characters?", answer: "Characters like l (lowercase L), 1 (one), O (uppercase O), and 0 (zero) look similar on many screens and printed labels. Removing them eliminates confusion when manually typing the password into smart TVs, game consoles, IoT devices, and other devices without copy-paste." },
+      { question: "Can I use this password with any router?", answer: "Yes. Most routers support WPA2 passwords up to 63 characters. The 16-20 character length is compatible with all WPA2/WPA3 routers while providing excellent security. Copy the password into your router's admin panel and share the QR code with guests." },
+      { question: "Is this password truly random?", answer: "Yes, using your browser's Crypto API — the same cryptographically secure random generator used for encryption keys. Each password is genuinely random and unpredictable." },
+    ],
+  },
+  {
+    id: "qr-code-generator",
+    title: "QR Code Generator",
+    description: "Generate QR codes instantly from any text or URL. Download as SVG. No tracking, no server uploads, pure client-side generation.",
+    metaDescription: "Free online QR code generator. Create QR codes from text or URLs instantly. Download as SVG vector graphics. 100% client-side, no tracking, no uploads.",
+    category: "generators",
+    keywords: ["qr code generator", "qr generator", "create qr code", "qr code maker", "free qr code"],
+    relatedTools: ["password-generator", "uuid-generator", "lorem-ipsum"],
+    examplePayload: "https://webutil.tech",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript", code: `// Lightweight QR generation using canvas
+function generateQR(text, size) {
+  const canvas = document.createElement('canvas');
+  canvas.width = size; canvas.height = size;
+  // Use a minimal QR library like qrcode-generator
+  const qr = qrcode(0, 'M');
+  qr.addData(text); qr.make();
+  const modCount = qr.getModuleCount();
+  const ctx = canvas.getContext('2d');
+  for (let r = 0; r < modCount; r++)
+    for (let c = 0; c < modCount; c++)
+      ctx.fillStyle = qr.isDark(r, c) ? '#000' : '#fff';
+  return canvas.toDataURL('image/png');
+}` },
+      { lang: "python", label: "Python", code: `import qrcode\nimg = qrcode.make("https://webutil.tech")\nimg.save("qrcode.png")\n\n# With customization\nqr = qrcode.QRCode(box_size=10, border=4)\nqr.add_data("https://webutil.tech")\nqr.make(fit=True)\nimg = qr.make_image(fill_color="black", back_color="white")` },
+      { lang: "go", label: "Go", code: `import "github.com/skip2/go-qrcode"\n\nqr, _ := qrcode.New("https://webutil.tech", qrcode.Medium)\nqr.WriteFile(256, "qrcode.png")\n\n// PNG byte output\npng, _ := qr.PNG(256)` },
+      { lang: "bash", label: "Bash", code: `# Install: apt install qrencode\nqrencode -o qrcode.png "https://webutil.tech"\nqrencode -t SVG -o qrcode.svg "https://webutil.tech"` },
+    ],
+    faqItems: [
+      { question: "How does this QR code generator work?", answer: "It uses the lightweight qrcode-generator library running entirely in your browser. No data is sent to any server. You can generate QR codes from any text or URL and download them as SVG files." },
+      { question: "Can I use the QR codes commercially?", answer: "Yes. QR codes generated by this tool are free to use for any purpose, including commercial use. There are no watermarks, tracking, or limitations." },
+      { question: "What data can I encode in a QR code?", answer: "Any text: URLs, email addresses, phone numbers, Wi-Fi credentials (WIFI:T:WPA;S:name;P:password;;), contact info (vCard), SMS messages (SMSTO:number:body), or plain text. The SVG output is scalable and works in print and web." },
+    ],
+  },
 ];
 
 export function getToolDataById(id: string): ToolData | undefined {

@@ -17,6 +17,12 @@ const categoryTools = getToolsByCategory(cat.id);
 const siteUrl = String(Astro.site).replace(/\/$/, "");
 const pageUrl = `${siteUrl}/tools/category/${cat.id}`;
 
+const categoryRouteMap: Record<string, string> = {
+  formatters: "dev", encoders: "dev", converters: "dev",
+  text: "text", generators: "generate",
+  images: "dev", security: "dev", web: "dev",
+};
+
 const blogLinks: Record<string, { title: string; slug: string }[]> = {
   formatters: [
     { title: "JSON Formatting Guide", slug: "json-formatting-guide" },
@@ -101,15 +107,18 @@ const collectionSchema = {
       </div>
 
       <div class="grid gap-4">
-        {categoryTools.map((tool) => (
+        {categoryTools.map((tool) => {
+          const prefix = categoryRouteMap[tool.category] || "dev";
+          return (
           <a
-            href={`/tools/${tool.id}`}
+            href={`/${prefix}/${tool.id}`}
             class="tool-card block p-5 hover:border-primary/30 transition-colors"
           >
             <h2 class="text-lg font-semibold group-hover:text-primary transition-colors">{tool.title}</h2>
             <p class="mt-1.5 text-sm text-on-surface-variant leading-relaxed">{tool.description}</p>
           </a>
-        ))}
+          );
+        })}
       </div>
 
       {categoryGuides.length > 0 && (

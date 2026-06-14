@@ -1,0 +1,183 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("word-counter")!;
+---
+
+<ToolLayout
+  tool={tool}
+>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-5">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="wc-input" class="text-sm font-medium">
+                Text Input
+              </label>
+              <button id="btn-clear" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+                </svg>
+                Clear
+              </button>
+            </div>
+            <textarea
+              id="wc-input"
+              class="input-field font-mono text-sm min-h-[200px] resize-y scrollbar-thin"
+              placeholder="Start typing or paste your text here..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
+            <div class="tool-card p-4 text-center">
+              <div id="stat-words" class="text-2xl font-bold text-primary">0</div>
+              <div class="text-xs text-on-surface-variant mt-1">Words</div>
+            </div>
+            <div class="tool-card p-4 text-center">
+              <div id="stat-chars" class="text-2xl font-bold text-primary">0</div>
+              <div class="text-xs text-on-surface-variant mt-1">Characters</div>
+            </div>
+            <div class="tool-card p-4 text-center">
+              <div id="stat-chars-ns" class="text-2xl font-bold text-primary">0</div>
+              <div class="text-xs text-on-surface-variant mt-1">Chars (no spaces)</div>
+            </div>
+            <div class="tool-card p-4 text-center">
+              <div id="stat-sentences" class="text-2xl font-bold text-primary">0</div>
+              <div class="text-xs text-on-surface-variant mt-1">Sentences</div>
+            </div>
+            <div class="tool-card p-4 text-center">
+              <div id="stat-paragraphs" class="text-2xl font-bold text-primary">0</div>
+              <div class="text-xs text-on-surface-variant mt-1">Paragraphs</div>
+            </div>
+            <div class="tool-card p-4 text-center">
+              <div id="stat-reading" class="text-2xl font-bold text-primary">0 min</div>
+              <div class="text-xs text-on-surface-variant mt-1">Reading Time</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Word Counter?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>word counter</strong> is a tool that counts the number of words, characters,
+        sentences, and paragraphs in a given text. Writers, students, editors, and SEO professionals
+        use a <strong>word count tool</strong> to ensure their content meets specific length requirements.
+        Our free <strong>online word counter</strong> provides real-time statistics as you type,
+        with all processing happening directly in your browser — your text never leaves your device.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Why Word Count Matters</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Academic Writing</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Essays, research papers, and dissertations often have strict word count requirements.
+            A <strong>word counter</strong> helps you stay within limits while maintaining quality.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">SEO & Content Marketing</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Search engines favor comprehensive content. Blog posts typically perform best at
+            1,500–2,500 words. Track your <strong>article word count</strong> to optimize for ranking.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Social Media</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Twitter/X has a 280-character limit, while other platforms have their own restrictions.
+            A <strong>character counter</strong> ensures your posts fit perfectly.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Reading Time Estimates</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            The average adult reads at about 200–250 words per minute. Our <strong>reading time calculator</strong>
+            helps you estimate how long your content takes to read.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Word Counter</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        To use our <strong>free word counter online</strong>, simply start typing or paste your text
+        into the input area above. The <strong>word count</strong>, <strong>character count</strong>
+        (with and without spaces), <strong>sentence count</strong>, <strong>paragraph count</strong>,
+        and estimated <strong>reading time</strong> update automatically in real time. Use the
+        <strong>Clear</strong> button to reset and start over. Everything runs client-side, so your
+        text stays private and secure.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Tips for Better Writing</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Be concise</strong> — Remove unnecessary words to improve clarity and readability. A good <strong>word count checker</strong> helps you identify verbose sections.</li>
+        <li><strong>Vary sentence length</strong> — Mix short and long sentences to create rhythm and maintain reader engagement throughout your content.</li>
+        <li><strong>Use active voice</strong> — Active voice makes your writing more direct and dynamic. Passive constructions often inflate word count without adding value.</li>
+        <li><strong>Check paragraph structure</strong> — Keep paragraphs focused on a single idea. Aim for 3–5 sentences per paragraph for optimal readability.</li>
+      </ul>
+
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Whether you are a student checking an essay, a writer polishing a blog post, or a professional
+        preparing a report, this <strong>word and character counter</strong> provides all the statistics
+        you need. No sign-up, no ads, no server uploads — just a fast, accurate <strong>text analyzer</strong>
+        that works offline.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("wc-input");
+  const statWords = document.getElementById("stat-words");
+  const statChars = document.getElementById("stat-chars");
+  const statCharsNs = document.getElementById("stat-chars-ns");
+  const statSentences = document.getElementById("stat-sentences");
+  const statParas = document.getElementById("stat-paragraphs");
+  const statReading = document.getElementById("stat-reading");
+  const btnClear = document.getElementById("btn-clear");
+
+  function updateStats() {
+    const text = input.value;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const chars = text.length;
+    const charsNoSpace = text.replace(/\s/g, '').length;
+    const sentences = text ? (text.match(/[.!?]+/g) || []).length : 0;
+    const paras = text ? text.split(/\n\s*\n/).filter(Boolean).length : 0;
+    const readTime = Math.max(1, Math.ceil(words / 200));
+
+    statWords.textContent = words.toLocaleString();
+    statChars.textContent = chars.toLocaleString();
+    statCharsNs.textContent = charsNoSpace.toLocaleString();
+    statSentences.textContent = sentences.toLocaleString();
+    statParas.textContent = paras.toLocaleString();
+    statReading.textContent = `${readTime} min`;
+  }
+
+  input.addEventListener("input", updateStats);
+
+  btnClear.onclick = () => {
+    input.value = "";
+    updateStats();
+    input.focus();
+  };
+
+  updateStats();
+</script>

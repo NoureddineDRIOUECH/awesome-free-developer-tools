@@ -328,6 +328,56 @@ export const tools: ToolDefinition[] = [
     keywords: ["uuid v7", "uuid v7 generator", "time-ordered uuid", "uuid7", "sortable uuid"],
     relatedTools: ["uuid-generator", "jwt-expiration-checker", "hash-generator"],
   },
+  {
+    id: "word-counter",
+    title: "Word & Character Counter",
+    description: "Count words, characters, sentences, and paragraphs in real-time as you type. Perfect for writers, students, and SEO professionals.",
+    category: "text",
+    icon: "numbers",
+    metaDescription: "Free online word and character counter. Count words, characters (with and without spaces), sentences, paragraphs, and reading time in real-time. 100% client-side, no data uploads.",
+    keywords: ["word counter", "character counter", "word count", "character count", "word count tool", "text counter"],
+    relatedTools: ["case-converter", "remove-duplicate-lines", "text-diff"],
+  },
+  {
+    id: "remove-duplicate-lines",
+    title: "Remove Duplicate Lines",
+    description: "Remove duplicate lines from any text, sort alphabetically or reverse, and get a clean unique list. Perfect for cleaning up lists and data.",
+    category: "text",
+    icon: "format_list_bulleted",
+    metaDescription: "Free online tool to remove duplicate lines from text. Remove duplicates, sort alphabetically (A-Z or Z-A), trim whitespace, and ignore empty lines. 100% client-side.",
+    keywords: ["remove duplicate lines", "duplicate line remover", "deduplicate text", "remove duplicate text", "unique lines"],
+    relatedTools: ["case-converter", "word-counter", "text-diff"],
+  },
+  {
+    id: "wi-fi-qr-code-generator",
+    title: "Wi-Fi QR Code Generator",
+    description: "Generate a QR code that smartphones scan to join your Wi-Fi instantly. Enter SSID, password, and encryption type.",
+    category: "generators",
+    icon: "qr_code",
+    metaDescription: "Free online Wi-Fi QR code generator. Create a QR code for your Wi-Fi network — anyone can scan it with their phone to connect instantly. 100% client-side.",
+    keywords: ["wi-fi qr code", "wifi qr code generator", "qr code wifi", "wifi qr code maker", "qr code for wifi password"],
+    relatedTools: ["qr-code-generator", "password-generator", "uuid-generator"],
+  },
+  {
+    id: "secure-wpa2-password-generator",
+    title: "Secure WPA2 Password Generator",
+    description: "Generate strong Wi-Fi passwords for routers — 16-20 chars, no ambiguous characters like l, 1, O, 0 that are hard to type.",
+    category: "generators",
+    icon: "vpn_key",
+    metaDescription: "Free online secure Wi-Fi password generator. Create strong WPA2-compatible passwords (16-20 chars) without ambiguous characters. 100% client-side.",
+    keywords: ["wpa2 password generator", "wifi password generator", "secure wifi password", "wpa2 key generator", "router password generator"],
+    relatedTools: ["password-generator", "wi-fi-qr-code-generator", "uuid-generator"],
+  },
+  {
+    id: "qr-code-generator",
+    title: "QR Code Generator",
+    description: "Generate QR codes instantly from any text or URL. Download as SVG. No tracking, no server uploads, pure client-side generation.",
+    category: "generators",
+    icon: "qr_code",
+    metaDescription: "Free online QR code generator. Create QR codes from text or URLs instantly. Download as SVG vector graphics. 100% client-side, no tracking, no uploads.",
+    keywords: ["qr code generator", "qr generator", "create qr code", "qr code maker", "free qr code"],
+    relatedTools: ["password-generator", "uuid-generator", "lorem-ipsum"],
+  },
 ];
 
 export function getToolById(id: string): ToolDefinition | undefined {
@@ -348,6 +398,16 @@ export function getRelatedTools(toolId: string): ToolDefinition[] {
 
 export function getCategoryInfo(id: ToolCategory): ToolCategoryInfo | undefined {
   return categories.find((c) => c.id === id);
+}
+
+const categoryRouteMap: Record<string, string> = {
+  formatters: "dev", encoders: "dev", converters: "dev",
+  text: "text", generators: "generate",
+  images: "dev", security: "dev", web: "dev",
+};
+
+export function getToolUrl(tool: { id: string; category: string }): string {
+  return `/${categoryRouteMap[tool.category] || "dev"}/${tool.id}`;
 }
 
 export function getToolCategoryPairs(): { category: ToolCategoryInfo; tools: ToolDefinition[] }[] {

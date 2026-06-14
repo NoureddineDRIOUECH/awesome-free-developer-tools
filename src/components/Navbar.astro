@@ -1,8 +1,8 @@
 ---
-import { tools, categories } from "../lib/tools";
+import { tools, categories, getToolUrl } from "../lib/tools";
 const nonEmptyCategories = categories.filter((c) => tools.some((t) => t.category === c.id));
 const catCounts = Object.fromEntries(nonEmptyCategories.map((c) => [c.id, tools.filter((t) => t.category === c.id).length]));
-const allToolItems = tools.map((t) => ({ id: t.id, title: t.title, category: t.category, url: `/tools/${t.id}` }));
+const allToolItems = tools.map((t) => ({ id: t.id, title: t.title, category: t.category, url: getToolUrl(t) }));
 ---
 
 <nav class="sticky top-0 z-50 border-b border-surface-container-highest bg-background/80 backdrop-blur-xl">

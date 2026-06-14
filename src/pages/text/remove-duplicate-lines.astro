@@ -1,0 +1,280 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("remove-duplicate-lines")!;
+---
+
+<ToolLayout
+  tool={tool}
+>
+  <!-- Tool UI -->
+  <section class="container-main pb-8">
+    <div class="max-w-4xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-4">
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="rd-input" class="text-sm font-medium">
+                Input
+              </label>
+              <button id="btn-load-example" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+                </svg>
+                Load Example
+              </button>
+            </div>
+            <textarea
+              id="rd-input"
+              class="input-field font-mono text-sm min-h-[200px] resize-y scrollbar-thin"
+              placeholder="Paste your list here..."
+              spellcheck="false"
+            ></textarea>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-4">
+            <div class="flex items-center gap-2">
+              <span class="text-xs text-on-surface-variant">Sort:</span>
+              <button data-sort="none" class="active border-primary text-xs px-3 py-1 rounded-full border transition-colors">None</button>
+              <button data-sort="asc" class="text-xs px-3 py-1 rounded-full border border-surface-container-highest hover:border-primary transition-colors">A-Z</button>
+              <button data-sort="desc" class="text-xs px-3 py-1 rounded-full border border-surface-container-highest hover:border-primary transition-colors">Z-A</button>
+            </div>
+
+            <div class="flex flex-wrap items-center gap-3">
+              <label class="flex items-center gap-1.5 text-xs text-on-surface-variant cursor-pointer">
+                <input type="checkbox" data-toggle="ignore" checked class="accent-primary" />
+                Ignore empty lines
+              </label>
+              <label class="flex items-center gap-1.5 text-xs text-on-surface-variant cursor-pointer">
+                <input type="checkbox" data-toggle="trim" checked class="accent-primary" />
+                Trim whitespace
+              </label>
+              <label class="flex items-center gap-1.5 text-xs text-on-surface-variant cursor-pointer">
+                <input type="checkbox" data-toggle="case" class="accent-primary" />
+                Case-insensitive
+              </label>
+            </div>
+          </div>
+
+          <div class="flex flex-wrap items-center gap-2">
+            <button id="btn-process" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/>
+              </svg>
+              Process
+            </button>
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div>
+            <div class="flex items-center justify-between mb-1.5">
+              <label for="rd-output" class="text-sm font-medium">Output</label>
+              <button id="btn-copy" class="text-xs text-primary hover:text-primary-hover transition-colors flex items-center gap-1">
+                <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/>
+                </svg>
+                Copy
+              </button>
+            </div>
+            <textarea
+              id="rd-output"
+              class="input-field font-mono text-sm min-h-[150px] resize-y scrollbar-thin"
+              readonly
+              placeholder="Processed output will appear here..."
+            ></textarea>
+          </div>
+
+          <div id="rd-stats" class="text-xs text-on-surface-variant text-center"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <!-- SEO Content -->
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Duplicate Line Remover?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>duplicate line remover</strong> is a tool that takes multi-line text and removes
+        repeated lines, leaving only unique entries. Developers, data analysts, and content
+        professionals use a <strong>deduplication tool</strong> to clean up lists, logs, CSV data,
+        and any text with redundant entries. Our free <strong>online duplicate line remover</strong>
+        processes everything in your browser — your data never leaves your device.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Common Use Cases</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Cleaning Up Lists</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Remove duplicate entries from mailing lists, inventory sheets, or any collection of
+            items. A <strong>deduplicator</strong> ensures each entry appears only once.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Log File Analysis</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Server logs and error reports often contain repeated entries. Removing duplicates helps
+            you focus on unique events and identify patterns more efficiently.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Data Preparation</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            Before importing data into databases or spreadsheets, use a <strong>duplicate line remover</strong>
+            to clean your data and prevent integrity issues from repeated rows.
+          </p>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">Keyword Research</h4>
+          <p class="mt-1 text-xs text-on-surface-variant">
+            SEO professionals collect keyword lists that often contain overlaps. Deduplication ensures
+            each keyword is counted once for accurate analysis and reporting.
+          </p>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Use This Duplicate Line Remover</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        To <strong>remove duplicate lines</strong>, paste your multi-line text into the input area.
+        Use the sort options to arrange results alphabetically (A-Z or Z-A), or keep the original
+        order with <strong>None</strong>. Toggle <strong>Ignore empty lines</strong>,
+        <strong>Trim whitespace</strong>, and <strong>Case-insensitive</strong> options to control
+        how duplicates are detected. Click <strong>Process</strong> to deduplicate, or
+        <strong>Load Example</strong> to see a sample. Copy the cleaned result using the
+        <strong>Copy</strong> button. All processing is done client-side for complete privacy.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Tips for Deduplication</h3>
+      <ul class="text-sm text-on-surface-variant leading-relaxed space-y-2 mb-6 list-disc pl-5">
+        <li><strong>Enable trim whitespace</strong> — Trailing or leading spaces can make identical lines appear different. Trimming ensures accurate duplicate detection.</li>
+        <li><strong>Use case-insensitive mode</strong> — When "Apple" and "apple" should be treated as duplicates, enable case-insensitive matching for more thorough deduplication.</li>
+        <li><strong>Check empty lines</strong> — Empty lines are often artifacts from copying text. Ignoring them keeps your output clean and focused on actual content.</li>
+        <li><strong>Sort after dedup</strong> — Sorting your unique lines alphabetically makes the result easier to scan and use in spreadsheets or databases.</li>
+      </ul>
+
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Whether you are cleaning a list of email addresses, deduplicating keywords for SEO,
+        preparing data for import, or simply organizing text, this <strong>duplicate line remover</strong>
+        gives you fast, reliable results. No sign-up, no ads, no server uploads — just a free,
+        private <strong>text deduplication tool</strong> that works offline.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  const input = document.getElementById("rd-input");
+  const output = document.getElementById("rd-output");
+  const btnProcess = document.getElementById("btn-process");
+  const btnClear = document.getElementById("btn-clear");
+  const btnCopy = document.getElementById("btn-copy");
+  const btnLoad = document.getElementById("btn-load-example");
+  const statsEl = document.getElementById("rd-stats");
+
+  let sortMode = "none";
+  let ignoreEmpty = true;
+  let trimWhitespace = true;
+  let caseInsensitive = false;
+
+  function processLines() {
+    let lines = input.value.split("\n");
+    const originalCount = lines.length;
+
+    if (trimWhitespace) lines = lines.map(l => l.trim());
+    if (ignoreEmpty) lines = lines.filter(l => l !== "");
+
+    let seen = new Set();
+    let uniqueLines = [];
+    for (const line of lines) {
+      const key = caseInsensitive ? line.toLowerCase() : line;
+      if (!seen.has(key)) {
+        seen.add(key);
+        uniqueLines.push(line);
+      }
+    }
+
+    if (sortMode === "asc") uniqueLines.sort((a, b) => a.localeCompare(b));
+    else if (sortMode === "desc") uniqueLines.sort((a, b) => b.localeCompare(a));
+
+    output.value = uniqueLines.join("\n");
+    const removed = originalCount - uniqueLines.length;
+    statsEl.textContent = `Removed ${removed} duplicate(s), ${uniqueLines.length} unique line(s) remaining`;
+  }
+
+  document.querySelectorAll("[data-sort]").forEach(btn => {
+    btn.onclick = () => {
+      document.querySelectorAll("[data-sort]").forEach(b => b.classList.remove("active", "border-primary"));
+      btn.classList.add("active", "border-primary");
+      sortMode = btn.dataset.sort;
+    };
+  });
+
+  document.querySelectorAll("[data-toggle]").forEach(cb => {
+    cb.onchange = () => {
+      const toggle = cb.dataset.toggle;
+      if (toggle === "ignore") ignoreEmpty = cb.checked;
+      else if (toggle === "trim") trimWhitespace = cb.checked;
+      else if (toggle === "case") caseInsensitive = cb.checked;
+    };
+  });
+
+  btnProcess.onclick = processLines;
+
+  btnClear.onclick = () => {
+    input.value = "";
+    output.value = "";
+    statsEl.textContent = "";
+    input.focus();
+  };
+
+  btnCopy.onclick = async () => {
+    const text = output.value;
+    if (!text) return;
+    try {
+      gtag('event', 'copy', { tool_id: 'remove-duplicate-lines', content_type: 'remove-duplicate-lines' });
+      await navigator.clipboard.writeText(text);
+      if (window.showToast) showToast("Copied!");
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    } catch {
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+      if (window.showToast) showToast("Copied!");
+      btnCopy.innerHTML =
+        '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+      setTimeout(() => {
+        btnCopy.innerHTML =
+          '<svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy';
+      }, 2000);
+    }
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'remove-duplicate-lines' });
+    input.value = "apple\nbanana\napple\ncherry\nbanana\ndate\napple";
+    processLines();
+  };
+</script>

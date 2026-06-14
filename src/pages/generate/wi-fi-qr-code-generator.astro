@@ -1,0 +1,251 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("wi-fi-qr-code-generator")!;
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <div class="grid gap-5">
+          <div>
+            <label for="wifi-ssid" class="text-sm font-medium mb-1.5 block">Network Name (SSID)</label>
+            <input
+              type="text"
+              id="wifi-ssid"
+              class="input-field text-sm w-full"
+              placeholder="My Wi-Fi Network"
+            />
+          </div>
+
+          <div>
+            <label for="wifi-password" class="text-sm font-medium mb-1.5 block">Password</label>
+            <input
+              type="text"
+              id="wifi-password"
+              class="input-field text-sm w-full font-mono"
+              placeholder="Enter Wi-Fi password"
+            />
+          </div>
+
+          <div class="flex flex-wrap items-end gap-4">
+            <div class="min-w-[140px]">
+              <label for="wifi-encryption" class="text-sm font-medium mb-1.5 block">Encryption</label>
+              <select id="wifi-encryption" class="input-field text-sm">
+                <option value="WPA">WPA / WPA2</option>
+                <option value="WEP">WEP</option>
+                <option value="nopass">None (Open)</option>
+              </select>
+            </div>
+
+            <div class="min-w-[140px]">
+              <label for="wifi-qr-size" class="text-sm font-medium mb-1.5 block">Size</label>
+              <select id="wifi-qr-size" class="input-field text-sm">
+                <option value="256">256 × 256</option>
+                <option value="512" selected>512 × 512</option>
+                <option value="1024">1024 × 1024</option>
+              </select>
+            </div>
+
+            <button id="btn-generate" class="btn-primary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"/>
+              </svg>
+              Generate QR Code
+            </button>
+
+            <button id="btn-download" class="btn-secondary text-sm hidden">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download SVG
+            </button>
+
+            <button id="btn-load-example" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13.828 10.172a4 4 0 00-5.656 0l-4 4a4 4 0 105.656 5.656l1.102-1.101m-.758-4.899a4 4 0 005.656 0l4-4a4 4 0 00-5.656-5.656l-1.1 1.1"/>
+              </svg>
+              Load Example
+            </button>
+
+            <button id="btn-clear" class="btn-secondary text-sm">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear
+            </button>
+          </div>
+
+          <div id="qr-output" class="flex flex-col items-center justify-center min-h-[220px] rounded-lg bg-surface-container p-4">
+            <p class="text-sm text-on-surface-variant">Enter network details to generate a Wi-Fi QR code.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+
+  <section class="container-main py-8 pb-16">
+    <div class="max-w-3xl mx-auto">
+      <h2 class="text-2xl font-semibold tracking-tight mb-4">What Is a Wi-Fi QR Code?</h2>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        A <strong>Wi-Fi QR code</strong> encodes your network credentials into a scannable QR code.
+        When a smartphone scans it, the device automatically connects to your Wi-Fi network —
+        no need to search for the network name or type in a long password. Our <strong>free Wi-Fi QR code
+        generator</strong> creates these codes directly in your browser. Your credentials never leave
+        your device.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How the Wi-Fi QR Code Format Works</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed mb-6">
+        Wi-Fi QR codes follow a standardized format defined by the <strong>IEEE 802.11</strong>
+        specification: <code class="text-primary text-xs">WIFI:T:WPA;S:MyNetwork;P:MyPassword;;</code>.
+        The format encodes the encryption type (<code>T</code>), SSID (<code>S</code>), and password
+        (<code>P</code>). Modern smartphones running iOS 11+ or Android 10+ natively recognize this
+        format through the built-in camera app — no third-party app required.
+      </p>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">Benefits of Using a Wi-Fi QR Code</h3>
+      <div class="grid sm:grid-cols-2 gap-3 mb-6">
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">For Home Users</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>Print and stick on the fridge for guests</li>
+            <li>Share without revealing the password verbally</li>
+            <li>Works with all modern smartphones</li>
+            <li>No app needed — native camera support</li>
+          </ul>
+        </div>
+        <div class="tool-card p-4">
+          <h4 class="font-medium text-sm text-primary">For Businesses</h4>
+          <ul class="mt-1 text-xs text-on-surface-variant space-y-1 list-disc pl-4">
+            <li>Display at reception or waiting areas</li>
+            <li>Include in digital signage or menus</li>
+            <li>Reduce IT support requests for passwords</li>
+            <li>Easily update by regenerating the QR code</li>
+          </ul>
+        </div>
+      </div>
+
+      <h3 class="text-xl font-semibold tracking-tight mb-3 mt-8">How to Generate a Wi-Fi QR Code</h3>
+      <p class="text-sm text-on-surface-variant leading-relaxed">
+        Enter your network <strong>SSID</strong> (the name of your Wi-Fi network), your
+        <strong>password</strong>, and select the correct <strong>encryption type</strong>
+        (WPA/WPA2 for most modern routers, WEP for older hardware, or None for open networks).
+        Click <strong>Generate QR Code</strong> to create your scannable code. Use
+        <strong>Download SVG</strong> to save it as a high-quality vector graphic for printing.
+      </p>
+    </div>
+  </section>
+
+  <AdSlot format="banner" class="container-main my-4" />
+</ToolLayout>
+
+<Toast />
+
+<script>
+  import qrcode from 'qrcode-generator';
+
+  const ssidInput = document.getElementById("wifi-ssid");
+  const passInput = document.getElementById("wifi-password");
+  const encSelect = document.getElementById("wifi-encryption");
+  const sizeSelect = document.getElementById("wifi-qr-size");
+  const btnGenerate = document.getElementById("btn-generate");
+  const btnDownload = document.getElementById("btn-download");
+  const btnClear = document.getElementById("btn-clear");
+  const btnLoad = document.getElementById("btn-load-example");
+  const qrOutput = document.getElementById("qr-output");
+
+  function generateWiFiQR() {
+    const ssid = ssidInput.value.trim();
+    const password = passInput.value.trim();
+    const enc = encSelect.value;
+
+    if (!ssid) {
+      qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Please enter a network name (SSID).</p>';
+      btnDownload.classList.add("hidden");
+      return;
+    }
+
+    const wifiStr = `WIFI:T:${enc};S:${ssid};P:${password};;`;
+
+    try {
+      const qr = qrcode(0, 'M');
+      qr.addData(wifiStr);
+      qr.make();
+
+      const modCount = qr.getModuleCount();
+      const cellSize = 4;
+      const margin = 2;
+      const size = modCount * cellSize + margin * 2 * cellSize;
+
+      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
+      svg += `<rect width="100%" height="100%" fill="white"/>`;
+
+      for (let r = 0; r < modCount; r++) {
+        for (let c = 0; c < modCount; c++) {
+          if (qr.isDark(r, c)) {
+            const x = (c + margin) * cellSize;
+            const y = (r + margin) * cellSize;
+            svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="black"/>`;
+          }
+        }
+      }
+
+      svg += '</svg>';
+      qrOutput.innerHTML = svg;
+
+      const svgEl = qrOutput.querySelector('svg');
+      const displaySize = parseInt(sizeSelect.value);
+      svgEl.style.width = displaySize + 'px';
+      svgEl.style.height = displaySize + 'px';
+      svgEl.style.maxWidth = '100%';
+
+      qrOutput.dataset.svg = svg;
+      btnDownload.classList.remove("hidden");
+
+      gtag('event', 'tool_action', { tool_id: 'wi-fi-qr-code-generator', action: 'generate' });
+    } catch (e) {
+      qrOutput.innerHTML = `<p class="text-sm text-red-400">Error: ${e.message}</p>`;
+      btnDownload.classList.add("hidden");
+    }
+  }
+
+  btnGenerate.onclick = generateWiFiQR;
+  ssidInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
+  passInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
+
+  btnDownload.onclick = () => {
+    const svg = qrOutput.dataset.svg;
+    if (!svg) return;
+    const blob = new Blob([svg], { type: 'image/svg+xml' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'wifi-qrcode.svg';
+    a.click();
+    URL.revokeObjectURL(url);
+    if (window.showToast) showToast("Downloaded!");
+  };
+
+  btnClear.onclick = () => {
+    ssidInput.value = "";
+    passInput.value = "";
+    qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Enter network details to generate a Wi-Fi QR code.</p>';
+    btnDownload.classList.add("hidden");
+    ssidInput.focus();
+  };
+
+  btnLoad.onclick = () => {
+    gtag('event', 'load_example', { tool_id: 'wi-fi-qr-code-generator' });
+    ssidInput.value = "Guest Wi-Fi";
+    passInput.value = "SecurePass123!";
+    encSelect.value = "WPA";
+    generateWiFiQR();
+  };
+</script>
