@@ -23,6 +23,12 @@ if (searchQuery) {
   );
 }
 
+const toolsJson = JSON.stringify(tools.map(t => ({
+  title: t.title,
+  description: t.description,
+  category: t.category,
+  keywords: t.keywords
+})));
 const allSchema = {
   "@context": "https://schema.org",
   "@type": "CollectionPage",
@@ -135,13 +141,7 @@ const allSchema = {
 
 </BaseLayout>
 
-<script type="application/json" id="tools-data">{JSON.stringify(tools.map(t => ({
-  title: t.title,
-  description: t.description,
-  category: t.category,
-  keywords: t.keywords
-})))
-}</script>
+<script type="application/json" id="tools-data" set:html={toolsJson}></script>
 
 <script>
 document.addEventListener("astro:page-load", function () {
