@@ -34,9 +34,9 @@ const {
 <!doctype html>
 <html lang="en">
   <head>
-    <script>function gtag(){var d=window.dataLayer=window.dataLayer||[];d.push(arguments);}</script>
+    <script is:inline>function gtag(){window.dataLayer=window.dataLayer||[];window.dataLayer.push(arguments);}</script>
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FX1YP6KVKK"></script>
-    <script>gtag('js',new Date());gtag('config','G-FX1YP6KVKK');</script>
+    <script is:inline>gtag('js',new Date());gtag('config','G-FX1YP6KVKK');</script>
     <SEOHead
       title={title}
       description={description}
