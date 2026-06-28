@@ -194,13 +194,14 @@
   }
 }
 
-::view-transition-old(root),
-::view-transition-new(root) {
-  animation-duration: 0.15s;
-  background: var(--color-background);
-  mix-blend-mode: normal;
+::view-transition-old(root) {
+  animation: none;
+  opacity: 0;
 }
-
+::view-transition-new(root) {
+  animation: 0.12s ease-in fade-in;
+  background: #0f1117;
+}
 ::view-transition-group(root) {
-  background: var(--color-background);
+  background: #0f1117;
 }
