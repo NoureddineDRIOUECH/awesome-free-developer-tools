@@ -44,9 +44,9 @@ const content = contentMap[category] || contentMap.dev;
 
 <div class="container-main py-6" data-geo-category={category}>
   <div class="max-w-4xl mx-auto">
-    <div class="relative overflow-hidden rounded-xl border border-primary/10 bg-gradient-to-r from-primary/5 via-primary/[0.03] to-transparent p-4 sm:p-5">
+    <div class="rounded-lg border border-surface-container-highest bg-surface-container-low p-4 sm:p-5">
       <div class="flex items-start gap-4">
-        <div class="shrink-0 size-10 rounded-lg bg-primary/10 text-primary flex items-center justify-center" set:html={content.icon}>
+        <div class="shrink-0 size-10 rounded-md bg-surface-container-high text-primary flex items-center justify-center" set:html={content.icon}>
         </div>
         <div class="min-w-0 flex-1">
           <h3 class="text-sm font-semibold">{content.title}</h3>
@@ -55,7 +55,7 @@ const content = contentMap[category] || contentMap.dev;
             {content.links.map((link) => (
               <a
                 href={link.url}
-                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors"
+                class="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-md border border-surface-container-highest text-xs font-medium text-on-surface-variant hover:text-on-surface hover:border-outline/50 transition-colors"
                 rel="sponsored noopener"
                 target="_blank"
               >
