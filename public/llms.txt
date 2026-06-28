@@ -1,0 +1,79 @@
+# WebUtil — Free Online Developer Tools
+
+Free online developer tools that run 100% client-side in your browser. No data is uploaded to any server. No sign-ups, no tracking, no limits. Built with Astro, TypeScript, and Tailwind CSS.
+
+## Key Pages
+
+- [Home](https://webutil.tech): Browse all 50+ free developer tools
+- [Blog](https://webutil.tech/blog): Developer guides and tutorials
+- [About](https://webutil.tech/about): About the project and tech stack
+- [FAQ](https://webutil.tech/faq): Frequently asked questions
+- [Tools](https://webutil.tech/tools): Complete tool index
+
+## JSON & Data Tools
+
+- [JSON Formatter](https://webutil.tech/dev/json-formatter): Format, validate, and beautify JSON with syntax highlighting
+- [JSON to CSV](https://webutil.tech/dev/json-to-csv): Convert JSON arrays to CSV with BOM and nested object flattening
+- [YAML Converter](https://webutil.tech/dev/yaml-converter): Convert between YAML and JSON with live preview
+- [XML Formatter](https://webutil.tech/dev/xml-formatter): Format, validate, and beautify XML documents
+- [SQL Formatter](https://webutil.tech/dev/sql-formatter): Beautify SQL queries with customizable indentation
+
+## Encoding & Security
+
+- [Base64 Encoder](https://webutil.tech/dev/base64-encoder): Encode and decode text/files to/from Base64
+- [URL Encoder](https://webutil.tech/dev/url-encoder): Encode and decode URLs and query parameters
+- [HTML Entities](https://webutil.tech/dev/html-entities): Convert special characters to HTML entities
+- [Hash Generator](https://webutil.tech/dev/hash-generator): Generate MD5, SHA-1, SHA-256, SHA-512 hashes
+- [JWT Decoder](https://webutil.tech/dev/jwt-decoder): Decode and inspect JWT token header, payload, and signature
+- [JWT Expiration Checker](https://webutil.tech/dev/jwt-expiration-checker): Check JWT token expiration and claims
+
+## Generators
+
+- [Password Generator](https://webutil.tech/generate/password-generator): Cryptographically secure random passwords
+- [UUID Generator](https://webutil.tech/generate/uuid-generator): Generate UUID v4 identifiers, bulk up to 100
+- [UUID v7 Generator](https://webutil.tech/generate/uuid-v7-generator): Time-ordered UUID v7 identifiers
+- [Lorem Ipsum Generator](https://webutil.tech/generate/lorem-ipsum): Generate placeholder text
+- [QR Code Generator](https://webutil.tech/generate/qr-code-generator): Create QR codes from text or URLs, download as SVG
+- [Wi-Fi QR Code Generator](https://webutil.tech/generate/wi-fi-qr-code-generator): QR code for instant Wi-Fi network access
+- [Secure WPA2 Password Generator](https://webutil.tech/generate/secure-wpa2-password-generator): Router-friendly passwords without ambiguous characters
+
+## Conversion Tools
+
+- [Color Converter](https://webutil.tech/dev/color-converter): Convert between HEX, RGB, HSL, and named CSS colors
+- [Case Converter](https://webutil.tech/text/case-converter): Convert between camelCase, snake_case, kebab-case, etc.
+- [px to rem Converter](https://webutil.tech/dev/px-to-rem): Convert pixel values to rem units
+- [Image Converter](https://webutil.tech/dev/image-converter): Convert images between PNG, JPEG, WebP, GIF
+
+## Text Tools
+
+- [Markdown Preview](https://webutil.tech/text/markdown-preview): Write and preview Markdown with live HTML rendering
+- [Text Diff Checker](https://webutil.tech/text/text-diff): Compare two texts side-by-side
+- [Regex Tester](https://webutil.tech/text/regex-tester): Test regular expressions with match highlighting
+- [Word & Character Counter](https://webutil.tech/text/word-counter): Count words, characters, sentences, reading time
+- [Remove Duplicate Lines](https://webutil.tech/text/remove-duplicate-lines): Deduplicate and sort text lines
+
+## Validators
+
+- [Kubernetes YAML Validator](https://webutil.tech/dev/kubernetes-yaml-validator): Validate K8s manifests
+- [Docker Compose Validator](https://webutil.tech/dev/docker-compose-validator): Validate docker-compose.yml files
+- [GitHub Actions Validator](https://webutil.tech/dev/github-actions-validator): Validate workflow YAML syntax
+
+## Blog Posts
+
+- [JSON Formatting Guide](https://webutil.tech/blog/json-formatting-guide)
+- [Base64 Encoding Methods](https://webutil.tech/blog/base64-encoding-methods)
+- [JWT Authentication Explained](https://webutil.tech/blog/jwt-authentication-explained)
+- [URL Encoding & Decoding](https://webutil.tech/blog/url-encoding-decoding)
+- [Password Security Best Practices](https://webutil.tech/blog/password-security-best-practices)
+- [Regex Tutorial for Beginners](https://webutil.tech/blog/regex-tutorial)
+- [CSS Units Guide](https://webutil.tech/blog/css-units-guide)
+- [Docker Compose Tutorial](https://webutil.tech/blog/docker-compose-tutorial)
+- [REST API Design Principles](https://webutil.tech/blog/rest-api-design)
+- [How QR Codes Work](https://webutil.tech/blog/how-qr-codes-work)
+- [UUID v4 vs UUID v7](https://webutil.tech/blog/uuid-v4-vs-uuid-v7)
+- [JSON vs YAML for APIs](https://webutil.tech/blog/json-vs-yaml-for-apis)
+
+## More
+
+- [GitHub Repository](https://github.com/NoureddineDRIOUECH/WebUtil): Open source codebase
+- [Canonical dev.to Post](https://dev.to/noureddine_drc/50-free-online-developer-tools-that-run-100-in-your-browser-mda)
