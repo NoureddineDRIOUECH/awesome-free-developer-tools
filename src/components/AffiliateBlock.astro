@@ -44,7 +44,7 @@ const content = contentMap[category] || contentMap.dev;
 
 <div class="container-main py-6" data-geo-category={category}>
   <div class="max-w-4xl mx-auto">
-    <div class="rounded-lg border border-surface-container-highest bg-surface-container-low p-4 sm:p-5">
+    <div class="rounded-lg border border-surface-container-highest bg-surface-container-low p-4 sm:p-5" data-sponsored>
       <div class="flex items-start gap-4">
         <div class="shrink-0 size-10 rounded-md bg-surface-container-high text-primary flex items-center justify-center" set:html={content.icon}>
         </div>
