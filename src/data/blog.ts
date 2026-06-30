@@ -252,6 +252,22 @@ export const blogPosts: BlogPost[] = [
     category: "Generators",
     readTime: "5 min read",
   },
+  {
+    slug: "common-jwt-errors",
+    title: "Common JWT Errors and How to Debug Them",
+    description: "A practical guide to debugging JWT parsing errors — base64 decoding issues, Bearer prefix problems, signature mismatches, and how to fix them.",
+    date: new Date("2026-06-28"),
+    category: "Security",
+    readTime: "5 min read",
+  },
+  {
+    slug: "json-compact-pretty-print",
+    title: "JSON Compact Pretty-Print: Smart Formatting Between Minified and Expanded",
+    description: "Learn how smart JSON formatting works — keeping small objects on one line while expanding large ones. A practical guide to compact pretty-print techniques.",
+    date: new Date("2026-06-30"),
+    category: "Formatters",
+    readTime: "4 min read",
+  },
 ];
 
 export const blogContent: Record<string, BlogContent> = {
@@ -603,6 +619,30 @@ export const blogContent: Record<string, BlogContent> = {
       { heading: "QR Code Use Cases and Best Practices", body: "Common use cases: URLs (link to websites, app stores), vCard contacts (scan to save to phone), Wi-Fi credentials (scan to connect), payment links (scan to pay), event check-in (tickets with QR codes), and product packaging (scan for info). Best practices: always test your QR code with multiple devices and apps. Ensure minimum print size of 2cm x 2cm (0.8 inches) for reliable scanning. Maintain high contrast between modules and background. Test with your QR Code Generator before mass printing — verify the data is correct and all URLs use HTTPS for security." },
     ],
   },
+  "common-jwt-errors": {
+    title: "Common JWT Errors and How to Debug Them",
+    description: "A practical guide to debugging JWT parsing errors — base64 decoding issues, Bearer prefix problems, signature mismatches, and how to fix them.",
+    date: new Date("2026-06-28"),
+    sections: [
+      { heading: "Why JWT Parsing Fails", body: "JWT parsing errors are some of the most frustrating issues in API development. The error messages are often cryptic — 'illegal base64 data at input byte 0', 'signature is invalid', or 'token contains an invalid number of segments'. Most of these errors have simple causes: including the Bearer prefix in the token string, using the wrong signing key, or passing an expired token. Understanding what each error means saves hours of debugging. Use our JWT Decoder to inspect token parts and spot issues instantly." },
+      { heading: "The Bearer Prefix Problem", body: "The most common JWT error is passing 'Bearer <token>' instead of just '<token>' to the parser. When you extract the Authorization header, it contains 'Bearer eyJhbGci...'. If you pass this whole string to jwt.ParseWithClaims (Go), jwt.verify (Node.js), or any parser, the library tries to base64-decode 'Bearer ' as the header segment, which fails with 'illegal base64 data at input byte 0'. Always strip the prefix: tokenString = strings.TrimPrefix(tokenString, 'Bearer ') in Go, or token = authHeader.replace('Bearer ', '') in JavaScript. Our JWT Decoder accepts tokens with or without the prefix and shows you the decoded parts." },
+      { heading: "Signature Validation Errors", body: "'Signature is invalid' or 'token signature does not match' means the token was signed with a different secret or key than what you're using to verify. Common causes: using HS256 (symmetric) signing but passing an RSA public key for verification, rotating the signing secret without accounting for tokens issued under the old secret, or environment mismatch (development vs production secret). For Go's jwt.ParseWithClaims, check that your token's signing method matches the expected method in the callback. The error 'unexpected signing method' fires when the token uses a different algorithm than your code expects. Always verify the algorithm in your parser: if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok { return nil, errors.New('unexpected signing method') }." },
+      { heading: "Expiration and Claim Validation", body: "'Token is expired' is straightforward — the exp (expiration) claim has passed. But 'invalid claims' or structural errors often mean missing required claims. If your parser expects custom claims (like a UserClaims struct), but the token only contains standard registered claims (iss, sub, exp, iat), parsing fails. Always log the raw error from the parser. For Go: _, err := jwt.ParseWithClaims(...) — the err contains the specific failure reason. Validate all standard claims: iss (issuer) should match your auth server URL, aud (audience) should match your service name, exp must be in the future. Our JWT Expiration Checker decodes and displays all claims so you can verify expiration and payload structure at a glance." },
+      { heading: "Multi-Secret Key Rotation Strategy", body: "When rotating JWT signing keys, tokens issued under the old key will fail validation after rotation. The solution: maintain a list of valid keys and try each one. In Go, collect all valid secrets in a slice and attempt parsing with each. In the jwt.ParseWithClaims key function, iterate over keys and return the first one that matches the token's key ID (kid header). Include a grace period where both old and new keys are accepted. Store the kid in the JWT header so your parser can select the correct key without trying all possibilities. Use our JWT Decoder to inspect the kid header and verify which key was used to sign. This pattern lets you rotate keys without invalidating existing sessions." },
+    ],
+  },
+  "json-compact-pretty-print": {
+    title: "JSON Compact Pretty-Print: Smart Formatting Between Minified and Expanded",
+    description: "Learn how smart JSON formatting works — keeping small objects on one line while expanding large ones. A practical guide to compact pretty-print techniques.",
+    date: new Date("2026-06-30"),
+    sections: [
+      { heading: "What Is Compact Pretty-Print?", body: "Standard JSON formatters offer two modes: minified (everything on one line) or pretty-printed (everything expanded with indentation). Compact pretty-print (also called smart formatting) is a middle ground — small objects and arrays stay on one line while large structures are expanded. This preserves readability for shallow data while keeping deep structures navigable. Python's json module doesn't support this natively, but you can achieve it with a custom encoder or by using tools that offer format/compact toggle options like our JSON Formatter." },
+      { heading: "When to Use Compact Formatting", body: "Compact formatting is ideal for log output where you need to see structure quickly. Development API responses become more readable when small config objects stay inline but large data arrays are expanded. Configuration files benefit from compact formatting because it reduces vertical scrolling while preserving structure. Debug output with mixed-depth data — like a response containing both a small metadata object and a large items array — is where compact formatting truly shines. Our JSON Formatter lets you toggle between expanded, compact, and minified views with one click." },
+      { heading: "Implementing Compact Pretty-Print in Python", body: "To implement compact formatting in Python, subclass json.JSONEncoder and override the encode method. Set a max_inline_length threshold (e.g., 80 characters). Use regex to detect small objects and arrays: re.sub(r'\\{([^}]+)\\}', ...) for objects, re.sub(r'\\[([^\\]]+)\\]', ...) for arrays. If the serialized inline version is under the threshold, keep it on one line. If it exceeds the threshold, keep the standard expanded format. Pass indent=2 to your encoder for readability. This gives you full control — no external dependencies needed." },
+      { heading: "Compact Formatting in Other Languages", body: "JavaScript: JSON.stringify accepts a replacer function — you can post-process the output with regex similar to the Python approach. Node.js: the `json-stringify-pretty-compact` npm package provides this out of the box. Go: the encoding/json package doesn't support compact mode natively, but you can implement custom MarshalJSON methods on your structs. Rust: serde_json has a PrettyFormatter and CompactFormatter — you can write a custom formatter that switches between them per value. For quick one-off formatting without writing code, use our JSON Formatter which supports all three modes." },
+      { heading: "Comparing JSON Formatting Modes", body: "Minified: no whitespace, smallest size, unreadable to humans. Pretty-printed: full indentation, most readable, largest size. Compact: indented structure with inline leaf nodes, good readability, moderate size. For a typical API response with 100 items, minified is ~3KB, pretty-printed is ~6KB, compact is ~4KB. Compact strikes the best balance for development workflows — readable enough to inspect at a glance, compact enough to fit in terminal output and log files. Try all three modes on our JSON Formatter to see which works best for your data." },
+    ],
+  },
 };
 
 export const blogToolMapping: Record<string, string> = {
@@ -635,6 +675,8 @@ export const blogToolMapping: Record<string, string> = {
   "docker-compose-tutorial": "docker-compose-validator",
   "rest-api-design": "json-formatter",
   "how-qr-codes-work": "qr-code-generator",
+  "common-jwt-errors": "jwt-decoder",
+  "json-compact-pretty-print": "json-formatter",
 };
 
 export function getBlogPost(slug: string): BlogContent | undefined {

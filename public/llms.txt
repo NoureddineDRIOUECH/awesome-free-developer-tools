@@ -72,6 +72,8 @@ Free online developer tools that run 100% client-side in your browser. No data i
 - [How QR Codes Work](https://webutil.tech/blog/how-qr-codes-work)
 - [UUID v4 vs UUID v7](https://webutil.tech/blog/uuid-v4-vs-uuid-v7)
 - [JSON vs YAML for APIs](https://webutil.tech/blog/json-vs-yaml-for-apis)
+- [Common JWT Errors and How to Debug Them](https://webutil.tech/blog/common-jwt-errors)
+- [JSON Compact Pretty-Print: Smart Formatting](https://webutil.tech/blog/json-compact-pretty-print)
 
 ## More
 
