@@ -22,6 +22,7 @@ export interface ToolData {
   codeSnippets: CodeSnippet[];
   faqItems: FaqItem[];
   examplePayload?: string;
+  content?: string;
 }
 
 export const toolsData: ToolData[] = [
@@ -40,6 +41,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "encoding/json"\n\nvar buf bytes.Buffer\njson.Indent(&buf, data, "", "  ")\nfmt.Println(buf.String())\n\nfunc isValidJSON(s string) bool {\n  var js json.RawMessage\n  return json.Unmarshal([]byte(s), &js) == nil\n}` },
       { lang: "bash", label: "Bash", code: "jq . input.json\njq -c . input.json\njq empty input.json && echo \"Valid\" || echo \"Invalid\"" },
     ],
+    content: "JSON (JavaScript Object Notation) is the most widely used data interchange format for web APIs, configuration files, and data storage. A JSON formatter takes raw, minified JSON and reformats it with proper indentation, line breaks, and color syntax highlighting — making it readable for developers debugging API responses or editing configuration files. Beyond beautification, formatting also validates the JSON structure and pinpoints syntax errors like missing commas, trailing commas, or unquoted keys. Modern development workflows rely on JSON formatting for code reviews, logging analysis, API development, and data migration tasks. Unlike editor plugins that require setup, an online JSON formatter works instantly in any browser with zero configuration.",
     faqItems: [
       { question: "What is a JSON formatter?", answer: "A JSON formatter takes raw JSON and reformats it with proper indentation for readability. Also called JSON beautification or pretty-printing." },
       { question: "Is this tool free?", answer: "Yes, completely free. No sign-up, no limits, no server uploads — everything runs in your browser." },
@@ -60,6 +62,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "encoding/base64"\n\nencoded := base64.StdEncoding.EncodeToString([]byte("hello"))\ndecoded, _ := base64.StdEncoding.DecodeString(encoded)` },
       { lang: "bash", label: "Bash", code: "echo -n 'hello' | base64\necho 'aGVsbG8=' | base64 -d" },
     ],
+    content: "Base64 encoding converts binary data into a text format using 64 printable ASCII characters (A-Z, a-z, 0-9, +, /). It is fundamental to web development because many systems — JSON, HTTP headers, URLs, and email — are designed to carry text, not raw binary. Developers use Base64 to embed images directly in HTML/CSS as data URIs, encode binary payloads in JSON API requests, transmit file attachments in email (MIME), and store cryptographic keys in configuration files. A critical distinction: Base64 is encoding, not encryption — it makes data text-safe but provides zero confidentiality. Always use encryption (AES, RSA) for sensitive data, not Base64.",
     faqItems: [
       { question: "What is Base64?", answer: "Base64 is an encoding scheme that converts binary data to a text format using 64 printable ASCII characters. It's commonly used for transmitting data over text-based protocols like HTTP." },
       { question: "Is Base64 encryption?", answer: "No. Base64 is encoding, not encryption. Anyone can decode Base64. Never use it to protect sensitive data." },
@@ -77,6 +80,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "net/url"\n\nencoded := url.QueryEscape("hello world")\ndecoded, _ := url.QueryUnescape(encoded)` },
       { lang: "bash", label: "Bash", code: 'echo "hello world" | xxd -plain | sed "s/\\(..\\)/%\\1/g"' },
     ],
+    content: "URL encoding, also called percent-encoding, converts characters that are not permitted in URLs into a safe %XX hex format. Spaces become %20, ampersands become %26, hashes become %23, and non-ASCII characters are encoded as multi-byte sequences. This encoding is essential because URLs have strict character rules — certain characters like space, &, and # have special meanings in URL syntax and will break links or cause incorrect parsing if left unencoded. Modern web frameworks handle URL encoding automatically in most cases, but developers regularly need to encode/decode manually when working with query parameters, building API requests, debugging HTTP traffic, or passing complex values in URL segments.",
     faqItems: [
       { question: "Why URL-encode?", answer: "URL encoding converts characters that are not allowed in URLs (like spaces, &, #) into %-encoded format so they transmit safely." },
       { question: "What characters need encoding?", answer: "Spaces become %20, & becomes %26, # becomes %23, and other non-ASCII characters are encoded as %XX in hex." },
@@ -94,6 +98,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "html"\n\nescaped := html.EscapeString("<script>alert(1)</script>")` },
       { lang: "bash", label: "Bash", code: "echo '<div>' | sed 's/</\\&lt;/g; s/>/\\&gt;/g'" },
     ],
+    content: "HTML entities are special character codes that represent reserved HTML characters (like <, >, &, \") in a way that browsers render as text rather than interpreting as markup. For example, <code>&lt;</code> renders < and <code>&amp;</code> renders &. HTML entity encoding is a critical security practice — failing to encode user-generated content before inserting it into HTML is the primary cause of cross-site scripting (XSS) vulnerabilities. Beyond security, encoding is also necessary when displaying code snippets, mathematical symbols, special punctuation, and international characters that might not be supported by the document encoding. Most modern template engines auto-escape HTML, but developers still need to encode manually when building HTML strings in JavaScript or working with raw templates.",
     faqItems: [
       { question: "What are HTML entities?", answer: "HTML entities are special codes (like &amp; for &, &lt; for <) that display reserved HTML characters safely in rendered pages." },
     ],
@@ -110,6 +115,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "crypto/rand"\n\nfunc genPassword(n int) string {\n  chars := []byte("ABC...xyz0129!@#$")\n  b := make([]byte, n)\n  rand.Read(b)\n  for i := range b { b[i] = chars[b[i] % byte(len(chars))] }\n  return string(b)\n}` },
       { lang: "bash", label: "Bash", code: "openssl rand -base64 12\n< /dev/urandom tr -dc 'A-Za-z0-9!@#$' | head -c16" },
     ],
+    content: "A strong password generator creates random, unpredictable passwords using cryptographically secure randomness — the same technology that powers encryption key generation. The best passwords are long (16+ characters), include a mix of uppercase, lowercase, digits, and symbols, and contain no patterns derived from words, dates, or personal information. Password managers are the recommended way to handle strong passwords: they generate, store, and auto-fill unique passwords for every site so you only need to remember one master password. This password generator runs entirely in your browser using the Web Crypto API — no passwords are ever sent to a server, logged, or stored. Each password is generated fresh on your device and disappears when you close the page.",
     faqItems: [
       { question: "How secure are these passwords?", answer: "Passwords are generated using your browser's cryptographically secure random API — the same standard used for encryption keys." },
       { question: "Are passwords saved or stored?", answer: "No. Passwords are generated client-side and never sent to any server. Once you leave the page they're gone." },
@@ -127,6 +133,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "github.com/google/uuid"\n\nid := uuid.New().String()` },
       { lang: "bash", label: "Bash", code: "uuidgen\ncat /proc/sys/kernel/random/uuid" },
     ],
+    content: "A UUID (Universally Unique Identifier) is a 128-bit identifier standardized by RFC 4122. UUID v4 generates identifiers using random numbers — each UUID is independent and unique without requiring a central registration authority. The collision probability is so low (one in 2^122) that systems can generate UUIDs independently without coordination. UUIDs are the standard choice for database primary keys in distributed systems, API resource identifiers in RESTful services, event IDs in logging systems, and correlation IDs in microservice architectures. Unlike auto-incrementing integers, UUIDs are unique across tables, databases, and even organizations — making them ideal for merge replication and distributed databases like CockroachDB and Cassandra.",
     faqItems: [
       { question: "What is UUID v4?", answer: "UUID v4 generates a 128-bit universally unique identifier using random numbers. The chance of collision is effectively zero." },
       { question: "Where are UUIDs used?", answer: "UUIDs are used as database primary keys, API resource identifiers, session tokens, and anywhere unique IDs are needed across distributed systems." },
@@ -143,6 +150,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "from lorem_text import lorem\nlorem.paragraph()\nlorem.words(10)" },
       { lang: "bash", label: "Bash", code: "cat /usr/share/dict/words | shuf -n 50 | paste -sd ' '\n# or install 'lorem' package" },
     ],
+    content: "Lorem Ipsum is placeholder text derived from sections 1.10.32 and 1.10.33 of Cicero's De Finibus Bonorum et Malorum (The Extremes of Good and Evil), written in 45 BC. It has been the standard dummy text in the printing and typesetting industry since the 1500s, and it remains the default placeholder text for web design, graphic design, and publishing today. Designers use Lorem Ipsum because it closely resembles natural written language in word distribution and letter frequency — unlike repetitive 'content here' text, it provides a realistic visual preview of how final content will look. This generator creates Lorem Ipsum text in your browser with customizable paragraph, sentence, and word counts suitable for any layout or mockup.",
     faqItems: [
       { question: "What is Lorem Ipsum?", answer: "Lorem Ipsum is dummy text derived from Latin literature, used since the 1500s as placeholder text in design mockups." },
       { question: "How much text can I generate?", answer: "There's no limit. The text is generated in your browser — you can create as many paragraphs, words, or bytes as you need." },
@@ -160,6 +168,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "gopkg.in/yaml.v3"\n\nvar data map[string]any\nyaml.Unmarshal([]byte(yamlStr), &data)\njsonData, _ := json.MarshalIndent(data, "", "  ")` },
       { lang: "bash", label: "Bash", code: "yq -o=json input.yaml\njq -c . | yq -P > output.yaml" },
     ],
+    content: "YAML (YAML Ain't Markup Language) is a human-readable data serialization format commonly used for configuration files — from Kubernetes manifests to GitHub Actions workflows to Docker Compose files. JSON (JavaScript Object Notation) is the standard format for web APIs and data exchange. Converting between YAML and JSON bridges two worlds: developers use YAML for readable configuration in their repos, while APIs and web services almost exclusively use JSON. The conversion preserves all data but has some limitations — YAML features like anchors (&), aliases (*), and comments are not representable in JSON and may be lost during conversion. Running entirely in your browser, this converter processes all data locally with no server uploads.",
     faqItems: [
       { question: "Why convert YAML to JSON?", answer: "JSON is better for APIs and web transmission. YAML is more human-readable for config files. Converting between them gives you the best of both." },
       { question: "Is either format lossy?", answer: "Most YAML features (like anchors and aliases) are not representable in JSON, so some data may be expanded during conversion." },
@@ -176,6 +185,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "def hex_to_rgb(hex):\n  h = hex.lstrip('#')\n  return tuple(int(h[i:i+2], 16) for i in (0, 2, 4))" },
       { lang: "go", label: "Go", code: `import "fmt"\n\nfunc hexToRGB(hex string) (r, g, b int) {\n  fmt.Sscanf(hex, "#%02x%02x%02x", &r, &g, &b)\n  return\n}` },
     ],
+    content: "Color conversion between HEX, RGB, HSL, and named CSS colors is a frequent task in web design and frontend development. HEX codes (like #ff0000) are the most common format in CSS, but they are not intuitive for programmatic color manipulation. RGB (0-255 per channel) maps naturally to how screens display color and is useful for opacity (rgba). HSL (hue-saturation-lightness) is the most human-readable format — you can adjust a color by rotating the hue (0-360°) while keeping saturation and lightness constant. Designers use color converters when extracting colors from design tools (which often output HEX), translating brand guidelines, creating color palettes programmatically, or ensuring accessibility compliance with proper contrast ratios. This converter provides live preview so you see the color instantly.",
     faqItems: [
       { question: "What's the difference between HEX, RGB, and HSL?", answer: "HEX is a 6-digit hex code (#ff0000). RGB uses 0-255 values per channel. HSL uses hue (0-360°), saturation (%), and lightness (%)." },
     ],
@@ -190,6 +200,7 @@ export const toolsData: ToolData[] = [
       { lang: "javascript", label: "JavaScript", code: "function toCamelCase(str) {\n  return str.replace(/[-_\\s]+(.)/g, (_, c) => c.toUpperCase());\n}\nfunction toSnakeCase(str) {\n  return str.replace(/[A-Z]/g, l => '_' + l.toLowerCase()).replace(/^_/, '');\n}" },
       { lang: "python", label: "Python", code: "import re\ndef to_snake(s):\n  return re.sub(r'([A-Z])', r'_\\1', s).lower().lstrip('_')" },
     ],
+    content: "Case conversion is a routine but essential task for developers working across multiple programming languages and frameworks. Each language community has established naming conventions: JavaScript and TypeScript use camelCase for variables and functions, PascalCase for classes and constructors; Python uses snake_case for everything except classes; CSS properties use kebab-case; environment variables and constants use UPPER_CASE (screaming snake case). Converting between these conventions manually is error-prone, especially when migrating code between languages or renaming API fields. A case converter eliminates these errors by instantly transforming text between all common formats, letting developers focus on logic rather than formatting details. All conversion happens client-side with no data uploads.",
     faqItems: [
       { question: "What is camelCase?", answer: "camelCase capitalizes each word after the first (e.g., getUserName). PascalCase capitalizes all words (e.g., GetUserName). snake_case uses underscores between lowercase words." },
       { question: "Which naming convention should I use?", answer: "JavaScript/TypeScript uses camelCase for variables. Python uses snake_case. CSS uses kebab-case. Use PascalCase for classes and constructors." },
@@ -207,6 +218,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "github.com/yuin/goldmark"\n\nvar buf bytes.Buffer\ngoldmark.Convert([]byte(md), &buf)` },
       { lang: "bash", label: "Bash", code: "echo '# Hello' | pandoc -f markdown -t html" },
     ],
+    content: "Markdown is the de facto standard for documentation across the developer ecosystem. GitHub README files, technical documentation, API guides, blog posts, and internal wikis all rely on Markdown for its simplicity and readability. Unlike WYSIWYG editors that hide formatting complexity, Markdown uses plain text conventions that are readable even in raw form — making it version-control friendly and universally compatible. A Markdown previewer with live HTML rendering is essential for anyone writing documentation: it shows exactly how your content will appear when rendered on GitHub, npm, or any other Markdown-consuming platform. This tool renders GitHub-flavored Markdown in real-time as you type, supporting tables, task lists, fenced code blocks with syntax highlighting, and strikethrough.",
     faqItems: [
       { question: "What is Markdown?", answer: "Markdown is a lightweight markup language that uses plain text formatting to create structured documents that can be converted to HTML." },
       { question: "What syntax is supported?", answer: "Headings (# ), bold (**), italic (*), links, images, code blocks, lists, tables, and blockquotes are all supported." },
@@ -223,6 +235,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import difflib\ndiff = difflib.unified_diff(old.splitlines(), new.splitlines(), lineterm='')\nprint('\\n'.join(diff))" },
       { lang: "bash", label: "Bash", code: "diff -u file1.txt file2.txt\n# or with colordiff:\ncolordiff -u file1.txt file2.txt" },
     ],
+    content: "A text diff tool compares two versions of text and highlights what changed — additions, deletions, and modifications. This is one of the most fundamental operations in software development: code reviews operate on diffs, version control systems (Git) store changes as diffs, and debugging often involves comparing expected vs actual output. A dedicated diff checker provides a focused, distraction-free comparison view that is often more convenient than command-line diff tools or IDE plugins. Developers use diff checkers to compare configuration files across environments, validate refactored code produces identical output, review translation changes, and debug data transformation pipelines. This tool performs line-by-line and character-by-character comparison entirely in your browser.",
     faqItems: [
       { question: "How does diff work?", answer: "The diff algorithm finds the longest common subsequence between two texts and highlights additions (green), deletions (red), and unchanged sections." },
     ],
@@ -238,6 +251,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "from PIL import Image\nimg = Image.open('input.png')\nimg.save('output.jpg', 'JPEG')" },
       { lang: "bash", label: "Bash", code: "convert input.png output.jpg\n# or: magick input.png output.webp" },
     ],
+    content: "Image format conversion is a common task in web development and design. PNG offers lossless compression with transparency support, ideal for screenshots, logos, and graphics with sharp edges. JPEG uses lossy compression that can achieve 50-80% size reduction but introduces artifacts, best for photographs and complex images. WebP is Google's modern format that provides 25-35% smaller files than JPEG at equivalent quality, with support for both lossy and lossless compression plus transparency. GIF supports animation but is limited to 256 colors and produces large file sizes. Unlike server-based converters that upload your files to remote servers, this tool uses your browser's Canvas API to process images locally — your images never leave your device.",
     faqItems: [
       { question: "What formats are supported?", answer: "PNG (lossless), JPEG (lossy), WebP (modern, smaller), and GIF (animated) are supported." },
       { question: "Are my images uploaded to a server?", answer: "No. All image processing happens in your browser using the Canvas API. Your files never leave your device." },
@@ -254,6 +268,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import sqlparse\nformatted = sqlparse.format(sql, reindent=True, keyword_case='upper')" },
       { lang: "bash", label: "Bash", code: "echo 'SELECT * FROM users;' | sqlformat --reindent --keywords upper -" },
     ],
+    content: "SQL formatting transforms raw, hard-to-read SQL queries into properly indented, structured statements that are easier to review, debug, and maintain. A well-formatted SQL query capitalizes keywords (SELECT, FROM, WHERE, JOIN), aligns columns and conditions vertically, and breaks long statements into logical lines. This is essential for code reviews — unformatted SQL is difficult to review for correctness and security issues. Database administrators and backend developers frequently need to format SQL when sharing queries, documenting database logic, or converting inline query strings into maintainable code. This tool supports standard SQL plus MySQL, PostgreSQL, and SQLite dialects, running entirely in your browser with no server uploads.",
     faqItems: [
       { question: "What SQL dialects are supported?", answer: "Standard SQL, MySQL, PostgreSQL, and SQLite are all supported by the formatter." },
     ],
@@ -269,6 +284,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import xml.dom.minidom\nformatted = xml.dom.minidom.parseString(xml_str).toprettyxml(indent='  ')" },
       { lang: "bash", label: "Bash", code: "xmllint --format input.xml\n# or:\nxq . input.xml | jq ." },
     ],
+    content: "XML (eXtensible Markup Language) is a markup language designed for storing and transporting data, widely used in web services (SOAP, RSS/Atom feeds), configuration files (Android manifests, Maven POM, .NET config), and document formats (SVG, Office Open XML). XML formatting — also called XML beautification or pretty-printing — adds proper indentation, line breaks, and structure to make raw XML readable. Beyond aesthetics, the formatting process also validates the XML structure and identifies well-formedness errors such as missing closing tags, incorrect nesting, or invalid characters. Developers frequently use XML formatters when debugging SOAP API responses, editing configuration files, transforming XML with XSLT, or reviewing RSS feed output.",
     faqItems: [
       { question: "What is XML formatting?", answer: "XML formatting adds proper indentation and line breaks to make XML data human-readable. It also helps identify structural issues in your XML." },
     ],
@@ -284,6 +300,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import base64, json\ndef decode_jwt(token):\n  parts = token.split('.')\n  header = json.loads(base64.b64decode(parts[0] + '=='))\n  payload = json.loads(base64.b64decode(parts[1] + '=='))\n  return header, payload" },
       { lang: "bash", label: "Bash", code: "cut -d. -f1 <<< \"$token\" | base64 -d 2>/dev/null | jq .\ncut -d. -f2 <<< \"$token\" | base64 -d 2>/dev/null | jq ." },
     ],
+    content: "JSON Web Tokens (JWT) are the industry standard for authentication and authorization in modern web applications. A JWT consists of three Base64-encoded segments separated by dots: a header (specifying the signing algorithm), a payload (containing claims like user ID, expiration time, and roles), and a cryptographic signature (verifying the token has not been tampered with). JWT decoding is the first step when debugging authentication issues — you need to inspect the payload to check expiration (exp), issuer (iss), and custom claims. This tool decodes JWTs completely client-side: paste a token and immediately see the decoded header and payload in readable JSON. Your tokens never leave your browser.",
     faqItems: [
       { question: "What is a JWT?", answer: "A JSON Web Token (JWT) is a compact, URL-safe token format used for authentication. It consists of a header, payload, and signature, each Base64-encoded." },
       { question: "Can I see the signature?", answer: "Yes, the signature is Base64-decoded and displayed. However, JWTs are signed, not encrypted — the signature verifies integrity, not confidentiality." },
@@ -301,6 +318,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "crypto/sha256"\n\nh := sha256.Sum256([]byte("hello"))\nfmt.Printf("%x", h)` },
       { lang: "bash", label: "Bash", code: "echo -n 'hello' | md5sum\necho -n 'hello' | sha256sum" },
     ],
+    content: "A cryptographic hash function takes an input (any text or file) and produces a fixed-length string of characters — the hash or digest. Hashing is a one-way operation: you cannot reverse a hash to recover the original input. This makes hashes useful for verifying data integrity (does the downloaded file match the original?), storing passwords securely (store the hash, not the password), and detecting duplicate content. MD5 (128-bit) and SHA-1 (160-bit) are fast but cryptographically broken — attackers can generate collisions. SHA-256 and SHA-512 are recommended for security-sensitive applications. This tool uses the Web Crypto API to compute hashes entirely in your browser.",
     faqItems: [
       { question: "What is the difference between MD5, SHA-1, and SHA-256?", answer: "SHA-256 offers the strongest security (256-bit hash). SHA-1 (160-bit) is deprecated for security. MD5 (128-bit) is broken and should only be used for checksums, not security." },
       { question: "Which hash should I use?", answer: "For security-sensitive applications, use SHA-256 or SHA-512. MD5 and SHA-1 should only be used for checksums and legacy compatibility." },
@@ -318,6 +336,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "regexp"\n\nre := regexp.MustCompile(\`hello (\\w+)\`)\nmatches := re.FindStringSubmatch("hello world")` },
       { lang: "bash", label: "Bash", code: "echo 'hello world' | grep -Eo 'hello [a-z]+'\necho 'hello world' | sed -n 's/hello \\([a-z]*\\)/found: \\1/p'" },
     ],
+    content: "Regular expressions are patterns used to match character combinations in text — one of the most powerful tools in a developer's arsenal. From validating email addresses and phone numbers to extracting data from logs and performing search-and-replace across thousands of files, regex is essential for text processing. A regex tester provides real-time feedback showing exactly which parts of your test string match the pattern, what each capture group extracts, and how flags (g, i, m, s) affect matching behavior. This interactive feedback loop is invaluable for debugging complex patterns before using them in code. Testing regex in a dedicated tool is faster than the edit-refresh cycle in application code and helps avoid production bugs caused by incorrect patterns.",
     faqItems: [
       { question: "What regex flavors are supported?", answer: "This tool uses JavaScript's RegExp engine, which follows the ECMAScript specification. It supports most common patterns including groups, lookaheads, and quantifiers." },
       { question: "What do the flags do?", answer: "g = global (find all matches, not just first), i = case-insensitive, m = multiline (^ and $ match line boundaries), s = dotAll (. matches newlines)." },
@@ -336,6 +355,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import json, csv, io\n\ndef json_to_csv(json_str):\n    data = json.loads(json_str)\n    if not data:\n        return ''\n    output = io.StringIO()\n    # Flatten nested objects\n    def flatten(obj, prefix=''):\n        items = {}\n        for k, v in obj.items():\n            key = f'{prefix}{k}'\n            if isinstance(v, dict):\n                items.update(flatten(v, key + '_'))\n            else:\n                items[key] = v\n        return items\n    flat = [flatten(row) for row in data]\n    writer = csv.DictWriter(output, fieldnames=flat[0].keys())\n    writer.writeheader()\n    writer.writerows(flat)\n    return output.getvalue()" },
       { lang: "bash", label: "Bash", code: "# Convert JSON to CSV with jq\ncat data.json | jq -r '(.[0] | keys_unsorted) as $keys | $keys, (.[] | [.[$keys[]]] | @csv)' > output.csv\n\n# Add BOM for Excel compatibility\nprintf '\\uFEFF' | cat - output.csv > excel_ready.csv" },
     ],
+    content: "Converting JSON data to CSV format is a common workflow when moving data from APIs and databases into spreadsheets and analytics tools. JSON structures data hierarchically with nested objects and arrays, while CSV uses a flat tabular format with rows and columns — making the conversion non-trivial. This tool handles the complexity automatically: nested objects are flattened using underscore notation (user.name becomes user_name), arrays are serialized as JSON strings within cells, and special characters in values are properly escaped with quotes. A key compatibility feature is the Byte Order Mark (BOM), which tells Excel to interpret the CSV as UTF-8 instead of the system default encoding. Without a BOM, Excel misreads accented characters, emoji, and international text. All processing happens client-side with zero server uploads.",
     faqItems: [
       { question: "Why won't my CSV open correctly in Excel?", answer: "Excel often misreads UTF-8 CSV files without a BOM (Byte Order Mark). This tool adds a BOM (\\uFEFF) automatically, so your CSV opens with correct encoding in Excel, including special characters and emoji." },
       { question: "How are nested objects handled?", answer: "Nested objects are flattened with underscore notation. For example, {\"user\": {\"name\": \"John\"}} becomes a column named user_name. Nested arrays are converted to JSON strings within the cell." },
@@ -355,6 +375,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "def px_to_rem(px, base=16):\n    return px / base\n\n# Usage\nprint(px_to_rem(16))  # 1.0\nprint(px_to_rem(32))  # 2.0\nprint(px_to_rem(24, 14))  # 1.714" },
       { lang: "bash", label: "Bash", code: "# Quick px to rem in bash\npx_to_rem() {\n  echo \"scale=3; $1 / ${2:-16}\" | bc\n}\n\npx_to_rem 32   # 2.000\npx_to_rem 24 14  # 1.714" },
     ],
+    content: "The rem (root em) unit is the foundation of accessible, scalable CSS layouts. Unlike px (pixels), which are absolute and ignore user preferences, rem is relative to the root HTML element's font size — usually 16px by default in browsers. This means that when users increase their browser's default font size for accessibility, every element sized in rem scales proportionally. Modern CSS frameworks like Tailwind and Bootstrap use rem-based design systems for this reason. Common conversions: 16px = 1rem, 32px = 2rem, 8px = 0.5rem at the default 16px base. Using rem for font sizes, padding, margins, and max-widths ensures your design respects user accessibility settings and adapts to different viewport sizes without media query overrides.",
     faqItems: [
       { question: "What is the rem unit?", answer: "rem (root em) is a CSS unit relative to the root element's font size. 1rem equals the font size of the <html> element, which is typically 16px by default in browsers. Using rem units ensures your layout scales when users change their browser's base font size." },
       { question: "What base font size should I use?", answer: "The default browser font size is 16px, which is what most websites use as their base. Some design systems use 14px or 10px for easier math (1rem = 10px). You can set any base size with this tool." },
@@ -377,6 +398,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import yaml\nwith open('deployment.yaml') as f:\n    data = yaml.safe_load(f)\nprint(data['apiVersion'], data['kind'])" },
       { lang: "go", label: "Go", code: `import ("os"; "sigs.k8s.io/yaml")\n\ndata, _ := os.ReadFile("deploy.yaml")\nout, _ := yaml.YAMLToJSON(data)\nfmt.Println(string(out))` },
     ],
+    content: "Kubernetes manifests are YAML files that define the desired state of resources in a Kubernetes cluster. A single typo, missing required field, or incorrect indentation can cause deployments to fail, pods to crash, or services to be unreachable — wasting developer time on debugging YAML instead of application logic. This validator checks Kubernetes manifest syntax client-side before you apply it to a cluster: it verifies apiVersion and kind are valid, metadata.name is present, spec sections follow the expected structure for each resource type, and YAML indentation is correct. This catches common mistakes like forgetting service selectors, missing container ports, or using wrong apiVersion for a resource type. Unlike kubectl --dry-run=client, this tool works without any cluster access and never sends your manifests anywhere.",
     faqItems: [
       { question: "What does this Kubernetes YAML validator check?", answer: "It validates YAML syntax and checks that your Kubernetes manifest has the required fields (apiVersion, kind, metadata.name), valid resource kinds, and correct structural patterns for common resources like Pods, Deployments, Services, ConfigMaps, and Namespaces." },
       { question: "Can I validate live Kubernetes manifests?", answer: "This tool validates YAML syntax and K8s structure client-side. For live validation against your cluster's API server, use kubectl apply --dry-run=server." },
@@ -399,6 +421,7 @@ export const toolsData: ToolData[] = [
       { lang: "python", label: "Python", code: "import yaml\nwith open('docker-compose.yml') as f:\n    data = yaml.safe_load(f)\nfor svc, config in data.get('services', {}).items():\n    print(f'{svc}: {config.get(\"image\", \"build\")}')" },
       { lang: "go", label: "Go", code: `import ("os"; "gopkg.in/yaml.v3")\n\ndata, _ := os.ReadFile("docker-compose.yml")\nvar config map[string]any\nyaml.Unmarshal(data, &config)` },
     ],
+    content: "Docker Compose defines multi-container Docker applications in a YAML file called docker-compose.yml. Common configuration errors include missing service definitions, incorrect port mapping syntax (host:container format required), invalid image references, and misconfigured volumes or networks. This validator checks your compose file for the correct structure: it ensures the services top-level key exists, each service defines either an image or build context, port mappings use the correct string or numeric format, environment variables follow the proper syntax, and volume references are valid. Catching these errors before running docker compose up saves significant troubleshooting time, especially in CI/CD pipelines where compose files are used for integration testing. All validation runs in your browser with zero server uploads.",
     faqItems: [
       { question: "What does this Docker Compose validator check?", answer: "It validates YAML syntax and checks your docker-compose.yml for required top-level fields (services), valid service definitions with image or build references, correct port mapping format, environment variable syntax, and volume configurations." },
       { question: "Does this replace docker compose config?", answer: "This is a quick client-side check for syntax and structure. For full validation against the Docker Compose specification, use 'docker compose config' from the CLI." },
@@ -425,6 +448,7 @@ export const toolsData: ToolData[] = [
       { question: "Can I use this for GitLab CI or CircleCI?", answer: "This validator is specifically for GitHub Actions workflow syntax. GitLab CI and CircleCI use different YAML structures with different required fields." },
       { question: "Does this validate action versions?", answer: "This checks that action references use the @version syntax (e.g., actions/checkout@v4) but does not validate whether the version actually exists on the marketplace." },
     ],
+    content: "GitHub Actions workflows are YAML files stored in .github/workflows/ that define CI/CD pipelines triggered by events like pushes, pull requests, or schedule. A single configuration error — like a missing trigger event, incorrect runs-on specification, or invalid action reference syntax — can break your entire CI pipeline. This workflow validator checks GitHub Actions YAML syntax and structure: it validates that workflow triggers (on) use valid event names (push, pull_request, workflow_dispatch, schedule), jobs have runs-on configurations, steps contain either uses or run commands, and action references follow the owner/repo@version format. Catching these issues before committing prevents wasted CI time and keeps your development workflow running smoothly. All validation happens client-side with no uploads.",
   },
   {
     id: "jwt-expiration-checker",
@@ -441,6 +465,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import ("time"; "github.com/golang-jwt/jwt/v5")\n\ntoken, _, _ := jwt.NewParser().ParseUnverified(jwtStr, jwt.MapClaims{})\nclaims := token.Claims.(jwt.MapClaims)\nexp, _ := claims.GetExpirationTime()\nfmt.Println(\"Expired:\", exp.Time.Before(time.Now()))` },
       { lang: "bash", label: "Bash", code: `echo "token" | cut -d. -f2 | base64 -d 2>/dev/null | jq -r '.exp, .iat'\n# Or use jwt-cli:\njwt decode "token"` },
     ],
+    content: "JWT expiration checking is essential for debugging authentication issues in modern web applications. Every JWT contains an exp (expiration) claim — a Unix timestamp after which the token is no longer valid. Tokens may also include iat (issued at), nbf (not before), and custom claims. When an API returns a 401 Unauthorized error, the first thing to check is whether the JWT has expired. This tool decodes your JWT client-side and displays the expiration date in your local timezone, the time remaining (or how long ago it expired), the issued-at timestamp, and whether the token is currently valid. Unlike server-side debugging that requires access to application logs, this tool works with the token alone. All processing is client-side — your token never leaves your browser.",
     faqItems: [
       { question: "What is JWT expiration?", answer: "JWT expiration is the exp claim in a JWT payload — a Unix timestamp indicating when the token becomes invalid. The iat (issued at) claim indicates when the token was created. Tokens with no exp claim are considered non-expiring." },
       { question: "How is expiration time displayed?", answer: "The tool shows the expiration date/time in your local timezone, the issued-at date/time, the time remaining (or how long ago it expired), and whether the token is currently valid or expired." },
@@ -462,6 +487,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "github.com/google/uuid"\n\nid := uuid.Must(uuid.NewV7())\nfmt.Println(id.String())` },
       { lang: "bash", label: "Bash", code: `# Install: go install github.com/mattn/uuid7@latest\nuuid7` },
     ],
+    content: "UUID v7 is the newest UUID format standardized in RFC 9562, designed to solve the database performance problems caused by random UUID v4 identifiers. The key innovation: UUID v7 embeds a Unix millisecond timestamp in its first 48 bits, making newly generated UUIDs sort sequentially by creation time. This dramatically improves B-tree index performance in databases like PostgreSQL, MySQL, and SQLite because new index entries are appended sequentially rather than inserted at random positions — reducing index fragmentation and page splits. For applications that use UUIDs as primary keys, migrating from UUID v4 to UUID v7 can significantly improve write performance and reduce storage overhead. Unlike auto-increment IDs, UUID v7 remains globally unique across tables and databases. All generation is client-side using the Web Crypto API.",
     faqItems: [
       { question: "What is UUID v7?", answer: "UUID v7 is a time-ordered UUID format (RFC 9562) that embeds a Unix millisecond timestamp in the first 48 bits. This makes UUIDs sortable by creation time, improving database index performance compared to random UUID v4." },
       { question: "UUID v7 vs UUID v4 — what's the difference?", answer: "UUID v4 is completely random. UUID v7 embeds a timestamp, making IDs sortable and clustered by creation time. UUID v7 performs better with B-tree database indexes because new IDs are appended sequentially rather than inserted randomly." },
@@ -492,6 +518,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "strings"\n\nfunc WordCount(s string) map[string]int {\n  return map[string]int{\n    "words": len(strings.Fields(s)),\n    "chars": len(s),\n  }\n}` },
       { lang: "bash", label: "Bash", code: `wc -w file.txt  # word count\nwc -c file.txt  # byte count\nwc -m file.txt  # character count` },
     ],
+    content: "A word counter is an essential tool for writers, editors, students, and SEO professionals who need precise text statistics. Beyond the basic word count, professional writing requires tracking characters (for meta descriptions and SMS messages), sentences (for readability scoring), paragraphs (for content structure), and estimated reading time (for blog posts and documentation). Content writers use word counters to hit SEO-optimized article lengths, students meet essay requirements, and copywriters craft messages within character limits for platforms like Twitter and Google Ads. This word counter provides all these metrics in real-time as you type, with no page reloads or button clicks needed. All text processing is client-side — your content never leaves your device.",
     faqItems: [
       { question: "What does a word counter do?", answer: "A word counter counts the number of words, characters, sentences, and paragraphs in a text. It's essential for writers meeting word count requirements, students writing essays, and SEO professionals optimizing meta descriptions." },
       { question: "Is my text data safe?", answer: "Yes. All processing happens client-side in your browser. Your text never leaves your device." },
@@ -518,6 +545,7 @@ export const toolsData: ToolData[] = [
       { lang: "go", label: "Go", code: `import "strings"\n\nfunc RemoveDups(s string) string {\n  seen := map[string]bool{}\n  var result []string\n  for _, line := range strings.Split(s, "\\n") {\n    line = strings.TrimSpace(line)\n    if line != "" && !seen[line] {\n      seen[line] = true\n      result = append(result, line)\n    }\n  }\n  return strings.Join(result, "\\n")\n}` },
       { lang: "bash", label: "Bash", code: "sort file.txt | uniq\nawk '!seen[$0]++' file.txt\nsort -u file.txt" },
     ],
+    content: "Removing duplicate lines from text is a common data cleaning task when working with lists, logs, CSV exports, and configuration files. Duplicates can creep into data through copy-paste errors, merged datasets, repeated log entries, or accumulated list entries. A duplicate line remover identifies identical lines, keeps only the first occurrence, and returns a clean, deduplicated list. Additional features like alphabetical sorting (A-Z or Z-A), whitespace trimming, and empty line removal make the cleaned output immediately useful for further processing. This operation is the text equivalent of SELECT DISTINCT in SQL or sort | uniq in Unix — but available instantly in your browser without any command-line knowledge. All processing is client-side with zero data uploads.",
     faqItems: [
       { question: "How does the duplicate line remover work?", answer: "It splits your text into lines, removes any that are identical, and gives you a clean list. You can sort the result alphabetically (A-Z or Z-A) and optionally trim whitespace and ignore empty lines." },
       { question: "Is this case-sensitive?", answer: "Yes, by default. Lines are compared exactly. 'Apple' and 'apple' are treated as different lines. You can use the Case Converter first to normalize case." },
@@ -549,6 +577,7 @@ img.save("wifi_qr.png")` },
       { lang: "go", label: "Go", code: `import "github.com/skip2/go-qrcode"\n\nstr := fmt.Sprintf("WIFI:T:%s;S:%s;P:%s;;", enc, ssid, pwd)\nqr, _ := qrcode.New(str, qrcode.Medium)\nqr.WriteFile(256, "wifi_qr.png")` },
       { lang: "bash", label: "Bash", code: `qrencode -o wifi_qr.png "WIFI:T:WPA;S:MyNetwork;P:MyPassword;;"` },
     ],
+    content: "A Wi-Fi QR code encodes your wireless network credentials (SSID, password, and encryption type) into a scannable QR code using the standard format defined by the WiFi Alliance. Any modern smartphone with a built-in camera can scan this QR code and connect to the network automatically — no manual password typing required. This is particularly useful for homes with many devices, guest networks, offices, coffee shops, and Airbnb rentals where typing a complex WPA2 password on a TV remote or game controller is frustrating. The encoding format is WIFI:T:WPA;S:YourNetwork;P:YourPassword;;. The QR code itself does not reveal the password visually, but anyone who can scan it can read the network credentials. All generation happens client-side in your browser.",
     faqItems: [
       { question: "What is a Wi-Fi QR code?", answer: "A Wi-Fi QR code encodes your network credentials (SSID, password, and encryption type) in a standard format. Smartphones with built-in QR scanners can read it and connect to your network automatically without typing the password." },
       { question: "Which devices support Wi-Fi QR codes?", answer: "All modern smartphones: iPhones (iOS 11+), Android (Android 10+), and most tablets. Just point the camera at the QR code and tap the notification to connect." },
@@ -580,6 +609,7 @@ print(password)` },
       { lang: "go", label: "Go", code: `import "crypto/rand"\n\nfunc genWPA2() string {\n  chars := []byte("ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$")\n  b := make([]byte, 16)\n  rand.Read(b)\n  for i := range b { b[i] = chars[b[i] % byte(len(chars))] }\n  return string(b)\n}` },
       { lang: "bash", label: "Bash", code: `< /dev/urandom tr -dc 'A-HJKMNP-Za-hjkmnp-z2-9!@#$%^&*' | head -c16` },
     ],
+    content: "A strong Wi-Fi password is your network's first line of defense against unauthorized access and security breaches. The recommended WPA2 password length is 16-20 characters — long enough to resist brute force attacks but short enough to type manually when needed. This password generator is specifically designed for WPA2/WPA3 wireless networks: it excludes ambiguous characters like lowercase l, uppercase I, digit 1, uppercase O, and digit 0 that are easily confused on router labels, printed cards, and device screens. The character set includes only distinct, unambiguous letters and numbers plus special characters. Each password is generated using your browser's cryptographically secure Web Crypto API — the same standard used for TLS encryption keys. No passwords are ever sent to any server.",
     faqItems: [
       { question: "What is a WPA2 password?", answer: "A WPA2 password (also called a Wi-Fi passphrase or pre-shared key) is the password used to secure a wireless network with WPA2 encryption. Strong WPA2 passwords are at least 8 characters, but 16-20 characters is recommended for maximum security." },
       { question: "Why avoid ambiguous characters?", answer: "Characters like l (lowercase L), 1 (one), O (uppercase O), and 0 (zero) look similar on many screens and printed labels. Removing them eliminates confusion when manually typing the password into smart TVs, game consoles, IoT devices, and other devices without copy-paste." },
@@ -615,6 +645,7 @@ function generateQR(text, size) {
       { lang: "go", label: "Go", code: `import "github.com/skip2/go-qrcode"\n\nqr, _ := qrcode.New("https://webutil.tech", qrcode.Medium)\nqr.WriteFile(256, "qrcode.png")\n\n// PNG byte output\npng, _ := qr.PNG(256)` },
       { lang: "bash", label: "Bash", code: `# Install: apt install qrencode\nqrencode -o qrcode.png "https://webutil.tech"\nqrencode -t SVG -o qrcode.svg "https://webutil.tech"` },
     ],
+    content: "QR (Quick Response) codes are two-dimensional barcodes that can be scanned by smartphone cameras to instantly access encoded information — URLs, text, contact details, Wi-Fi credentials, or any other data. Originally invented by Denso Wave in 1994 for tracking automotive parts, QR codes are now ubiquitous in marketing, payments, authentication, and information sharing. A QR code generator creates these codes from any text input: paste a URL to create a scannable link, enter Wi-Fi credentials for instant network access, or encode contact information as a vCard. The SVG output format is resolution-independent and works perfectly for both print (business cards, posters, menus) and digital (websites, emails, presentations). This generator runs entirely in your browser — no data is sent to any server, and there are no usage limits or watermarks.",
     faqItems: [
       { question: "How does this QR code generator work?", answer: "It uses the lightweight qrcode-generator library running entirely in your browser. No data is sent to any server. You can generate QR codes from any text or URL and download them as SVG files." },
       { question: "Can I use the QR codes commercially?", answer: "Yes. QR codes generated by this tool are free to use for any purpose, including commercial use. There are no watermarks, tracking, or limitations." },

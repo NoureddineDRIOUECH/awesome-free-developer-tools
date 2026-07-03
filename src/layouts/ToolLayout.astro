@@ -121,6 +121,16 @@ const related = getRelatedTools(tool.id);
 
   <slot />
 
+  {toolData?.content && (
+    <section class="container-main py-8">
+      <div class="max-w-4xl mx-auto">
+        <div class="prose prose-sm max-w-none text-on-surface-variant leading-relaxed">
+          {toolData.content.split("\n\n").map((p) => <p>{p}</p>)}
+        </div>
+      </div>
+    </section>
+  )}
+
   {allTabs.length > 0 && (
     <section class="container-main py-12">
       <div class="max-w-4xl mx-auto">
