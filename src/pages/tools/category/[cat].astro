@@ -63,6 +63,17 @@ const blogLinks: Record<string, { title: string; slug: string }[]> = {
 
 const categoryGuides = blogLinks[cat.id] || [];
 
+const categoryDescriptions: Record<string, string> = {
+  formatters: "Formatters help developers maintain consistent code style across projects. JSON formatters validate and beautify API responses, configuration files, and data exports with proper indentation and syntax error detection. SQL formatters make complex queries readable by capitalizing keywords and aligning clauses. XML formatters handle document structures with namespace support. Proper formatting reduces debugging time, improves code review quality, and enforces team conventions without manual effort. All formatting tools on WebUtil run entirely client-side — your code never leaves your browser.",
+  encoders: "Encoders and decoders convert data between different representations for safe transmission and storage. Base64 encoding embeds binary data in text formats like JSON and HTML. URL encoding ensures special characters in query parameters and URL paths are transmitted correctly. HTML entity encoding prevents XSS attacks and renders special characters safely in web pages. These conversions are fundamental to web development — every API call, form submission, and page render depends on proper encoding. WebUtil's encoder tools process everything in your browser with zero server uploads.",
+  generators: "Generators create random or structured data for development, testing, and security. UUID generators produce unique identifiers for database keys and distributed system references — choose between random v4 and time-ordered v7 formats. Password generators create cryptographically strong passwords using the Web Crypto API with customizable character sets. QR code generators encode URLs, Wi-Fi credentials, and text into scannable images. Lorem Ipsum generators provide realistic placeholder text for designs and mockups. All generation uses your browser's native APIs — no data is sent to external servers.",
+  converters: "Converters transform data between formats and units for compatibility across tools and platforms. Color converters translate between HEX, RGB, HSL, and named CSS colors with live preview — essential for web design and accessibility compliance. YAML converters bridge configuration files and JSON APIs, supporting comments and nested structures. Image converters resize and reformat PNG, JPEG, WebP, and GIF files using the browser's Canvas API. CSS unit converters translate px to rem for accessible, scalable designs. Every conversion happens locally — your files and data stay private.",
+  text: "Text tools manipulate and analyze string content for writing, development, and data cleaning. Case converters transform naming conventions between camelCase, PascalCase, snake_case, kebab-case, and more for cross-language compatibility. Markdown previewers render GitHub-flavored Markdown with live HTML output for documentation and README files. Diff checkers compare text side-by-side highlighting additions, deletions, and changes for code review. Regex testers validate patterns with real-time match highlighting and group capture. Word counters track words, characters, sentences, and reading time for content optimization. All processing is client-side with no data uploads.",
+  images: "Image tools process visual assets directly in your browser using the Canvas API. Convert between PNG (lossless with transparency), JPEG (lossy compression for photos), WebP (modern format with 25-35% smaller files), and GIF (simple animations). Unlike server-based image converters, WebUtil processes everything locally — your images never leave your device. This is critical for sensitive visual data like design mockups, product photos, and personal images. The Canvas API handles all decoding and encoding natively in your browser with quality settings for output format optimization.",
+  security: "Security tools help developers implement authentication, encryption, and data integrity without exposing sensitive information. JWT decoders inspect token headers, payloads, and signatures for debugging authentication flows. Hash generators compute MD5, SHA-1, SHA-256, and SHA-512 digests for file integrity verification and password hashing. Password generators create strong, unique credentials resistant to brute force and dictionary attacks. JWT expiration checkers validate token lifetimes and claims for secure session management. Every security tool runs 100% client-side — your secrets, tokens, and passwords never reach any server.",
+  web: "Web tools help developers build, test, and validate modern infrastructure and deployment configurations. Kubernetes YAML validators check pod, deployment, and service manifests for correct structure and required fields before cluster apply. Docker Compose validators verify docker-compose.yml syntax, service definitions, port mappings, and volume configurations. GitHub Actions validators validate workflow YAML files including triggers, jobs, steps, and action references. These validators catch syntax errors and configuration issues before they reach production, saving deployment time and preventing outages. All validation runs in your browser with no file uploads.",
+};
+
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
@@ -104,6 +115,10 @@ const collectionSchema = {
           {category.description}. All tools run entirely in your browser —
           nothing is uploaded, nothing is stored.
         </p>
+      </div>
+
+      <div class="prose prose-sm max-w-none text-on-surface-variant leading-relaxed mb-8">
+        <p>{categoryDescriptions[cat.id]}</p>
       </div>
 
       <div class="grid gap-4">

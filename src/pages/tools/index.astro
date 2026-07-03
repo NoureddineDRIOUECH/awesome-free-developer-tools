@@ -108,6 +108,22 @@ const allSchema = {
 
     <AdSlot format="banner" className="mb-8" />
 
+    {selectedCategory && (
+      <section class="mb-8 text-sm text-on-surface-variant leading-relaxed max-w-3xl">
+        <p>{
+          selectedCategory === "formatters" ? "Formatters help developers maintain consistent code style across projects. JSON formatters validate and beautify API responses, configuration files, and data exports with proper indentation and syntax error detection. SQL formatters make complex queries readable by capitalizing keywords and aligning clauses. XML formatters handle document structures with namespace support. All formatting tools on WebUtil run entirely client-side." :
+          selectedCategory === "encoders" ? "Encoders and decoders convert data between different representations for safe transmission and storage. Base64 encoding embeds binary data in text formats like JSON and HTML. URL encoding ensures special characters in query parameters are transmitted correctly. HTML entity encoding prevents XSS attacks and renders special characters safely in web pages. WebUtil's encoder tools process everything in your browser with zero server uploads." :
+          selectedCategory === "generators" ? "Generators create random or structured data for development, testing, and security. UUID generators produce unique identifiers for database keys and distributed system references. Password generators create cryptographically strong passwords using the Web Crypto API. QR code generators encode URLs and Wi-Fi credentials into scannable images. All generation uses your browser's native APIs with no server uploads." :
+          selectedCategory === "converters" ? "Converters transform data between formats and units for compatibility across tools and platforms. Color converters translate between HEX, RGB, HSL, and named CSS colors with live preview. YAML converters bridge configuration files and JSON APIs. Image converters reformat PNG, JPEG, WebP, and GIF files using the Canvas API. Every conversion happens locally in your browser." :
+          selectedCategory === "text" ? "Text tools manipulate and analyze string content for writing and development. Case converters transform naming conventions between camelCase, snake_case, kebab-case, and more. Markdown previewers render GitHub-flavored Markdown with live HTML output. Diff checkers compare text side-by-side for code review. Regex testers validate patterns with real-time highlighting. All processing is client-side with no data uploads." :
+          selectedCategory === "images" ? "Image tools process visual assets directly in your browser using the Canvas API. Convert between PNG, JPEG, WebP, and GIF formats with quality settings. Unlike server-based converters, WebUtil processes everything locally — your images never leave your device. This is critical for sensitive design mockups, product photos, and personal images." :
+          selectedCategory === "security" ? "Security tools help developers implement authentication and encryption without exposing sensitive information. JWT decoders inspect token headers and payloads for debugging authentication flows. Hash generators compute MD5, SHA-1, SHA-256, and SHA-512 digests. Password generators create strong credentials resistant to attacks. Every security tool runs 100% client-side." :
+          selectedCategory === "web" ? "Web tools help developers validate modern infrastructure and deployment configurations. Kubernetes YAML validators check pod and service manifests before cluster apply. Docker Compose validators verify docker-compose.yml syntax and service definitions. GitHub Actions validators validate workflow triggers, jobs, and action references. All validation runs in your browser with no file uploads." :
+          ""
+        }</p>
+      </section>
+    )}
+
     <!-- Tools Grid -->
     <div id="tools-grid" class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
       {tools.map((tool) => (
