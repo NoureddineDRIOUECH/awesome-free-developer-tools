@@ -92,6 +92,7 @@ All-in-one collections covering most daily dev utility needs.
 - [Neumorphism.io](https://neumorphism.io) — Generate soft-ui CSS shadows.
 - [Smooth Shadow](https://shadows.brumm.af) — Make layered CSS shadows visually.
 - [Fancy Border Radius](https://9elements.github.io/fancy-border-radius) — Visual border-radius generator.
+- [Codex Theme Builder](https://codextheme.tools) — Free browser theme builder for OpenAI Codex with live preview and CSS token export.
 
 ---
 
