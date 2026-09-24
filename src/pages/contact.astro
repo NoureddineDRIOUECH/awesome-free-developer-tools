@@ -24,7 +24,10 @@ const contactSchema = {
     </div>
 
     <div class="rounded-xl border border-surface-container-highest bg-surface-container-low p-6 sm:p-8">
-      <form netlify class="space-y-5">
+      <form id="contact-form" class="space-y-5">
+        <div id="contact-status" class="hidden p-4 rounded-lg bg-primary/10 border border-primary/30 text-xs sm:text-sm text-primary leading-relaxed">
+          Thank you! If your email client did not open automatically, please send your message directly to <a href="mailto:support@webutil.tech" class="underline font-semibold">support@webutil.tech</a>.
+        </div>
         <div class="grid sm:grid-cols-2 gap-4">
           <div>
             <label for="name" class="text-sm font-medium mb-1.5 block">Name</label>
@@ -54,6 +57,26 @@ const contactSchema = {
         </button>
       </form>
     </div>
+
+<script is:inline>
+document.addEventListener("astro:page-load", function () {
+  var form = document.getElementById("contact-form");
+  if (!form) return;
+  form.addEventListener("submit", function (e) {
+    e.preventDefault();
+    var nameEl = document.getElementById("name");
+    var subjEl = document.getElementById("subject");
+    var msgEl = document.getElementById("message");
+    var name = nameEl ? nameEl.value : "";
+    var subject = subjEl ? subjEl.value : "General";
+    var message = msgEl ? msgEl.value : "";
+    var mailto = "mailto:support@webutil.tech?subject=" + encodeURIComponent("[WebUtil " + subject + "] from " + name) + "&body=" + encodeURIComponent(message);
+    var status = document.getElementById("contact-status");
+    if (status) status.classList.remove("hidden");
+    window.location.href = mailto;
+  });
+});
+</script>
 
     <div class="mt-10 grid sm:grid-cols-3 gap-6 text-center text-sm text-on-surface-variant">
       <div>
