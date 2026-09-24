@@ -191,7 +191,8 @@ const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "feature
 <Toast />
 
 <script>
-  const input = document.getElementById("json-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("json-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("json-output");
   const stats = document.getElementById("input-stats");
   const btnFormat = document.getElementById("btn-format");
@@ -200,6 +201,8 @@ const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "feature
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnFormat) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -276,4 +279,5 @@ const formattedExample = `{\n  "name": "WebUtil",\n  "type": "tool",\n  "feature
 
   input.addEventListener("input", updateStats);
   updateStats();
+});
 </script>

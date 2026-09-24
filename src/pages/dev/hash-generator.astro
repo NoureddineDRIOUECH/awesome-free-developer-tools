@@ -168,7 +168,8 @@ const loadExample = "Hello, WebUtil! Generate hashes from this sample text.";
 <Toast />
 
 <script>
-  const input = document.getElementById("hash-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("hash-input") as HTMLTextAreaElement | null;
   const stats = document.getElementById("input-stats");
   const btnGenerate = document.getElementById("btn-generate");
   const btnClear = document.getElementById("btn-clear");
@@ -184,6 +185,8 @@ const loadExample = "Hello, WebUtil! Generate hashes from this sample text.";
   const sha1Val = document.getElementById("hash-sha1-value");
   const sha256Val = document.getElementById("hash-sha256-value");
   const sha512Val = document.getElementById("hash-sha512-value");
+
+  if (!input || !btnGenerate || !hashMD5) return;
 
   // MD5 implementation (public domain, Paul Johnston)
   const md5 = (function() {
@@ -356,4 +359,5 @@ const loadExample = "Hello, WebUtil! Generate hashes from this sample text.";
   input.addEventListener("input", updateStats);
 
   generateHashes();
+});
 </script>

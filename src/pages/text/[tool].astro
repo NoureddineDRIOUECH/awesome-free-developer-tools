@@ -4,7 +4,14 @@ import { getRelatedTools, getCategoryInfo, tools } from "../../lib/tools";
 import type { ToolDefinition } from "../../lib/tools";
 
 export function getStaticPaths() {
-  const dedicated = ["case-converter", "markdown-preview", "text-diff", "regex-tester"];
+  const dedicated = [
+    "case-converter",
+    "markdown-preview",
+    "text-diff",
+    "regex-tester",
+    "word-counter",
+    "remove-duplicate-lines",
+  ];
   return tools
     .filter((t) => t.category === "text" && !dedicated.includes(t.id))
     .map((tool) => ({
@@ -64,8 +71,12 @@ const breadcrumbSchema = {
 </ToolLayout>
 
 <script>
+document.addEventListener("astro:page-load", () => {
   const toolId = window.location.pathname.split("/").pop();
+  // @ts-ignore
   if (toolId && window.setupTool) {
+    // @ts-ignore
     window.setupTool(toolId);
   }
+});
 </script>

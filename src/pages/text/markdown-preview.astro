@@ -166,12 +166,15 @@ const loadExample = "# Hello WebUtil\n\nThis is **Markdown** preview with:\n- Li
 <Toast />
 
 <script>
-  const input = document.getElementById("md-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("md-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("md-output");
   const btnPreview = document.getElementById("btn-preview");
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output) return;
 
   const sampleMarkdown = `# Welcome to Markdown
 
@@ -230,7 +233,14 @@ Inline code: \`console.log("hello")\`
       s = s.replace(/`([^`]+)`/g, "<code>$1</code>");
       s = s.replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>");
       s = s.replace(/\*(.+?)\*/g, "<em>$1</em>");
-      s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener noreferrer">$1</a>');
+      s = s.replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_m, linkText, url) => {
+        const trimmed = url.trim();
+        if (/^(https?:\/\/|mailto:|#)/i.test(trimmed)) {
+          const safeUrl = trimmed.replace(/"/g, "&quot;");
+          return `<a href="${safeUrl}" target="_blank" rel="noopener noreferrer">${linkText}</a>`;
+        }
+        return `${linkText} (${url})`;
+      });
       return s;
     }
 
@@ -358,4 +368,5 @@ Inline code: \`console.log("hello")\`
   };
 
   updatePreview();
+});
 </script>

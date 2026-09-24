@@ -128,6 +128,7 @@ const tool = getToolById("uuid-generator")!;
 <Toast />
 
 <script>
+document.addEventListener("astro:page-load", () => {
   function generateUUID() {
     if (crypto.randomUUID) {
       return crypto.randomUUID();
@@ -140,13 +141,21 @@ const tool = getToolById("uuid-generator")!;
   }
 
   const list = document.getElementById("uuid-list");
-  const countInput = document.getElementById("uuid-count");
+  const countInput = document.getElementById("uuid-count") as HTMLInputElement | null;
   const btnGenerate = document.getElementById("btn-generate");
   const btnCopyAll = document.getElementById("btn-copy-all");
   const btnShare = document.getElementById("btn-share");
   const btnClear = document.getElementById("btn-clear");
 
-  function renderUUIDs(ids) {
+  if (!list || !countInput || !btnGenerate) return;
+
+  // Parse share params if present
+  const params = new URLSearchParams(window.location.search);
+  if (params.has("count")) {
+    countInput.value = params.get("count") || "5";
+  }
+
+  function renderUUIDs(ids: string[]) {
     if (ids.length === 0) {
       list.innerHTML = '<p class="text-sm text-on-surface-variant">No UUIDs generated yet.</p>';
       return;
@@ -162,12 +171,15 @@ const tool = getToolById("uuid-generator")!;
     ).join("");
 
     list.querySelectorAll(".copy-single").forEach((btn) => {
-      btn.onclick = async () => {
+      btn.addEventListener("click", async () => {
         const uuid = btn.getAttribute("data-uuid");
+        if (!uuid) return;
         try {
-          gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
+          // @ts-ignore
+          if (typeof gtag === 'function') gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
           await navigator.clipboard.writeText(uuid);
-          if (window.showToast) showToast("Copied!");
+          // @ts-ignore
+          if (window.showToast) window.showToast("Copied!");
           btn.textContent = "Copied!";
           setTimeout(() => { btn.textContent = "Copy"; }, 2000);
         } catch {
@@ -177,15 +189,16 @@ const tool = getToolById("uuid-generator")!;
           ta.select();
           document.execCommand("copy");
           ta.remove();
-          if (window.showToast) showToast("Copied!");
+          // @ts-ignore
+          if (window.showToast) window.showToast("Copied!");
           btn.textContent = "Copied!";
           setTimeout(() => { btn.textContent = "Copy"; }, 2000);
         }
-      };
+      });
     });
   }
 
-  let currentUUIDs = [];
+  let currentUUIDs: string[] = [];
 
   function generateUUIDs() {
     const count = Math.min(Math.max(parseInt(countInput.value) || 1, 1), 50);
@@ -199,58 +212,71 @@ const tool = getToolById("uuid-generator")!;
     if (e.key === "Enter") generateUUIDs();
   });
 
-  btnClear.onclick = () => {
-    currentUUIDs = [];
-    renderUUIDs([]);
-  };
+  if (btnClear) {
+    btnClear.onclick = () => {
+      currentUUIDs = [];
+      renderUUIDs([]);
+    };
+  }
 
-  btnCopyAll.onclick = async () => {
-    if (currentUUIDs.length === 0) return;
-    const text = currentUUIDs.join("\n");
-    try {
-      gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
-      await navigator.clipboard.writeText(text);
-      if (window.showToast) showToast("Copied!");
-      btnCopyAll.innerHTML =
-        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
-      setTimeout(() => {
+  if (btnCopyAll) {
+    btnCopyAll.onclick = async () => {
+      if (currentUUIDs.length === 0) return;
+      const text = currentUUIDs.join("\n");
+      try {
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'copy', { tool_id: 'uuid-generator', content_type: 'uuid-generator' });
+        await navigator.clipboard.writeText(text);
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
         btnCopyAll.innerHTML =
-          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
-      }, 2000);
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      if (window.showToast) showToast("Copied!");
-      btnCopyAll.innerHTML =
-        '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
-      setTimeout(() => {
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+        setTimeout(() => {
+          btnCopyAll.innerHTML =
+            '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+        }, 2000);
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
         btnCopyAll.innerHTML =
-          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
-      }, 2000);
-    }
-  };
+          '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg> Copied!';
+        setTimeout(() => {
+          btnCopyAll.innerHTML =
+            '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy All';
+        }, 2000);
+      }
+    };
+  }
 
-  btnShare.onclick = async () => {
-    const count = countInput.value || "5";
-    const url = `${location.origin}/generate/uuid?count=${count}`;
-    try {
-      gtag('event', 'share', { tool_id: 'uuid-generator', url: url });
-      await navigator.clipboard.writeText(url);
-      if (window.showToast) showToast("Share link copied!");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = url;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      if (window.showToast) showToast("Share link copied!");
-    }
-  };
+  if (btnShare) {
+    btnShare.onclick = async () => {
+      const count = countInput.value || "5";
+      const url = `${location.origin}/generate/uuid-generator?count=${count}`;
+      try {
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'share', { tool_id: 'uuid-generator', url: url });
+        await navigator.clipboard.writeText(url);
+        // @ts-ignore
+        if (window.showToast) window.showToast("Share link copied!");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        // @ts-ignore
+        if (window.showToast) window.showToast("Share link copied!");
+      }
+    };
+  }
 
   generateUUIDs();
+});
 </script>

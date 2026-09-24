@@ -138,13 +138,16 @@ const tool = getToolById("xml-formatter")!;
 <Toast />
 
 <script>
-  const input = document.getElementById("xml-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("xml-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("xml-output");
   const stats = document.getElementById("input-stats");
   const btnFormat = document.getElementById("xml-format");
   const btnClear = document.getElementById("xml-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnFormat) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -238,4 +241,5 @@ const tool = getToolById("xml-formatter")!;
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

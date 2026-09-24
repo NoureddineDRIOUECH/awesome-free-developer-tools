@@ -151,101 +151,136 @@ const tool = getToolById("wi-fi-qr-code-generator")!;
 <script>
   import qrcode from 'qrcode-generator';
 
-  const ssidInput = document.getElementById("wifi-ssid");
-  const passInput = document.getElementById("wifi-password");
-  const encSelect = document.getElementById("wifi-encryption");
-  const sizeSelect = document.getElementById("wifi-qr-size");
-  const btnGenerate = document.getElementById("btn-generate");
-  const btnDownload = document.getElementById("btn-download");
-  const btnClear = document.getElementById("btn-clear");
-  const btnLoad = document.getElementById("btn-load-example");
-  const qrOutput = document.getElementById("qr-output");
+  document.addEventListener("astro:page-load", () => {
+    const ssidInput = document.getElementById("wifi-ssid") as HTMLInputElement | null;
+    const passInput = document.getElementById("wifi-password") as HTMLInputElement | null;
+    const encSelect = document.getElementById("wifi-encryption") as HTMLSelectElement | null;
+    const sizeSelect = document.getElementById("wifi-qr-size") as HTMLSelectElement | null;
+    const btnGenerate = document.getElementById("btn-generate");
+    const btnDownload = document.getElementById("btn-download");
+    const btnClear = document.getElementById("btn-clear");
+    const btnLoad = document.getElementById("btn-load-example");
+    const qrOutput = document.getElementById("qr-output");
 
-  function generateWiFiQR() {
-    const ssid = ssidInput.value.trim();
-    const password = passInput.value.trim();
-    const enc = encSelect.value;
+    if (!ssidInput || !passInput || !encSelect || !qrOutput || !btnGenerate) return;
 
-    if (!ssid) {
-      qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Please enter a network name (SSID).</p>';
-      btnDownload.classList.add("hidden");
-      return;
+    function escapeWifiString(str: string): string {
+      return str.replace(/([\\;,:"])/g, "\\$1");
     }
 
-    const wifiStr = `WIFI:T:${enc};S:${ssid};P:${password};;`;
+    function generateWiFiQR() {
+      if (!ssidInput || !passInput || !encSelect || !qrOutput || !btnDownload || !sizeSelect) return;
+      const ssid = ssidInput.value.trim();
+      const password = passInput.value;
+      const enc = encSelect.value;
 
-    try {
-      const qr = qrcode(0, 'M');
-      qr.addData(wifiStr);
-      qr.make();
-
-      const modCount = qr.getModuleCount();
-      const cellSize = 4;
-      const margin = 2;
-      const size = modCount * cellSize + margin * 2 * cellSize;
-
-      let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
-      svg += `<rect width="100%" height="100%" fill="white"/>`;
-
-      for (let r = 0; r < modCount; r++) {
-        for (let c = 0; c < modCount; c++) {
-          if (qr.isDark(r, c)) {
-            const x = (c + margin) * cellSize;
-            const y = (r + margin) * cellSize;
-            svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="black"/>`;
-          }
-        }
+      if (!ssid) {
+        qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Please enter a network name (SSID).</p>';
+        btnDownload.classList.add("hidden");
+        return;
       }
 
-      svg += '</svg>';
-      qrOutput.innerHTML = svg;
+      const escapedSsid = escapeWifiString(ssid);
+      const escapedPass = escapeWifiString(password);
+      const wifiStr = enc === "nopass"
+        ? `WIFI:T:nopass;S:${escapedSsid};;`
+        : `WIFI:T:${enc};S:${escapedSsid};P:${escapedPass};;`;
 
-      const svgEl = qrOutput.querySelector('svg');
-      const displaySize = parseInt(sizeSelect.value);
-      svgEl.style.width = displaySize + 'px';
-      svgEl.style.height = displaySize + 'px';
-      svgEl.style.maxWidth = '100%';
+      try {
+        const qr = qrcode(0, 'M');
+        qr.addData(wifiStr);
+        qr.make();
 
-      qrOutput.dataset.svg = svg;
-      btnDownload.classList.remove("hidden");
+        const modCount = qr.getModuleCount();
+        const cellSize = 4;
+        const margin = 2;
+        const size = modCount * cellSize + margin * 2 * cellSize;
 
-      gtag('event', 'tool_action', { tool_id: 'wi-fi-qr-code-generator', action: 'generate' });
-    } catch (e) {
-      qrOutput.innerHTML = `<p class="text-sm text-red-400">Error: ${e.message}</p>`;
-      btnDownload.classList.add("hidden");
+        let svg = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${size} ${size}" width="${size}" height="${size}">`;
+        svg += `<rect width="100%" height="100%" fill="white"/>`;
+
+        for (let r = 0; r < modCount; r++) {
+          for (let c = 0; c < modCount; c++) {
+            if (qr.isDark(r, c)) {
+              const x = (c + margin) * cellSize;
+              const y = (r + margin) * cellSize;
+              svg += `<rect x="${x}" y="${y}" width="${cellSize}" height="${cellSize}" fill="black"/>`;
+            }
+          }
+        }
+
+        svg += '</svg>';
+        qrOutput.innerHTML = svg;
+
+        const svgEl = qrOutput.querySelector('svg');
+        const displaySize = parseInt(sizeSelect.value, 10);
+        if (svgEl) {
+          svgEl.style.width = displaySize + 'px';
+          svgEl.style.height = displaySize + 'px';
+          svgEl.style.maxWidth = '100%';
+        }
+
+        qrOutput.dataset.svg = svg;
+        btnDownload.classList.remove("hidden");
+
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'tool_action', { tool_id: 'wi-fi-qr-code-generator', action: 'generate' });
+      } catch (e: any) {
+        qrOutput.innerHTML = `<p class="text-sm text-red-400">Error: ${e.message}</p>`;
+        btnDownload.classList.add("hidden");
+      }
     }
-  }
 
-  btnGenerate.onclick = generateWiFiQR;
-  ssidInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
-  passInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
+    btnGenerate.onclick = generateWiFiQR;
+    ssidInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
+    passInput.addEventListener("keydown", (e) => { if (e.key === "Enter") generateWiFiQR(); });
 
-  btnDownload.onclick = () => {
-    const svg = qrOutput.dataset.svg;
-    if (!svg) return;
-    const blob = new Blob([svg], { type: 'image/svg+xml' });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = 'wifi-qrcode.svg';
-    a.click();
-    URL.revokeObjectURL(url);
-    if (window.showToast) showToast("Downloaded!");
-  };
+    if (sizeSelect) {
+      sizeSelect.addEventListener("change", () => {
+        const svgEl = qrOutput.querySelector('svg');
+        if (svgEl) {
+          const displaySize = parseInt(sizeSelect.value, 10);
+          svgEl.style.width = displaySize + 'px';
+          svgEl.style.height = displaySize + 'px';
+        }
+      });
+    }
 
-  btnClear.onclick = () => {
-    ssidInput.value = "";
-    passInput.value = "";
-    qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Enter network details to generate a Wi-Fi QR code.</p>';
-    btnDownload.classList.add("hidden");
-    ssidInput.focus();
-  };
+    if (btnDownload) {
+      btnDownload.onclick = () => {
+        const svg = qrOutput.dataset.svg;
+        if (!svg) return;
+        const blob = new Blob([svg], { type: 'image/svg+xml' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'wifi-qrcode.svg';
+        a.click();
+        URL.revokeObjectURL(url);
+        // @ts-ignore
+        if (window.showToast) window.showToast("Downloaded!");
+      };
+    }
 
-  btnLoad.onclick = () => {
-    gtag('event', 'load_example', { tool_id: 'wi-fi-qr-code-generator' });
-    ssidInput.value = "Guest Wi-Fi";
-    passInput.value = "SecurePass123!";
-    encSelect.value = "WPA";
-    generateWiFiQR();
-  };
+    if (btnClear) {
+      btnClear.onclick = () => {
+        ssidInput.value = "";
+        passInput.value = "";
+        qrOutput.innerHTML = '<p class="text-sm text-on-surface-variant">Enter network details to generate a Wi-Fi QR code.</p>';
+        if (btnDownload) btnDownload.classList.add("hidden");
+        ssidInput.focus();
+      };
+    }
+
+    if (btnLoad) {
+      btnLoad.onclick = () => {
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'load_example', { tool_id: 'wi-fi-qr-code-generator' });
+        ssidInput.value = "Guest Wi-Fi";
+        passInput.value = "SecurePass123!";
+        encSelect.value = "WPA";
+        generateWiFiQR();
+      };
+    }
+  });
 </script>

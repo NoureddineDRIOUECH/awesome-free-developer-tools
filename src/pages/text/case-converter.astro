@@ -149,12 +149,15 @@ const loadExample = "hello world, this is a sample text for case conversion";
 <Toast />
 
 <script>
-  const input = document.getElementById("case-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("case-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("case-output");
   const stats = document.getElementById("case-stats");
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -267,4 +270,5 @@ const loadExample = "hello world, this is a sample text for case conversion";
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

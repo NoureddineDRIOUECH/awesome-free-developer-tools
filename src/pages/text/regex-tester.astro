@@ -194,9 +194,10 @@ const loadExampleTest = "Call 555-1234 or 555-5678 for info";
 <Toast />
 
 <script>
-  const patternInput = document.getElementById("regex-pattern");
-  const flagsInput = document.getElementById("regex-flags");
-  const testString = document.getElementById("test-string");
+document.addEventListener("astro:page-load", () => {
+  const patternInput = document.getElementById("regex-pattern") as HTMLInputElement | null;
+  const flagsInput = document.getElementById("regex-flags") as HTMLInputElement | null;
+  const testString = document.getElementById("test-string") as HTMLTextAreaElement | null;
   const matchesText = document.getElementById("matches-text");
   const groupsOutput = document.getElementById("groups-output");
   const groupsTable = document.getElementById("groups-table");
@@ -206,6 +207,8 @@ const loadExampleTest = "Call 555-1234 or 555-5678 for info";
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!patternInput || !flagsInput || !testString || !matchesText || !error || !errorMsg || !matchCount) return;
 
   const COLORS = [
     "bg-yellow-500/30 text-yellow-200",
@@ -243,6 +246,7 @@ const loadExampleTest = "Call 555-1234 or 555-5678 for info";
         while ((m = regex.exec(text)) !== null) {
           matches.push({ full: m[0], groups: Array.from(m).slice(1), index: m.index });
           if (m.index === regex.lastIndex) regex.lastIndex++;
+          if (matches.length >= 1000) break;
         }
       } else {
         match = regex.exec(text);
@@ -309,8 +313,13 @@ const loadExampleTest = "Call 555-1234 or 555-5678 for info";
     }
   }
 
-  function escapeHtml(str) {
-    return str.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+  function escapeHtml(str: any) {
+    return String(str)
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
   }
 
   // Flag toggle buttons
@@ -396,4 +405,5 @@ const loadExampleTest = "Call 555-1234 or 555-5678 for info";
 
   // Initial test
   testRegex();
+});
 </script>

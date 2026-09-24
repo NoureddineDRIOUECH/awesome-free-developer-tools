@@ -181,7 +181,8 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
 <Toast />
 
 <script>
-  const input = document.getElementById("jwt-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("jwt-input") as HTMLTextAreaElement | null;
   const btnDecode = document.getElementById("btn-decode");
   const btnClear = document.getElementById("btn-clear");
   const output = document.getElementById("jwt-output");
@@ -194,6 +195,8 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
   const copyPayload = document.getElementById("copy-payload");
   const expiryBadge = document.getElementById("expiry-badge");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !btnDecode || !output || !headerEl || !payloadEl || !signatureEl) return;
 
   function base64UrlDecode(str) {
     str = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -325,13 +328,14 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
           </div>`;
       }
       if (payload.sub) {
+        const safeSub = String(payload.sub).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         badgeHTML +=
           `<div class="flex items-center gap-2 px-3 py-2 rounded-lg bg-primary/5 border border-primary/10 text-sm mt-2">
             <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
             </svg>
             <span class="text-primary font-medium">Subject</span>
-            <span class="text-on-surface-variant font-mono text-xs">${payload.sub}</span>
+            <span class="text-on-surface-variant font-mono text-xs">${safeSub}</span>
           </div>`;
       }
 
@@ -373,4 +377,5 @@ const loadExample = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3OD
   if (input.value.trim()) {
     btnDecode.click();
   }
+});
 </script>

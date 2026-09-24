@@ -114,11 +114,14 @@ const tool = getToolById("lorem-ipsum")!;
 <Toast />
 
 <script>
-  const amountInput = document.getElementById("lorem-amount");
-  const typeSelect = document.getElementById("lorem-type");
+document.addEventListener("astro:page-load", () => {
+  const amountInput = document.getElementById("lorem-amount") as HTMLInputElement | null;
+  const typeSelect = document.getElementById("lorem-type") as HTMLSelectElement | null;
   const generateBtn = document.getElementById("lorem-generate");
   const outputPre = document.getElementById("lorem-output");
   const copyBtn = document.getElementById("lorem-copy");
+
+  if (!amountInput || !typeSelect || !generateBtn || !outputPre) return;
 
   const words = [
     "lorem", "ipsum", "dolor", "sit", "amet", "consectetur",
@@ -223,4 +226,7 @@ const tool = getToolById("lorem-ipsum")!;
       }, 2000);
     }
   };
+
+  generateBtn.click();
+});
 </script>

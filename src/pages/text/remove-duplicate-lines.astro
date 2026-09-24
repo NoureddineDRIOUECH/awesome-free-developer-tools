@@ -178,13 +178,16 @@ const tool = getToolById("remove-duplicate-lines")!;
 <Toast />
 
 <script>
-  const input = document.getElementById("rd-input");
-  const output = document.getElementById("rd-output");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("rd-input") as HTMLTextAreaElement | null;
+  const output = document.getElementById("rd-output") as HTMLTextAreaElement | null;
   const btnProcess = document.getElementById("btn-process");
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
   const statsEl = document.getElementById("rd-stats");
+
+  if (!input || !output || !btnProcess) return;
 
   let sortMode = "none";
   let ignoreEmpty = true;
@@ -273,8 +276,10 @@ const tool = getToolById("remove-duplicate-lines")!;
   };
 
   btnLoad.onclick = () => {
-    gtag('event', 'load_example', { tool_id: 'remove-duplicate-lines' });
+    // @ts-ignore
+    if (typeof gtag === 'function') gtag('event', 'load_example', { tool_id: 'remove-duplicate-lines' });
     input.value = "apple\nbanana\napple\ncherry\nbanana\ndate\napple";
     processLines();
   };
+});
 </script>

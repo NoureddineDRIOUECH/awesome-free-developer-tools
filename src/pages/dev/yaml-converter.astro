@@ -154,13 +154,16 @@ skills:
 <Toast />
 
 <script>
-  const input = document.getElementById("yaml-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("yaml-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("yaml-output");
   const stats = document.getElementById("input-stats");
   const btnConvert = document.getElementById("yaml-convert");
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnSample = document.getElementById("btn-load-sample");
+
+  if (!input || !output || !btnConvert) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -202,6 +205,7 @@ skills:
 
       const indent = match[1].length;
       const key = match[2];
+      if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
       let val = match[3].trim();
 
       while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
@@ -237,7 +241,7 @@ skills:
             items.push(parseYamlValue(listMatch[1]));
           } else {
             const kvMatch = nextLine.match(/^\s*([\w-]+)\s*:\s*(.*)$/);
-            if (kvMatch) {
+            if (kvMatch && kvMatch[1] !== "__proto__" && kvMatch[1] !== "constructor" && kvMatch[1] !== "prototype") {
               const subObj = {};
               subObj[kvMatch[1]] = parseYamlValue(kvMatch[2]);
               items.push(subObj);
@@ -329,4 +333,5 @@ version: 2.0.0`;
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

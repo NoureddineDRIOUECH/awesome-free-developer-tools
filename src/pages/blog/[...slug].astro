@@ -2,6 +2,7 @@
 import BlogLayout from "../../layouts/BlogLayout.astro";
 import AdSlot from "../../components/AdSlot.astro";
 import { getBlogPosts, getBlogPost, getToolLink } from "../../data/blog";
+import { getToolById, getToolUrl } from "../../lib/tools";
 
 export async function getStaticPaths() {
   return getBlogPosts().map((p) => ({
@@ -18,6 +19,10 @@ const post = getBlogPost(slug);
 if (!post) {
   return Astro.redirect("/blog", 301);
 }
+
+const toolId = getToolLink(slug);
+const tool = toolId ? getToolById(toolId) : undefined;
+const toolUrl = tool ? getToolUrl(tool) : null;
 
 const articleSchema = {
   "@context": "https://schema.org",
@@ -54,9 +59,30 @@ const articleSchema = {
     </section>
   ))}
 
-  <div class="mt-8 pt-6 border-t border-surface-container-highest">
-    <p class="text-sm text-on-surface-variant">
-        Use our <a href={`/tools/${getToolLink(slug)}`} class="text-primary hover:underline">free online tool</a> to get started instantly.
-      </p>
-  </div>
+  {tool && toolUrl && (
+    <div class="mt-10 pt-6 border-t border-surface-container-highest">
+      <aside class="rounded-xl border border-primary/25 bg-primary/[0.04] p-5 sm:p-6 transition-all hover:border-primary/40">
+        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4">
+          <div>
+            <span class="inline-block text-xs font-semibold uppercase tracking-wider text-primary mb-1">
+              Try It In Your Browser
+            </span>
+            <h3 class="text-base sm:text-lg font-semibold text-on-surface">{tool.title}</h3>
+            <p class="text-xs sm:text-sm text-on-surface-variant mt-1 max-w-xl leading-relaxed">
+              {tool.description}
+            </p>
+          </div>
+          <a
+            href={toolUrl}
+            class="btn-primary text-xs sm:text-sm whitespace-nowrap shrink-0 px-4 py-2.5 flex items-center gap-1.5"
+          >
+            <span>Open {tool.title}</span>
+            <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+            </svg>
+          </a>
+        </div>
+      </aside>
+    </div>
+  )}
 </BlogLayout>

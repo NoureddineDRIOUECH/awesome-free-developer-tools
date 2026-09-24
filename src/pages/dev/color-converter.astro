@@ -121,10 +121,13 @@ const loadExample = "#7e51e0";
 <Toast />
 
 <script>
-  const colorPicker = document.getElementById("color-picker");
-  const colorHex = document.getElementById("color-hex");
-  const colorRgb = document.getElementById("color-rgb");
-  const colorHsl = document.getElementById("color-hsl");
+document.addEventListener("astro:page-load", () => {
+  const colorPicker = document.getElementById("color-picker") as HTMLInputElement | null;
+  const colorHex = document.getElementById("color-hex") as HTMLInputElement | null;
+  const colorRgb = document.getElementById("color-rgb") as HTMLInputElement | null;
+  const colorHsl = document.getElementById("color-hsl") as HTMLInputElement | null;
+
+  if (!colorPicker || !colorHex || !colorRgb || !colorHsl) return;
 
   function hexToRgb(hex) {
     const clean = hex.replace("#", "");
@@ -220,4 +223,5 @@ const loadExample = "#7e51e0";
       if (window.showToast) showToast("Copied!");
     }
   };
+});
 </script>

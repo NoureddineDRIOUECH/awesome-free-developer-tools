@@ -4,7 +4,7 @@ Free online developer tools that run 100% client-side in your browser. No data i
 
 ## Key Pages
 
-- [Home](https://webutil.tech): Browse all 50+ free developer tools
+- [Home](https://webutil.tech): Browse all 30+ free developer tools
 - [Blog](https://webutil.tech/blog): Developer guides and tutorials
 - [About](https://webutil.tech/about): About the project and tech stack
 - [FAQ](https://webutil.tech/faq): Frequently asked questions

@@ -158,7 +158,8 @@ const loadExample = "Hello, WebUtil! This is a sample string to test encoding an
 <Toast />
 
 <script>
-  const input = document.getElementById("b64-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("b64-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("b64-output");
   const stats = document.getElementById("input-stats");
   const btnEncode = document.getElementById("btn-encode");
@@ -166,6 +167,8 @@ const loadExample = "Hello, WebUtil! This is a sample string to test encoding an
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnEncode) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -263,4 +266,5 @@ const loadExample = "Hello, WebUtil! This is a sample string to test encoding an
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

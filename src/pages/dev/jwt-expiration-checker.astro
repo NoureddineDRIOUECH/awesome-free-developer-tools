@@ -152,7 +152,8 @@ const tool = getToolById("jwt-expiration-checker")!;
 <Toast />
 
 <script>
-  const input = document.getElementById("jwt-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("jwt-input") as HTMLTextAreaElement | null;
   const btnCheck = document.getElementById("btn-check");
   const btnClear = document.getElementById("btn-clear");
   const output = document.getElementById("jwt-output");
@@ -165,6 +166,8 @@ const tool = getToolById("jwt-expiration-checker")!;
   const expiryBadge = document.getElementById("expiry-badge");
   const timeInfo = document.getElementById("time-info");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !btnCheck || !output || !headerEl || !payloadEl) return;
 
   function base64UrlDecode(str) {
     str = str.replace(/-/g, "+").replace(/_/g, "/");
@@ -371,4 +374,5 @@ const tool = getToolById("jwt-expiration-checker")!;
       btnCheck.click();
     }
   });
+});
 </script>

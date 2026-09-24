@@ -132,13 +132,25 @@ const tool = getToolById("text-diff")!;
 <Toast />
 
 <script>
-  const input1 = document.getElementById("diff-input1");
-  const input2 = document.getElementById("diff-input2");
+document.addEventListener("astro:page-load", () => {
+  const input1 = document.getElementById("diff-input1") as HTMLTextAreaElement | null;
+  const input2 = document.getElementById("diff-input2") as HTMLTextAreaElement | null;
   const output = document.getElementById("diff-output");
   const btnCompare = document.getElementById("diff-compare");
   const btnClear = document.getElementById("diff-clear");
   const btnCopy = document.getElementById("diff-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input1 || !input2 || !output || !btnCompare) return;
+
+  function escapeHtml(str: string): string {
+    return str
+      .replace(/&/g, "&amp;")
+      .replace(/</g, "&lt;")
+      .replace(/>/g, "&gt;")
+      .replace(/"/g, "&quot;")
+      .replace(/'/g, "&#039;");
+  }
 
   btnCompare.onclick = () => {
     const lines1 = input1.value.split("\n");
@@ -149,16 +161,18 @@ const tool = getToolById("text-diff")!;
     for (let i = 0; i < maxLen; i++) {
       const l1 = lines1[i] !== undefined ? lines1[i] : undefined;
       const l2 = lines2[i] !== undefined ? lines2[i] : undefined;
+      const safe1 = l1 !== undefined ? escapeHtml(l1) : "";
+      const safe2 = l2 !== undefined ? escapeHtml(l2) : "";
 
       if (l1 === undefined) {
-        html += `<span style="color:#22c55e">+ ${l2}</span>\n`;
+        html += `<span style="color:#22c55e">+ ${safe2}</span>\n`;
       } else if (l2 === undefined) {
-        html += `<span style="color:#ef4444">- ${l1}</span>\n`;
+        html += `<span style="color:#ef4444">- ${safe1}</span>\n`;
       } else if (l1 === l2) {
-        html += `  ${l1}\n`;
+        html += `  ${safe1}\n`;
       } else {
-        html += `<span style="color:#ef4444">- ${l1}</span>\n`;
-        html += `<span style="color:#22c55e">+ ${l2}</span>\n`;
+        html += `<span style="color:#ef4444">- ${safe1}</span>\n`;
+        html += `<span style="color:#22c55e">+ ${safe2}</span>\n`;
       }
     }
 
@@ -171,36 +185,47 @@ const tool = getToolById("text-diff")!;
     }
   };
 
-  btnClear.onclick = () => {
-    input1.value = "";
-    input2.value = "";
-    output.textContent = "";
-    output.className = "input-field font-mono text-sm min-h-[200px] whitespace-pre-wrap overflow-auto scrollbar-thin leading-relaxed";
-    input1.focus();
-  };
+  if (btnClear) {
+    btnClear.onclick = () => {
+      input1.value = "";
+      input2.value = "";
+      output.textContent = "";
+      output.className = "input-field font-mono text-sm min-h-[200px] whitespace-pre-wrap overflow-auto scrollbar-thin leading-relaxed";
+      input1.focus();
+    };
+  }
 
-  btnLoad.onclick = () => {
-    input1.value = 'The quick brown fox jumps over the lazy dog';
-    input2.value = 'The quick brown fox jumps over the sleepy cat';
-    gtag('event', 'load_example', { tool_id: 'text-diff' });
-    btnCompare.click();
-  };
+  if (btnLoad) {
+    btnLoad.onclick = () => {
+      input1.value = 'The quick brown fox jumps over the lazy dog';
+      input2.value = 'The quick brown fox jumps over the sleepy cat';
+      // @ts-ignore
+      if (typeof gtag === 'function') gtag('event', 'load_example', { tool_id: 'text-diff' });
+      btnCompare.click();
+    };
+  }
 
-  btnCopy.onclick = async () => {
-    const text = output.textContent || output.innerText;
-    if (!text) return;
-    try {
-      gtag('event', 'copy', { tool_id: 'text-diff', content_type: 'text-diff' });
-      await navigator.clipboard.writeText(text);
-      if (window.showToast) showToast("Copied!");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      if (window.showToast) showToast("Copied!");
-    }
-  };
+  if (btnCopy) {
+    btnCopy.onclick = async () => {
+      const text = output.textContent || (output as HTMLElement).innerText;
+      if (!text || text === "Paste text in both fields and click Compare.") return;
+      try {
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'copy', { tool_id: 'text-diff', content_type: 'text-diff' });
+        await navigator.clipboard.writeText(text);
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
+      }
+    };
+  }
+});
 </script>

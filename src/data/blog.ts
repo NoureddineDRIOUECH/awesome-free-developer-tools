@@ -837,3 +837,10 @@ export function getBlogPosts(): BlogPost[] {
 export function getToolLink(slug: string): string {
   return blogToolMapping[slug] || slug;
 }
+
+export function getBlogPostsForTool(toolId: string): BlogPost[] {
+  const matchingSlugs = Object.entries(blogToolMapping)
+    .filter(([_, id]) => id === toolId)
+    .map(([slug]) => slug);
+  return blogPosts.filter((p) => matchingSlugs.includes(p.slug));
+}

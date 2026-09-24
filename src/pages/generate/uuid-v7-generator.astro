@@ -134,6 +134,7 @@ const tool = getToolById("uuid-v7-generator")!;
 <Toast />
 
 <script>
+document.addEventListener("astro:page-load", () => {
   function generateUuidV7() {
     const timestamp = Date.now();
     const hexTime = timestamp.toString(16).padStart(12, "0");
@@ -146,10 +147,12 @@ const tool = getToolById("uuid-v7-generator")!;
   }
 
   const output = document.getElementById("uuid-v7-output");
-  const countInput = document.getElementById("uuid-v7-count");
+  const countInput = document.getElementById("uuid-v7-count") as HTMLInputElement | null;
   const btnGenerate = document.getElementById("btn-generate-v7");
   const btnCopyAll = document.getElementById("btn-copy-all");
   const btnClear = document.getElementById("btn-clear");
+
+  if (!output || !countInput || !btnGenerate) return;
 
   function renderUUIDs(ids) {
     if (ids.length === 0) {
@@ -210,4 +213,5 @@ const tool = getToolById("uuid-v7-generator")!;
   };
 
   generateUUIDs();
+});
 </script>

@@ -134,7 +134,8 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
 <Toast />
 
 <script>
-  const input = document.getElementById("csv-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("csv-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("csv-output");
   const stats = document.getElementById("input-stats");
   const info = document.getElementById("csv-info");
@@ -144,58 +145,57 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
   const btnClear = document.getElementById("btn-clear");
   const btnLoad = document.getElementById("btn-load-example");
 
+  if (!input || !output || !btnConvert) return;
+
   function updateStats() {
+    if (!input || !stats) return;
     const chars = input.value.length;
     const lines = input.value ? input.value.split("\n").length : 0;
     stats.textContent = `${chars} chars · ${lines} lines`;
   }
 
-  function flattenKeys(obj, prefix) {
-    prefix = prefix || "";
-    const keys = [];
-    for (const k in obj) {
-      if (typeof obj[k] === "object" && obj[k] !== null && !Array.isArray(obj[k])) {
-        keys.push(...flattenKeys(obj[k], prefix + k + "_"));
+  function flattenObject(obj: any, prefix = ""): Record<string, any> {
+    const result: Record<string, any> = {};
+    if (obj == null || typeof obj !== "object") return result;
+
+    for (const [key, value] of Object.entries(obj)) {
+      const fullKey = prefix ? `${prefix}.${key}` : key;
+      if (value !== null && typeof value === "object" && !Array.isArray(value) && !(value instanceof Date)) {
+        Object.assign(result, flattenObject(value, fullKey));
+      } else if (Array.isArray(value)) {
+        result[fullKey] = JSON.stringify(value);
       } else {
-        keys.push(prefix + k);
+        result[fullKey] = value;
       }
     }
-    return keys;
+    return result;
   }
 
-  function getFlattened(obj, path) {
-    const parts = path.split("_");
-    let val = obj;
-    for (const p of parts) {
-      if (val == null || typeof val !== "object") return val;
-      val = val[p];
-    }
-    return val;
-  }
-
-  function escapeCsv(val) {
+  function escapeCsv(val: any) {
     if (val == null) return "";
     const str = String(val);
-    if (str.includes(",") || str.includes('"') || str.includes("\n")) {
+    if (str.includes(",") || str.includes('"') || str.includes("\n") || str.includes("\r")) {
       return '"' + str.replace(/"/g, '""') + '"';
     }
     return str;
   }
 
-  function jsonToCsv(jsonStr) {
+  function jsonToCsv(jsonStr: string) {
     const parsed = JSON.parse(jsonStr);
-    const items = Array.isArray(parsed) ? parsed : [parsed];
-    if (!items.length) return { csv: "", rows: 0 };
+    const rawItems = Array.isArray(parsed) ? parsed : [parsed];
+    if (!rawItems.length) return { csv: "", rows: 0 };
 
-    const keys = [...new Set(items.flatMap(obj => flattenKeys(obj)))];
-    const header = keys.join(",");
-    const rows = items.map(item =>
-      keys.map(k => {
-        const val = getFlattened(item, k);
-        return escapeCsv(val);
-      }).join(",")
+    const flattenedItems = rawItems.map(item => (typeof item === 'object' && item !== null) ? flattenObject(item) : { value: item });
+    const keySet = new Set<string>();
+    flattenedItems.forEach(item => {
+      Object.keys(item).forEach(k => keySet.add(k));
+    });
+    const keys = Array.from(keySet);
+    const header = keys.map(escapeCsv).join(",");
+    const rows = flattenedItems.map(item =>
+      keys.map(k => escapeCsv(item[k])).join(",")
     );
-    return { csv: "\uFEFF" + [header, ...rows].join("\n"), rows: items.length };
+    return { csv: "\uFEFF" + [header, ...rows].join("\n"), rows: flattenedItems.length };
   }
 
   btnConvert.onclick = () => {
@@ -203,67 +203,80 @@ const nestedExample = '{"user": {"name": "Alice", "age": 30}}';
     if (!raw) {
       output.textContent = "Enter JSON data to convert.";
       output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
-      info.textContent = "";
+      if (info) info.textContent = "";
       return;
     }
     try {
       const { csv, rows } = jsonToCsv(raw);
       output.textContent = csv;
       output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
-      info.textContent = `${rows} row${rows !== 1 ? "s" : ""} · includes BOM for Excel`;
-    } catch (e) {
+      if (info) info.textContent = `${rows} row${rows !== 1 ? "s" : ""} · includes BOM for Excel`;
+    } catch (e: any) {
       output.textContent = "Invalid JSON:\n" + e.message;
       output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin border-red-500/50";
-      info.textContent = "";
+      if (info) info.textContent = "";
     }
   };
 
-  btnCopy.onclick = async () => {
-    const text = output.textContent;
-    if (!text || text.startsWith("Invalid")) return;
-    try {
-      gtag('event', 'copy', { tool_id: 'json-to-csv', content_type: 'json-to-csv' });
-      await navigator.clipboard.writeText(text);
-      if (window.showToast) showToast("Copied!");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      if (window.showToast) showToast("Copied!");
-    }
-  };
+  if (btnCopy) {
+    btnCopy.onclick = async () => {
+      const text = output.textContent;
+      if (!text || text.startsWith("Invalid") || text === "Enter JSON data to convert.") return;
+      try {
+        // @ts-ignore
+        if (typeof gtag === 'function') gtag('event', 'copy', { tool_id: 'json-to-csv', content_type: 'json-to-csv' });
+        await navigator.clipboard.writeText(text);
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        // @ts-ignore
+        if (window.showToast) window.showToast("Copied!");
+      }
+    };
+  }
 
-  btnDownload.onclick = () => {
-    const text = output.textContent;
-    if (!text || text.startsWith("Invalid")) return;
-    const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "export.csv";
-    a.click();
-    URL.revokeObjectURL(url);
-  };
+  if (btnDownload) {
+    btnDownload.onclick = () => {
+      const text = output.textContent;
+      if (!text || text.startsWith("Invalid") || text === "Enter JSON data to convert.") return;
+      const blob = new Blob([text], { type: "text/csv;charset=utf-8" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "export.csv";
+      a.click();
+      URL.revokeObjectURL(url);
+    };
+  }
 
-  btnClear.onclick = () => {
-    input.value = "";
-    output.textContent = "";
-    output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
-    info.textContent = "";
-    updateStats();
-    input.focus();
-  };
+  if (btnClear) {
+    btnClear.onclick = () => {
+      input.value = "";
+      output.textContent = "";
+      output.className = "input-field font-mono text-xs min-h-[180px] whitespace-pre-wrap overflow-auto scrollbar-thin";
+      if (info) info.textContent = "";
+      updateStats();
+      input.focus();
+    };
+  }
 
-  btnLoad.onclick = () => {
-    input.value = '[{"name":"Alice","age":30,"city":"New York"},{"name":"Bob","age":25,"city":"London"}]';
-    updateStats();
-    gtag('event', 'load_example', { tool_id: 'json-to-csv' });
-    btnConvert.click();
-  };
+  if (btnLoad) {
+    btnLoad.onclick = () => {
+      input.value = '[{"name":"Alice","age":30,"city":"New York"},{"name":"Bob","age":25,"city":"London"}]';
+      updateStats();
+      // @ts-ignore
+      if (typeof gtag === 'function') gtag('event', 'load_example', { tool_id: 'json-to-csv' });
+      btnConvert.click();
+    };
+  }
 
   input.addEventListener("input", updateStats);
   updateStats();
+});
 </script>

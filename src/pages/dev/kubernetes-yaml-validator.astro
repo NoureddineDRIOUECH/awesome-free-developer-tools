@@ -149,12 +149,15 @@ spec:
 <Toast />
 
 <script>
-  const input = document.getElementById("k8s-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("k8s-input") as HTMLTextAreaElement | null;
   const results = document.getElementById("k8s-results");
   const stats = document.getElementById("input-stats");
   const btnValidate = document.getElementById("btn-validate");
   const btnClear = document.getElementById("btn-clear");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !results || !btnValidate) return;
 
   const VALID_K8S_KINDS = [
     "Pod", "Deployment", "Service", "ConfigMap", "Secret", "Namespace",
@@ -214,6 +217,7 @@ spec:
 
       const indent = match[1].length;
       const key = match[2];
+      if (key === "__proto__" || key === "constructor" || key === "prototype") continue;
       let val = match[3].trim();
 
       while (stack.length > 1 && indent <= stack[stack.length - 1].indent) {
@@ -415,6 +419,8 @@ spec:
       summaryText = `${warningCount} warning(s) found`;
     }
 
+    const escapeHtml = (str: any) => String(str).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
+
     results.innerHTML = `
       <div class="flex items-center gap-2 mb-3 text-sm font-medium ${summaryClass}">
         <svg class="size-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -432,7 +438,7 @@ spec:
             : '<svg class="size-4 text-red-400 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>';
           return `<li class="flex items-start gap-2 text-sm ${r.status === "ok" ? "text-green-300/80" : r.status === "warning" ? "text-yellow-300/80" : "text-red-300/80"}">
             ${icon}
-            <span>${r.message}</span>
+            <span>${escapeHtml(r.message)}</span>
           </li>`;
         }).join("")}
       </ul>
@@ -515,4 +521,5 @@ spec:
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

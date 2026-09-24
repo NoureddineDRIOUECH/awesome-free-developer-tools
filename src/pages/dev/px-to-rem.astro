@@ -154,13 +154,16 @@ const tool = getToolById("px-to-rem")!;
 <Toast />
 
 <script>
-  const pxInput = document.getElementById("px-value");
-  const baseInput = document.getElementById("base-size");
+document.addEventListener("astro:page-load", () => {
+  const pxInput = document.getElementById("px-value") as HTMLInputElement | null;
+  const baseInput = document.getElementById("base-size") as HTMLInputElement | null;
   const resultText = document.getElementById("result-text");
   const resultDetail = document.getElementById("result-detail");
   const refTable = document.getElementById("ref-table");
   const btnCopyTable = document.getElementById("btn-copy-table");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!pxInput || !baseInput || !resultText || !refTable) return;
 
   const COMMON_PX = [1, 2, 4, 6, 8, 10, 12, 14, 16, 18, 20, 24, 28, 32, 36, 40, 48, 56, 64, 72, 80, 96, 128];
   const USE_LABELS = {
@@ -235,4 +238,5 @@ const tool = getToolById("px-to-rem")!;
   pxInput.addEventListener("input", update);
   baseInput.addEventListener("input", update);
   update();
+});
 </script>

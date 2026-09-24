@@ -145,7 +145,8 @@ const tool = getToolById("word-counter")!;
 <Toast />
 
 <script>
-  const input = document.getElementById("wc-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("wc-input") as HTMLTextAreaElement | null;
   const statWords = document.getElementById("stat-words");
   const statChars = document.getElementById("stat-chars");
   const statCharsNs = document.getElementById("stat-chars-ns");
@@ -154,7 +155,10 @@ const tool = getToolById("word-counter")!;
   const statReading = document.getElementById("stat-reading");
   const btnClear = document.getElementById("btn-clear");
 
+  if (!input || !statWords || !statChars || !statCharsNs || !statSentences || !statParas || !statReading) return;
+
   function updateStats() {
+    if (!input || !statWords || !statChars || !statCharsNs || !statSentences || !statParas || !statReading) return;
     const text = input.value;
     const words = text.trim() ? text.trim().split(/\s+/).length : 0;
     const chars = text.length;
@@ -173,11 +177,14 @@ const tool = getToolById("word-counter")!;
 
   input.addEventListener("input", updateStats);
 
-  btnClear.onclick = () => {
-    input.value = "";
-    updateStats();
-    input.focus();
-  };
+  if (btnClear) {
+    btnClear.onclick = () => {
+      input.value = "";
+      updateStats();
+      input.focus();
+    };
+  }
 
   updateStats();
+});
 </script>

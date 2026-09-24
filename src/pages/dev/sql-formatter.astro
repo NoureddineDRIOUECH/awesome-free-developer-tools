@@ -123,13 +123,16 @@ const loadExample = "SELECT id, name, email FROM users WHERE active=1 ORDER BY n
 <Toast />
 
 <script>
-  const input = document.getElementById("sql-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("sql-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("sql-output");
   const stats = document.getElementById("input-stats");
   const btnFormat = document.getElementById("sql-format");
   const btnClear = document.getElementById("sql-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnFormat) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -212,4 +215,5 @@ const loadExample = "SELECT id, name, email FROM users WHERE active=1 ORDER BY n
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

@@ -4,7 +4,15 @@ import { getRelatedTools, getCategoryInfo, tools } from "../../lib/tools";
 import type { ToolDefinition } from "../../lib/tools";
 
 export function getStaticPaths() {
-  const dedicated = ["password-generator", "uuid-generator", "lorem-ipsum", "uuid-v7-generator"];
+  const dedicated = [
+    "password-generator",
+    "uuid-generator",
+    "lorem-ipsum",
+    "uuid-v7-generator",
+    "qr-code-generator",
+    "wi-fi-qr-code-generator",
+    "secure-wpa2-password-generator",
+  ];
   return tools
     .filter((t) => t.category === "generators" && !dedicated.includes(t.id))
     .map((tool) => ({
@@ -64,8 +72,12 @@ const breadcrumbSchema = {
 </ToolLayout>
 
 <script>
+document.addEventListener("astro:page-load", () => {
   const toolId = window.location.pathname.split("/").pop();
+  // @ts-ignore
   if (toolId && window.setupTool) {
+    // @ts-ignore
     window.setupTool(toolId);
   }
+});
 </script>

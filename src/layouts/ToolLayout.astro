@@ -4,6 +4,7 @@ import PopularTools from "../components/PopularTools.astro";
 import AffiliateBlock from "../components/AffiliateBlock.astro";
 import { tools, getRelatedTools, getCategoryInfo, getToolUrl, type ToolDefinition } from "../lib/tools";
 import { getToolDataById } from "../data/tools";
+import { getBlogPostsForTool } from "../data/blog";
 
 export interface Props {
   tool: ToolDefinition;
@@ -22,15 +23,15 @@ const category = getCategoryInfo(tool.category);
 
 const softwareSchema = {
   "@context": "https://schema.org",
-  "@type": "SoftwareApplication",
-  name: tool.title,
+  "@type": ["SoftwareApplication", "WebApplication"],
+  name: `${tool.title} - WebUtil`,
   applicationCategory: "DeveloperApplication",
   operatingSystem: "All",
   browserRequirements: "Requires JavaScript",
   description: tool.metaDescription,
   url: pageUrl,
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  author: { "@type": "Organization", name: "WebUtil" },
+  author: { "@type": "Organization", name: "WebUtil", url: siteUrl },
 };
 
 const breadcrumbSchema = {
@@ -54,44 +55,18 @@ const faqSchema = faqItems.length > 0 ? {
   })),
 } : null;
 
-const howToSchema = {
-  "@context": "https://schema.org",
-  "@type": "HowTo",
-  name: `How to Use the ${tool.title}`,
-  description: `Learn how to use the free online ${tool.title.toLowerCase()} tool. All processing happens in your browser.`,
-  step: [
-    {
-      "@type": "HowToStep",
-      position: 1,
-      name: "Enter your input",
-      text: "Paste or type your data into the input area on the page.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 2,
-      name: "Configure options",
-      text: "Select any available options or settings to customize the output.",
-    },
-    {
-      "@type": "HowToStep",
-      position: 3,
-      name: "Get results instantly",
-      text: "Your results appear instantly. All processing runs 100% client-side in your browser.",
-    },
-  ],
-};
-
-const schemas = [softwareSchema, breadcrumbSchema, howToSchema, ...(faqSchema ? [faqSchema] : [])];
+const schemas = [softwareSchema, breadcrumbSchema, ...(faqSchema ? [faqSchema] : [])];
 
 const allTabs = codeSnippets.length > 0
   ? codeSnippets
   : [];
 
 const related = getRelatedTools(tool.id);
+const relatedPosts = getBlogPostsForTool(tool.id);
 ---
 
 <BaseLayout
-  title={`${tool.title} Online - Free ${category?.name || "Developer"} Tool`}
+  title={tool.metaTitle || `${tool.title} - Free Online Tool`}
   description={tool.metaDescription}
   canonical={pageUrl}
   jsonLd={schemas}
@@ -170,6 +145,26 @@ const related = getRelatedTools(tool.id);
             <a href={getToolUrl(rt)} class="border border-surface-container-highest bg-surface-container-low rounded-lg block p-4 transition-all duration-150 hover:border-primary/30">
               <h3 class="font-semibold text-sm">{rt.title}</h3>
               <p class="mt-1 text-xs text-on-surface-variant leading-relaxed">{rt.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  {relatedPosts.length > 0 && (
+    <section class="container-main py-8 pb-4">
+      <div class="max-w-4xl mx-auto">
+        <h2 class="text-2xl font-semibold tracking-tight mb-6">Related Guides & Tutorials</h2>
+        <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {relatedPosts.map((post) => (
+            <a href={`/blog/${post.slug}`} class="border border-surface-container-highest bg-surface-container-low rounded-lg block p-4 transition-all duration-150 hover:border-primary/30 group">
+              <div class="flex items-center gap-2 text-xs text-on-surface-variant mb-1.5">
+                <span class="chip active text-[10px] px-1.5 py-0.5">{post.category}</span>
+                <span>{post.readTime}</span>
+              </div>
+              <h3 class="font-semibold text-sm group-hover:text-primary transition-colors leading-snug">{post.title}</h3>
+              <p class="mt-1 text-xs text-on-surface-variant leading-relaxed line-clamp-2">{post.description}</p>
             </a>
           ))}
         </div>

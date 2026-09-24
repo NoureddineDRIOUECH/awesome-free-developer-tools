@@ -71,8 +71,12 @@ const breadcrumbSchema = {
 </ToolLayout>
 
 <script>
+document.addEventListener("astro:page-load", () => {
   const toolId = window.location.pathname.split("/").pop();
+  // @ts-ignore
   if (toolId && window.setupTool) {
+    // @ts-ignore
     window.setupTool(toolId);
   }
+});
 </script>

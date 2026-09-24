@@ -149,7 +149,8 @@ const tool = getToolById("url-encoder")!;
 <Toast />
 
 <script>
-  const input = document.getElementById("url-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("url-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("url-output");
   const stats = document.getElementById("input-stats");
   const btnEncode = document.getElementById("btn-encode");
@@ -158,6 +159,8 @@ const tool = getToolById("url-encoder")!;
   const btnClear = document.getElementById("btn-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnEncode) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -258,4 +261,5 @@ const tool = getToolById("url-encoder")!;
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>

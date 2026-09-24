@@ -155,6 +155,7 @@ const tool = getToolById("image-converter")!;
 <Toast />
 
 <script>
+document.addEventListener("astro:page-load", () => {
   const dropZone = document.getElementById("drop-zone");
   const fileInput = document.getElementById("image-file");
   const dropText = document.getElementById("drop-text");
@@ -165,6 +166,9 @@ const tool = getToolById("image-converter")!;
   const resultDiv = document.getElementById("image-result");
   const resultImg = document.getElementById("image-result-img");
   const downloadLink = document.getElementById("image-download");
+  const btnCopy = document.getElementById("btn-copy");
+
+  if (!dropZone || !fileInput || !formatSelect || !convertBtn) return;
 
   let currentFile = null;
   let currentDataUrl = null;
@@ -200,10 +204,10 @@ const tool = getToolById("image-converter")!;
     const reader = new FileReader();
     reader.onload = (e) => {
       currentDataUrl = e.target.result;
-      previewImg.src = currentDataUrl;
-      previewDiv.classList.remove("hidden");
-      resultDiv.classList.add("hidden");
-      dropText.textContent = file.name;
+      if (previewImg) previewImg.src = currentDataUrl;
+      if (previewDiv) previewDiv.classList.remove("hidden");
+      if (resultDiv) resultDiv.classList.add("hidden");
+      if (dropText) dropText.textContent = file.name;
       convertBtn.disabled = false;
     };
     reader.readAsDataURL(file);
@@ -214,44 +218,48 @@ const tool = getToolById("image-converter")!;
 
     const img = new Image();
     img.onload = () => {
+      const format = formatSelect.value;
+      const ext = format.split("/").pop();
       const canvas = document.createElement("canvas");
       canvas.width = img.naturalWidth;
       canvas.height = img.naturalHeight;
       const ctx = canvas.getContext("2d");
+      if (!ctx) return;
       ctx.drawImage(img, 0, 0);
       resultDataUrl = canvas.toDataURL(format);
 
-      const format = formatSelect.value;
-      const ext = format.split("/").pop();
-
       canvas.toBlob((blob) => {
+        if (!blob) return;
         const url = URL.createObjectURL(blob);
-        resultImg.src = url;
-        resultDiv.classList.remove("hidden");
+        if (resultImg) resultImg.src = url;
+        if (resultDiv) resultDiv.classList.remove("hidden");
 
-        downloadLink.href = url;
-        downloadLink.download = `converted.${ext}`;
+        if (downloadLink) {
+          downloadLink.href = url;
+          downloadLink.download = `converted.${ext}`;
+        }
       }, format);
     };
     img.src = currentDataUrl;
   };
 
-  const btnCopy = document.getElementById("btn-copy");
-
-  btnCopy.onclick = async () => {
-    if (!resultDataUrl) return;
-    gtag('event', 'copy', { tool_id: 'image-converter', content_type: 'image-converter' });
-    try {
-      await navigator.clipboard.writeText(resultDataUrl);
-      if (window.showToast) showToast("Copied!");
-    } catch {
-      const ta = document.createElement("textarea");
-      ta.value = resultDataUrl;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-      if (window.showToast) showToast("Copied!");
-    }
-  };
+  if (btnCopy) {
+    btnCopy.onclick = async () => {
+      if (!resultDataUrl) return;
+      gtag('event', 'copy', { tool_id: 'image-converter', content_type: 'image-converter' });
+      try {
+        await navigator.clipboard.writeText(resultDataUrl);
+        if (window.showToast) showToast("Copied!");
+      } catch {
+        const ta = document.createElement("textarea");
+        ta.value = resultDataUrl;
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand("copy");
+        ta.remove();
+        if (window.showToast) showToast("Copied!");
+      }
+    };
+  }
+});
 </script>

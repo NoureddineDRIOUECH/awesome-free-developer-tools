@@ -172,7 +172,8 @@ const loadExample = `<div class="example">Hello & "World"</div>`;
 <Toast />
 
 <script>
-  const input = document.getElementById("html-input");
+document.addEventListener("astro:page-load", () => {
+  const input = document.getElementById("html-input") as HTMLTextAreaElement | null;
   const output = document.getElementById("html-output");
   const stats = document.getElementById("input-stats");
   const btnEncode = document.getElementById("html-encode");
@@ -180,6 +181,8 @@ const loadExample = `<div class="example">Hello & "World"</div>`;
   const btnClear = document.getElementById("html-clear");
   const btnCopy = document.getElementById("btn-copy");
   const btnLoad = document.getElementById("btn-load-example");
+
+  if (!input || !output || !btnEncode) return;
 
   function updateStats() {
     const chars = input.value.length;
@@ -300,4 +303,5 @@ const loadExample = `<div class="example">Hello & "World"</div>`;
   input.addEventListener("input", updateStats);
 
   updateStats();
+});
 </script>
