@@ -60,6 +60,8 @@ All-in-one collections covering most daily dev utility needs.
 
 ## Converters
 
+- [File Converter](https://fileontap.com/) — Convert and compress HEIC/WebP/PNG/JPG and handle image↔PDF locally in the browser; no upload or account.
+
 - [Color Converter](https://webutil.tech/dev/color-converter) — Convert between HEX, RGB, HSL, and named CSS colors.
 - [Case Converter](https://webutil.tech/text/case-converter) — Convert between camelCase, snake_case, kebab-case, and more.
 - [CSS px to rem Converter](https://webutil.tech/dev/px-to-rem) — Convert pixel values to rem units with reference table.
