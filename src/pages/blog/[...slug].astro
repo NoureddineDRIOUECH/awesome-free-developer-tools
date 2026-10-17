@@ -34,6 +34,8 @@ const articleSchema = {
   dateModified: post.date.toISOString(),
   publisher: { "@type": "Organization", name: "WebUtil" },
 };
+const allPosts = getBlogPosts();
+const morePosts = allPosts.filter((p) => p.slug !== slug).slice(0, 3);
 ---
 
 <BlogLayout
@@ -50,11 +52,30 @@ const articleSchema = {
   ]}
 >
   {post.sections.map((section, i) => (
-    <section>
-      <h2>{section.heading}</h2>
-      {section.body.split('\n\n').map((p) => (
-        p.trim() ? <p>{p.trim()}</p> : null
-      ))}
+    <section class="mb-8">
+      <h2 class="text-xl sm:text-2xl font-bold tracking-tight text-on-surface mb-3">{section.heading}</h2>
+      {section.body.split('\n\n').map((block) => {
+        const text = block.trim();
+        if (!text) return null;
+        if (text.startsWith('```') && text.endsWith('```')) {
+          const lines = text.split('\n');
+          const code = lines.slice(1, -1).join('\n');
+          return (
+            <pre class="bg-surface-container border border-surface-container-highest rounded-lg p-4 text-xs sm:text-sm font-mono overflow-x-auto my-4 text-on-surface leading-relaxed">
+              <code>{code}</code>
+            </pre>
+          );
+        }
+        if (text.startsWith('- ') || text.startsWith('* ')) {
+          const items = text.split('\n').filter((l) => l.trim().startsWith('- ') || l.trim().startsWith('* '));
+          return (
+            <ul class="my-3 space-y-1.5 list-disc pl-5 text-on-surface-variant text-sm sm:text-base leading-relaxed">
+              {items.map((item) => <li>{item.replace(/^[-*]\s+/, '')}</li>)}
+            </ul>
+          );
+        }
+        return <p class="text-on-surface-variant leading-relaxed text-sm sm:text-base my-3">{text}</p>;
+      })}
       {i === 2 && <AdSlot format="in-article" class="my-8" />}
     </section>
   ))}
@@ -83,6 +104,27 @@ const articleSchema = {
           </a>
         </div>
       </aside>
+    </div>
+  )}
+
+  {morePosts.length > 0 && (
+    <div class="mt-12 pt-8 border-t border-surface-container-highest">
+      <h3 class="text-lg font-semibold tracking-tight text-on-surface mb-4">Recommended Articles & Guides</h3>
+      <div class="grid sm:grid-cols-3 gap-4">
+        {morePosts.map((p) => (
+          <a
+            href={`/blog/${p.slug}`}
+            class="border border-surface-container-highest bg-surface-container-low rounded-lg p-4 block hover:border-primary/40 transition-all duration-150 group"
+          >
+            <div class="flex items-center gap-2 text-xs text-on-surface-variant mb-1.5">
+              <span class="chip active text-[10px] px-1.5 py-0.5">{p.category}</span>
+              <span>{p.readTime}</span>
+            </div>
+            <h4 class="font-semibold text-sm group-hover:text-primary transition-colors leading-snug line-clamp-2">{p.title}</h4>
+            <p class="mt-1 text-xs text-on-surface-variant line-clamp-2 leading-relaxed">{p.description}</p>
+          </a>
+        ))}
+      </div>
     </div>
   )}
 </BlogLayout>

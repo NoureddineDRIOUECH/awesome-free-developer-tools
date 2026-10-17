@@ -409,6 +409,28 @@ export const tools: ToolDefinition[] = [
     keywords: ["qr code generator", "qr generator", "create qr code", "qr code maker", "free qr code"],
     relatedTools: ["password-generator", "uuid-generator", "lorem-ipsum"],
   },
+  {
+    id: "pdf-merger",
+    title: "PDF Merger & Combiner",
+    description: "Merge multiple PDF files into a single document entirely in your browser. 100% private, unlimited files, zero uploads.",
+    category: "converters",
+    icon: "picture_as_pdf",
+    metaTitle: "PDF Merger — Merge & Combine PDF Files Online Free & Private",
+    metaDescription: "Free online PDF merger. Combine multiple PDF documents into one entirely in your browser with zero server uploads, no file size limits, and 100% privacy.",
+    keywords: ["pdf merger", "merge pdf", "combine pdf", "pdf joiner", "merge pdf online free", "private pdf merger"],
+    relatedTools: ["image-converter", "base64-encoder", "exif-remover"],
+  },
+  {
+    id: "exif-remover",
+    title: "Photo EXIF & GPS Location Stripper",
+    description: "Inspect and remove hidden EXIF metadata, camera settings, and GPS location coordinates from photos before sharing.",
+    category: "images",
+    icon: "no_photography",
+    metaTitle: "Photo EXIF Remover — Strip GPS & Metadata from Photos Online",
+    metaDescription: "Free online EXIF metadata remover. View hidden camera tags and GPS location data, then strip all metadata to download a private, clean photo. 100% client-side.",
+    keywords: ["exif remover", "remove exif data", "strip metadata photo", "remove gps from photo", "photo privacy tool", "clean image metadata"],
+    relatedTools: ["image-converter", "pdf-merger", "hash-generator"],
+  },
 ];
 
 export function getToolById(id: string): ToolDefinition | undefined {

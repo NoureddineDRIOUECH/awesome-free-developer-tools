@@ -1,0 +1,345 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("pdf-merger")!;
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <!-- Privacy Badge -->
+        <div class="flex items-center gap-2 p-3 mb-6 rounded-lg bg-primary/10 border border-primary/20 text-xs text-on-surface">
+          <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+          </svg>
+          <span><strong>100% Client-Side Privacy:</strong> Your PDF files are processed entirely in your browser memory. Nothing is ever uploaded to any server.</span>
+        </div>
+
+        <!-- Upload Dropzone -->
+        <div
+          id="pdf-dropzone"
+          class="border-2 border-dashed border-surface-container-highest hover:border-primary/50 transition-colors rounded-xl p-8 text-center cursor-pointer bg-surface-container-low/50"
+        >
+          <input type="file" id="pdf-file-input" multiple accept="application/pdf" class="hidden" />
+          <div class="flex flex-col items-center justify-center gap-3 pointer-events-none">
+            <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-on-surface">Choose PDF files or drag & drop them here</p>
+              <p class="text-xs text-on-surface-variant mt-1">Select 2 or more PDFs to combine into one single document</p>
+            </div>
+            <button type="button" class="btn-primary text-xs pointer-events-auto mt-1">
+              Select PDF Files
+            </button>
+          </div>
+        </div>
+
+        <!-- File List Container -->
+        <div id="pdf-list-container" class="mt-6 hidden">
+          <div class="flex items-center justify-between mb-3">
+            <h3 class="text-sm font-semibold text-on-surface flex items-center gap-2">
+              <span>Files to Merge</span>
+              <span id="pdf-file-count" class="text-xs font-normal px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant">0 files</span>
+            </h3>
+            <button id="btn-clear-all" class="text-xs text-error hover:underline flex items-center gap-1 cursor-pointer">
+              <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              Clear All
+            </button>
+          </div>
+
+          <div id="pdf-file-list" class="space-y-2 max-h-80 overflow-y-auto pr-1"></div>
+
+          <!-- Controls -->
+          <div class="mt-6 flex flex-wrap items-center gap-3 pt-4 border-t border-surface-container-highest">
+            <button id="btn-merge-pdf" class="btn-primary text-sm flex items-center gap-2">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7v8a2 2 0 002 2h6M8 7V5a2 2 0 012-2h4.586a1 1 0 01.707.293l4.414 4.414a1 1 0 01.293.707V15a2 2 0 01-2 2h-2M8 7H6a2 2 0 00-2 2v10a2 2 0 002 2h8a2 2 0 002-2v-2"/>
+              </svg>
+              <span id="btn-merge-text">Merge PDFs Now</span>
+            </button>
+
+            <button id="btn-add-more" class="btn-secondary text-sm">
+              Add More Files
+            </button>
+          </div>
+        </div>
+
+        <!-- Result Card -->
+        <div id="pdf-result-card" class="mt-6 p-5 rounded-xl border border-primary/30 bg-primary/5 hidden animate-fade-in">
+          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+            <div>
+              <div class="flex items-center gap-2 text-primary font-semibold text-sm">
+                <svg class="size-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+                PDFs Merged Successfully!
+              </div>
+              <p id="pdf-result-details" class="text-xs text-on-surface-variant mt-1">
+                Your combined PDF is ready to download.
+              </p>
+            </div>
+            <a
+              id="btn-download-pdf"
+              href="#"
+              download="merged-document.pdf"
+              class="btn-primary text-sm whitespace-nowrap shrink-0 flex items-center gap-2"
+            >
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+              </svg>
+              Download Merged PDF
+            </a>
+          </div>
+        </div>
+
+        <AdSlot format="banner" class="my-6" />
+      </div>
+    </div>
+  </section>
+
+  <Toast id="toast-pdf" />
+</ToolLayout>
+
+<script is:inline src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.9/dist/pdf-lib.min.js"></script>
+
+<script is:inline>
+document.addEventListener("astro:page-load", function () {
+  var dropzone = document.getElementById("pdf-dropzone");
+  var fileInput = document.getElementById("pdf-file-input");
+  var listContainer = document.getElementById("pdf-list-container");
+  var fileList = document.getElementById("pdf-file-list");
+  var fileCountLabel = document.getElementById("pdf-file-count");
+  var btnMerge = document.getElementById("btn-merge-pdf");
+  var btnMergeText = document.getElementById("btn-merge-text");
+  var btnClearAll = document.getElementById("btn-clear-all");
+  var btnAddMore = document.getElementById("btn-add-more");
+  var resultCard = document.getElementById("pdf-result-card");
+  var resultDetails = document.getElementById("pdf-result-details");
+  var btnDownload = document.getElementById("btn-download-pdf");
+
+  if (!dropzone || !fileInput) return;
+
+  var pdfFiles = []; // Array of { file, name, size, pageCount, buffer }
+
+  function formatBytes(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    var k = 1024;
+    var sizes = ["Bytes", "KB", "MB", "GB"];
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+  }
+
+  function showToast(msg) {
+    var toast = document.getElementById("toast-pdf");
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.remove("hidden");
+    setTimeout(function () {
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+
+  async function addFiles(files) {
+    var validFiles = Array.from(files).filter(function (f) {
+      return f.type === "application/pdf" || f.name.toLowerCase().endsWith(".pdf");
+    });
+
+    if (validFiles.length === 0) {
+      showToast("Please select valid PDF files.");
+      return;
+    }
+
+    for (var i = 0; i < validFiles.length; i++) {
+      var file = validFiles[i];
+      try {
+        var buffer = await file.arrayBuffer();
+        var pageCount = "?";
+        if (window.PDFLib) {
+          try {
+            var doc = await PDFLib.PDFDocument.load(buffer, { ignoreEncryption: true });
+            pageCount = doc.getPageCount();
+          } catch (e) {
+            console.warn("Could not parse page count:", e);
+          }
+        }
+        pdfFiles.push({
+          file: file,
+          name: file.name,
+          size: file.size,
+          pageCount: pageCount,
+          buffer: buffer,
+        });
+      } catch (err) {
+        showToast("Error reading file: " + file.name);
+      }
+    }
+
+    renderFileList();
+  }
+
+  function renderFileList() {
+    fileList.innerHTML = "";
+    if (pdfFiles.length === 0) {
+      listContainer.classList.add("hidden");
+      resultCard.classList.add("hidden");
+      return;
+    }
+
+    listContainer.classList.remove("hidden");
+    fileCountLabel.textContent = pdfFiles.length + (pdfFiles.length === 1 ? " file" : " files");
+
+    pdfFiles.forEach(function (item, index) {
+      var row = document.createElement("div");
+      row.className = "flex items-center justify-between p-3 rounded-lg border border-surface-container-highest bg-surface-container-low text-xs";
+      row.innerHTML =
+        '<div class="flex items-center gap-3 min-w-0 flex-1 mr-2">' +
+        '  <span class="size-6 rounded-md bg-surface-container-high font-semibold text-on-surface-variant flex items-center justify-center shrink-0">' + (index + 1) + '</span>' +
+        '  <div class="min-w-0 flex-1">' +
+        '    <p class="font-medium text-on-surface truncate">' + item.name + '</p>' +
+        '    <p class="text-on-surface-variant/70 text-[11px] mt-0.5">' + formatBytes(item.size) + ' &bull; ' + item.pageCount + ' pages</p>' +
+        '  </div>' +
+        '</div>' +
+        '<div class="flex items-center gap-1 shrink-0">' +
+        '  <button type="button" class="btn-move-up p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant transition-colors" data-index="' + index + '" ' + (index === 0 ? "disabled style='opacity:0.3'" : "") + ' title="Move Up">' +
+        '    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7"/></svg>' +
+        '  </button>' +
+        '  <button type="button" class="btn-move-down p-1.5 rounded hover:bg-surface-container-high text-on-surface-variant transition-colors" data-index="' + index + '" ' + (index === pdfFiles.length - 1 ? "disabled style='opacity:0.3'" : "") + ' title="Move Down">' +
+        '    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>' +
+        '  </button>' +
+        '  <button type="button" class="btn-remove-file p-1.5 rounded hover:bg-error/20 text-error transition-colors" data-index="' + index + '" title="Remove File">' +
+        '    <svg class="size-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"/></svg>' +
+        '  </button>' +
+        '</div>';
+      fileList.appendChild(row);
+    });
+
+    // Wire reorder and delete events
+    fileList.querySelectorAll(".btn-move-up").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = parseInt(this.dataset.index, 10);
+        if (idx > 0) {
+          var temp = pdfFiles[idx];
+          pdfFiles[idx] = pdfFiles[idx - 1];
+          pdfFiles[idx - 1] = temp;
+          renderFileList();
+        }
+      });
+    });
+
+    fileList.querySelectorAll(".btn-move-down").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = parseInt(this.dataset.index, 10);
+        if (idx < pdfFiles.length - 1) {
+          var temp = pdfFiles[idx];
+          pdfFiles[idx] = pdfFiles[idx + 1];
+          pdfFiles[idx + 1] = temp;
+          renderFileList();
+        }
+      });
+    });
+
+    fileList.querySelectorAll(".btn-remove-file").forEach(function (btn) {
+      btn.addEventListener("click", function () {
+        var idx = parseInt(this.dataset.index, 10);
+        pdfFiles.splice(idx, 1);
+        renderFileList();
+      });
+    });
+  }
+
+  dropzone.addEventListener("click", function () {
+    fileInput.click();
+  });
+
+  btnAddMore.addEventListener("click", function () {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", function (e) {
+    if (e.target.files) addFiles(e.target.files);
+    fileInput.value = "";
+  });
+
+  dropzone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    dropzone.classList.add("border-primary");
+  });
+
+  dropzone.addEventListener("dragleave", function () {
+    dropzone.classList.remove("border-primary");
+  });
+
+  dropzone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dropzone.classList.remove("border-primary");
+    if (e.dataTransfer.files) addFiles(e.dataTransfer.files);
+  });
+
+  btnClearAll.addEventListener("click", function () {
+    pdfFiles = [];
+    renderFileList();
+  });
+
+  btnMerge.addEventListener("click", async function () {
+    if (pdfFiles.length < 2) {
+      showToast("Please add at least 2 PDF files to merge.");
+      return;
+    }
+
+    if (!window.PDFLib) {
+      showToast("PDF engine is still loading. Please try again in a second.");
+      return;
+    }
+
+    try {
+      btnMerge.disabled = true;
+      btnMergeText.textContent = "Merging PDFs...";
+
+      var startTime = performance.now();
+      var mergedPdf = await PDFLib.PDFDocument.create();
+      var totalMergedPages = 0;
+
+      for (var i = 0; i < pdfFiles.length; i++) {
+        var item = pdfFiles[i];
+        var doc = await PDFLib.PDFDocument.load(item.buffer, { ignoreEncryption: true });
+        var indices = doc.getPageIndices();
+        var copiedPages = await mergedPdf.copyPages(doc, indices);
+        copiedPages.forEach(function (page) {
+          mergedPdf.addPage(page);
+          totalMergedPages++;
+        });
+      }
+
+      var mergedBytes = await mergedPdf.save();
+      var blob = new Blob([mergedBytes], { type: "application/pdf" });
+      var url = URL.createObjectURL(blob);
+      var duration = ((performance.now() - startTime) / 1000).toFixed(2);
+
+      btnDownload.href = url;
+      btnDownload.download = "webutil-merged-" + Date.now() + ".pdf";
+
+      resultDetails.textContent =
+        "Successfully combined " + pdfFiles.length + " files (" + totalMergedPages + " total pages, " + formatBytes(mergedBytes.byteLength) + ") in " + duration + "s.";
+
+      resultCard.classList.remove("hidden");
+      resultCard.scrollIntoView({ behavior: "smooth", block: "nearest" });
+      showToast("PDF merge complete!");
+    } catch (err) {
+      console.error(err);
+      showToast("Failed to merge PDFs: " + (err.message || "Unknown error"));
+    } finally {
+      btnMerge.disabled = false;
+      btnMergeText.textContent = "Merge PDFs Now";
+    }
+  });
+});
+</script>

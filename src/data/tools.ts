@@ -733,6 +733,123 @@ function generateQR(text, size) {
       { question: "Are my QR code URLs or messages tracked by WebUtil?", answer: "No. All QR generation executes 100% client-side in your browser. WebUtil includes no tracking redirects, analytics hooks, or URL shorteners." }
     ],
   },
+  {
+    id: "pdf-merger",
+    title: "PDF Merger & Combiner",
+    description: "Merge multiple PDF files into a single document entirely in your browser. 100% private, unlimited files, zero uploads.",
+    metaDescription: "Free online PDF merger. Combine multiple PDF documents into one entirely in your browser with zero server uploads, no file size limits, and 100% privacy.",
+    category: "converters",
+    keywords: ["pdf merger", "merge pdf", "combine pdf", "pdf joiner", "merge pdf online free", "private pdf merger"],
+    relatedTools: ["image-converter", "base64-encoder", "exif-remover"],
+    examplePayload: "document1.pdf, document2.pdf",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript (pdf-lib)", code: `import { PDFDocument } from 'pdf-lib';
+
+async function mergePDFs(pdfBuffers) {
+  const mergedPdf = await PDFDocument.create();
+  for (const buffer of pdfBuffers) {
+    const doc = await PDFDocument.load(buffer);
+    const copiedPages = await mergedPdf.copyPages(doc, doc.getPageIndices());
+    copiedPages.forEach((page) => mergedPdf.addPage(page));
+  }
+  return await mergedPdf.save();
+}` },
+      { lang: "python", label: "Python (pypdf)", code: `from pypdf import PdfMerger
+
+merger = PdfMerger()
+for pdf in ["doc1.pdf", "doc2.pdf", "doc3.pdf"]:
+    merger.append(pdf)
+
+merger.write("combined_output.pdf")
+merger.close()` },
+      { lang: "go", label: "Go (pdfcpu)", code: `package main
+
+import "github.com/pdfcpu/pdfcpu/pkg/api"
+
+func main() {
+    inFiles := []string{"doc1.pdf", "doc2.pdf"}
+    api.MergeCreateFile(inFiles, "merged.pdf", false, nil)
+}` },
+      { lang: "bash", label: "Bash (poppler-utils)", code: `# Install poppler-utils
+pdfunite document1.pdf document2.pdf document3.pdf merged_output.pdf` },
+    ],
+    content: "The Portable Document Format (PDF), governed by the ISO 32000 international standard, is the universal format for legal agreements, financial statements, medical records, and architectural schematics. In standard office and remote work environments, users frequently need to assemble disparate PDF files—such as combining a signed cover letter with supplementary appendices, or merging quarterly financial reports into an executive dossier. However, commercial cloud-based PDF web services pose serious cybersecurity and privacy vulnerabilities: they require users to upload confidential, unencrypted documents to third-party cloud servers where data may be retained, scanned, or exposed to breaches. Furthermore, most online tools impose arbitrary file size limits, page count caps, or paywalls requiring monthly subscriptions. WebUtil's PDF Merger & Combiner fundamentally transforms document handling by performing all PDF page extraction, stream concatenation, and cross-reference table rebuilding directly within your local browser memory using WebAssembly and client-side JavaScript. No document bytes ever travel over the network, ensuring complete adherence to GDPR, HIPAA, and corporate confidentiality protocols with zero file size limits.",
+    faqItems: [
+      { question: "Is it safe to merge sensitive financial or legal PDFs on WebUtil?", answer: "Yes, 100% safe. Unlike traditional PDF websites, WebUtil never uploads your files to any server. All processing runs entirely inside your browser's local sandbox memory." },
+      { question: "Are there any file size or page count limits?", answer: "There are no artificial limits. You can merge as many PDF files and pages as your local computer or phone's device memory can handle." },
+      { question: "Can I reorder or rearrange the PDF files before merging?", answer: "Yes. Simply drag and drop or use the Up and Down arrow buttons next to each file to arrange them in your exact desired page order." },
+      { question: "Does merging PDFs degrade text clarity or image resolution?", answer: "No. The underlying vector graphics, typography, fonts, and raster images are copied byte-for-byte into the new document container with zero compression or quality loss." },
+      { question: "Does this PDF merger work offline?", answer: "Yes. Once the page is loaded, the PDF merging engine functions completely offline without an active internet connection." }
+    ],
+  },
+  {
+    id: "exif-remover",
+    title: "Photo EXIF & GPS Location Stripper",
+    description: "Inspect and remove hidden EXIF metadata, camera settings, and GPS location coordinates from photos before sharing.",
+    metaDescription: "Free online EXIF metadata remover. View hidden camera tags and GPS location data, then strip all metadata to download a private, clean photo. 100% client-side.",
+    category: "images",
+    keywords: ["exif remover", "remove exif data", "strip metadata photo", "remove gps from photo", "photo privacy tool", "clean image metadata"],
+    relatedTools: ["image-converter", "pdf-merger", "hash-generator"],
+    examplePayload: "photo.jpg",
+    codeSnippets: [
+      { lang: "javascript", label: "JavaScript (Canvas)", code: `// Strip metadata by drawing to HTML5 Canvas
+function stripExif(imageFile) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      const ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0);
+      canvas.toBlob((blob) => resolve(blob), 'image/jpeg', 0.95);
+    };
+    img.src = URL.createObjectURL(imageFile);
+  });
+}` },
+      { lang: "python", label: "Python (Pillow)", code: `from PIL import Image
+
+def strip_exif(input_path, output_path):
+    image = Image.open(input_path)
+    # Re-save image without exif parameter
+    data = list(image.getdata())
+    clean_image = Image.new(image.mode, image.size)
+    clean_image.putdata(data)
+    clean_image.save(output_path)
+
+strip_exif("input.jpg", "clean_output.jpg")` },
+      { lang: "go", label: "Go (image/jpeg)", code: `package main
+
+import (
+    "image"
+    "image/jpeg"
+    "os"
+)
+
+func main() {
+    file, _ := os.Open("photo.jpg")
+    img, _, _ := image.Decode(file)
+    file.Close()
+
+    out, _ := os.Create("clean_photo.jpg")
+    defer out.Close()
+    jpeg.Encode(out, img, &jpeg.Options{Quality: 95})
+}` },
+      { lang: "bash", label: "Bash (exiftool)", code: `# Strip all metadata permanently
+exiftool -all= -overwrite_original photo.jpg
+
+# View remaining metadata
+exiftool photo.jpg` },
+    ],
+    content: "Whenever a photograph is captured with a modern smartphone (iPhone or Android) or digital camera, the device automatically records extensive Exchangeable Image File Format (EXIF) metadata and embeds it directly into the image file headers (standardized under JEITA CP-3451). This metadata includes your precise geographical GPS coordinates (latitude, longitude, and elevation accurate to within a few meters), exact timestamp, device model, camera serial number, lens parameters, exposure settings, and sometimes owner identifiers. When sharing photos on forums, classified marketplaces (Craigslist, Facebook Marketplace, eBay), or messaging applications that don't aggressively strip metadata, you risk exposing your residential home address, daily routine, or personal location to strangers and malicious actors. WebUtil's Photo EXIF & GPS Location Stripper provides an instant, dual-purpose privacy defense: it inspects your photo in real time to reveal what private data is currently embedded, warns you if GPS location coordinates are present, and lets you strip 100% of EXIF, IPTC, and XMP metadata with one click. Because the cleansing process renders pixels locally into an HTML5 Canvas, zero bytes are transmitted across the web.",
+    faqItems: [
+      { question: "What hidden metadata is stored inside my smartphone photos?", answer: "Smartphone photos commonly contain GPS latitude and longitude, altitude, device make and model, camera software version, date and time, shutter speed, ISO rating, and flash status." },
+      { question: "Why is GPS location in photos a security and privacy risk?", answer: "If you take a photo at home and upload it to an online marketplace or message board, anyone who downloads the file can extract your exact residential address from the embedded GPS coordinates." },
+      { question: "How does WebUtil strip metadata without sending my photos to a server?", answer: "WebUtil uses the browser's native HTML5 Canvas API. The image pixels are drawn to a local canvas and re-encoded into a fresh JPEG/PNG container, leaving all metadata headers behind. Your photos never leave your device." },
+      { question: "Does removing EXIF metadata reduce the image quality or resolution?", answer: "No. The photo retains its full native pixel dimensions (width and height). A high quality factor (95%) is applied during re-encoding, preserving crisp visual fidelity." },
+      { question: "Does this tool work on iPhone, iPad, and Android browsers?", answer: "Yes. WebUtil is fully responsive and compatible with Safari on iOS and Chrome on Android, allowing you to sanitize photos directly on your phone before uploading them." }
+    ],
+  },
 ];
 
 export function getToolDataById(id: string): ToolData | undefined {

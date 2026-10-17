@@ -1,0 +1,394 @@
+---
+import ToolLayout from "../../layouts/ToolLayout.astro";
+import Toast from "../../components/Toast.astro";
+import AdSlot from "../../components/AdSlot.astro";
+import { getToolById } from "../../lib/tools";
+
+const tool = getToolById("exif-remover")!;
+---
+
+<ToolLayout tool={tool}>
+  <section class="container-main pb-8">
+    <div class="max-w-3xl mx-auto">
+      <div class="tool-card p-4 sm:p-6">
+        <!-- Privacy Banner -->
+        <div class="flex items-center gap-2 p-3 mb-6 rounded-lg bg-primary/10 border border-primary/20 text-xs text-on-surface">
+          <svg class="size-4 text-primary shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"/>
+          </svg>
+          <span><strong>100% On-Device Processing:</strong> Your photos are analyzed and cleaned locally using HTML5 Canvas. No image data is ever uploaded or stored.</span>
+        </div>
+
+        <!-- Upload Zone -->
+        <div
+          id="exif-dropzone"
+          class="border-2 border-dashed border-surface-container-highest hover:border-primary/50 transition-colors rounded-xl p-8 text-center cursor-pointer bg-surface-container-low/50"
+        >
+          <input type="file" id="exif-file-input" accept="image/jpeg,image/png,image/webp" class="hidden" />
+          <div class="flex flex-col items-center justify-center gap-3 pointer-events-none">
+            <div class="size-12 rounded-full bg-primary/10 text-primary flex items-center justify-center">
+              <svg class="size-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+              </svg>
+            </div>
+            <div>
+              <p class="text-sm font-semibold text-on-surface">Choose a photo or drag & drop here</p>
+              <p class="text-xs text-on-surface-variant mt-1">Supports JPEG, JPG, PNG, and WebP from iPhone, Android, and DSLR cameras</p>
+            </div>
+            <button type="button" class="btn-primary text-xs pointer-events-auto mt-1">
+              Select Photo to Inspect
+            </button>
+          </div>
+        </div>
+
+        <!-- Image Analysis Container -->
+        <div id="exif-results-container" class="mt-6 hidden space-y-5">
+          <!-- GPS Alert Banner -->
+          <div id="gps-alert-box" class="p-4 rounded-xl border hidden"></div>
+
+          <!-- Preview & Basic Info -->
+          <div class="grid sm:grid-cols-3 gap-4 items-start">
+            <div class="sm:col-span-1 rounded-lg overflow-hidden border border-surface-container-highest bg-surface-container-low p-2">
+              <img id="image-preview" src="#" alt="Preview" class="w-full h-auto max-h-48 object-contain rounded mx-auto" />
+              <div id="image-filename" class="text-xs text-center font-medium truncate mt-2 text-on-surface"></div>
+              <div id="image-filesize" class="text-[11px] text-center text-on-surface-variant/70"></div>
+            </div>
+
+            <!-- Metadata Table -->
+            <div class="sm:col-span-2 rounded-lg border border-surface-container-highest bg-surface-container-low p-4">
+              <h3 class="text-xs font-semibold uppercase tracking-wider text-on-surface-variant mb-3 flex items-center justify-between">
+                <span>Embedded Metadata (EXIF)</span>
+                <span id="metadata-status-badge" class="badge badge-sm"></span>
+              </h3>
+              <div id="metadata-table" class="space-y-2 text-xs"></div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="flex flex-wrap items-center gap-3 pt-4 border-t border-surface-container-highest">
+            <button id="btn-strip-download" class="btn-primary text-sm flex items-center gap-2">
+              <svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/>
+              </svg>
+              <span>Strip All Metadata & Download Safe Photo</span>
+            </button>
+            <button id="btn-upload-another" class="btn-secondary text-sm">
+              Upload Another Photo
+            </button>
+          </div>
+        </div>
+
+        <AdSlot format="banner" class="my-6" />
+      </div>
+    </div>
+  </section>
+
+  <Toast id="toast-exif" />
+</ToolLayout>
+
+<script is:inline>
+document.addEventListener("astro:page-load", function () {
+  var dropzone = document.getElementById("exif-dropzone");
+  var fileInput = document.getElementById("exif-file-input");
+  var resultsContainer = document.getElementById("exif-results-container");
+  var imagePreview = document.getElementById("image-preview");
+  var imageFilename = document.getElementById("image-filename");
+  var imageFilesize = document.getElementById("image-filesize");
+  var metadataTable = document.getElementById("metadata-table");
+  var metadataStatusBadge = document.getElementById("metadata-status-badge");
+  var gpsAlertBox = document.getElementById("gps-alert-box");
+  var btnStripDownload = document.getElementById("btn-strip-download");
+  var btnUploadAnother = document.getElementById("btn-upload-another");
+
+  if (!dropzone || !fileInput) return;
+
+  var currentFile = null;
+  var currentParsedExif = null;
+
+  function showToast(msg) {
+    var toast = document.getElementById("toast-exif");
+    if (!toast) return;
+    toast.textContent = msg;
+    toast.classList.remove("hidden");
+    setTimeout(function () {
+      toast.classList.add("hidden");
+    }, 3000);
+  }
+
+  function formatBytes(bytes) {
+    if (bytes === 0) return "0 Bytes";
+    var k = 1024;
+    var sizes = ["Bytes", "KB", "MB"];
+    var i = Math.floor(Math.log(bytes) / Math.log(k));
+    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + " " + sizes[i];
+  }
+
+  // Pure client-side binary EXIF parser for JPEG
+  function parseExif(arrayBuffer) {
+    var dataView = new DataView(arrayBuffer);
+    if (dataView.byteLength < 4) return null;
+
+    // Check SOI marker 0xFFD8
+    if (dataView.getUint16(0) !== 0xffd8) {
+      return { format: "Non-JPEG Image (Canvas Sanitizable)" };
+    }
+
+    var offset = 2;
+    var length = dataView.byteLength;
+    var exifData = { tags: {} };
+
+    while (offset < length) {
+      if (dataView.getUint8(offset) !== 0xff) break;
+      var marker = dataView.getUint8(offset + 1);
+
+      if (marker === 0xe1) {
+        // APP1 marker (EXIF)
+        var app1Length = dataView.getUint16(offset + 2);
+        // Check "Exif\0\0"
+        if (
+          dataView.getUint8(offset + 4) === 0x45 &&
+          dataView.getUint8(offset + 5) === 0x78 &&
+          dataView.getUint8(offset + 6) === 0x69 &&
+          dataView.getUint8(offset + 7) === 0x66 &&
+          dataView.getUint8(offset + 8) === 0x00 &&
+          dataView.getUint8(offset + 9) === 0x00
+        ) {
+          parseTiff(dataView, offset + 10, exifData);
+        }
+        break;
+      } else if (marker === 0xda || marker === 0xd9) {
+        break; // SOS or EOI
+      } else {
+        offset += 2 + dataView.getUint16(offset + 2);
+      }
+    }
+
+    return exifData;
+  }
+
+  function parseTiff(dataView, tiffOffset, exifData) {
+    var endian = dataView.getUint16(tiffOffset);
+    var littleEndian = endian === 0x4949; // "II" vs "MM"
+
+    if (dataView.getUint16(tiffOffset + 2, littleEndian) !== 0x002a) return;
+
+    var firstIfdOffset = dataView.getUint32(tiffOffset + 4, littleEndian);
+    if (firstIfdOffset < 8) return;
+
+    parseIfd(dataView, tiffOffset, tiffOffset + firstIfdOffset, littleEndian, exifData, false);
+  }
+
+  function parseIfd(dataView, tiffOffset, ifdOffset, littleEndian, exifData, isGps) {
+    if (ifdOffset + 2 > dataView.byteLength) return;
+    var entries = dataView.getUint16(ifdOffset, littleEndian);
+
+    for (var i = 0; i < entries; i++) {
+      var entryOffset = ifdOffset + 2 + i * 12;
+      if (entryOffset + 12 > dataView.byteLength) break;
+
+      var tag = dataView.getUint16(entryOffset, littleEndian);
+      var type = dataView.getUint16(entryOffset + 2, littleEndian);
+      var count = dataView.getUint32(entryOffset + 4, littleEndian);
+      var valueOffset = entryOffset + 8;
+
+      if (type === 2) {
+        // ASCII String
+        var strOffset = count > 4 ? tiffOffset + dataView.getUint32(valueOffset, littleEndian) : valueOffset;
+        var str = "";
+        for (var j = 0; j < count - 1; j++) {
+          if (strOffset + j < dataView.byteLength) {
+            str += String.fromCharCode(dataView.getUint8(strOffset + j));
+          }
+        }
+        if (tag === 0x010f) exifData.tags["Camera Make"] = str;
+        if (tag === 0x0110) exifData.tags["Camera Model"] = str;
+        if (tag === 0x0131) exifData.tags["Software"] = str;
+        if (tag === 0x0132) exifData.tags["Date Taken"] = str;
+        if (isGps && tag === 0x0001) exifData.tags["GPS Latitude Ref"] = str;
+        if (isGps && tag === 0x0003) exifData.tags["GPS Longitude Ref"] = str;
+      } else if (tag === 0x8769) {
+        // Exif IFD pointer
+        var subIfdOffset = tiffOffset + dataView.getUint32(valueOffset, littleEndian);
+        parseIfd(dataView, tiffOffset, subIfdOffset, littleEndian, exifData, false);
+      } else if (tag === 0x8825) {
+        // GPS IFD pointer
+        var gpsIfdOffset = tiffOffset + dataView.getUint32(valueOffset, littleEndian);
+        exifData.hasGpsPointer = true;
+        parseIfd(dataView, tiffOffset, gpsIfdOffset, littleEndian, exifData, true);
+      } else if (isGps && (tag === 0x0002 || tag === 0x0004)) {
+        // GPS Latitude / Longitude rationals
+        var ratOffset = tiffOffset + dataView.getUint32(valueOffset, littleEndian);
+        if (ratOffset + 24 <= dataView.byteLength) {
+          var d = dataView.getUint32(ratOffset, littleEndian) / dataView.getUint32(ratOffset + 4, littleEndian);
+          var m = dataView.getUint32(ratOffset + 8, littleEndian) / dataView.getUint32(ratOffset + 12, littleEndian);
+          var s = dataView.getUint32(ratOffset + 16, littleEndian) / dataView.getUint32(ratOffset + 20, littleEndian);
+          var coord = d + m / 60 + s / 3600;
+          if (tag === 0x0002) exifData.latitude = coord;
+          if (tag === 0x0004) exifData.longitude = coord;
+        }
+      }
+    }
+  }
+
+  function handleFile(file) {
+    if (!file || !file.type.startsWith("image/")) {
+      showToast("Please select an image file (JPEG, PNG, WebP).");
+      return;
+    }
+
+    currentFile = file;
+    imageFilename.textContent = file.name;
+    imageFilesize.textContent = formatBytes(file.size);
+
+    var reader = new FileReader();
+    reader.onload = function (e) {
+      imagePreview.src = e.target.result;
+    };
+    reader.readAsDataURL(file);
+
+    var bufferReader = new FileReader();
+    bufferReader.onload = function (e) {
+      var arrayBuffer = e.target.result;
+      var parsed = parseExif(arrayBuffer);
+      currentParsedExif = parsed;
+      displayMetadata(parsed, file);
+    };
+    bufferReader.readAsArrayBuffer(file);
+
+    resultsContainer.classList.remove("hidden");
+    resultsContainer.scrollIntoView({ behavior: "smooth", block: "nearest" });
+  }
+
+  function displayMetadata(parsed, file) {
+    metadataTable.innerHTML = "";
+    var tags = (parsed && parsed.tags) || {};
+    var hasGps = false;
+
+    if (parsed && parsed.latitude !== undefined && parsed.longitude !== undefined) {
+      var lat = parsed.latitude;
+      var lon = parsed.longitude;
+      if (tags["GPS Latitude Ref"] === "S") lat = -lat;
+      if (tags["GPS Longitude Ref"] === "W") lon = -lon;
+      hasGps = true;
+      tags["GPS Latitude"] = lat.toFixed(6) + "°";
+      tags["GPS Longitude"] = lon.toFixed(6) + "°";
+
+      gpsAlertBox.className = "p-4 rounded-xl border border-error/40 bg-error/10 text-xs";
+      gpsAlertBox.innerHTML =
+        '<div class="flex items-start gap-3">' +
+        '  <span class="text-lg">📍</span>' +
+        '  <div>' +
+        '    <p class="font-bold text-error text-sm">PRIVACY WARNING: Exact GPS Location Found!</p>' +
+        '    <p class="text-on-surface-variant mt-1">This photo contains coordinates (<strong>' + lat.toFixed(5) + ', ' + lon.toFixed(5) + '</strong>) that pinpoint your exact physical location.' +
+        '    <a href="https://www.openstreetmap.org/?mlat=' + lat + '&mlon=' + lon + '#map=16/' + lat + '/' + lon + '" target="_blank" rel="noopener noreferrer" class="text-primary underline ml-1 font-semibold">View on Map &rarr;</a></p>' +
+        '  </div>' +
+        '</div>';
+      gpsAlertBox.classList.remove("hidden");
+    } else {
+      gpsAlertBox.className = "p-3 rounded-xl border border-surface-container-highest bg-surface-container-low text-xs";
+      gpsAlertBox.innerHTML =
+        '<div class="flex items-center gap-2 text-on-surface-variant">' +
+        '  <span class="text-primary font-bold">✓</span>' +
+        '  <span>No GPS location coordinates detected in this file.</span>' +
+        '</div>';
+      gpsAlertBox.classList.remove("hidden");
+    }
+
+    var tagKeys = Object.keys(tags);
+    if (tagKeys.length === 0) {
+      metadataStatusBadge.textContent = "Clean / Minimal Metadata";
+      metadataStatusBadge.className = "badge badge-sm badge-success";
+      metadataTable.innerHTML =
+        '<p class="text-on-surface-variant/70 italic py-2">No heavy EXIF tags detected. You can still sanitize this image below to ensure complete stripping.</p>';
+    } else {
+      metadataStatusBadge.textContent = tagKeys.length + " Metadata Tags Found";
+      metadataStatusBadge.className = hasGps ? "badge badge-sm badge-error" : "badge badge-sm badge-warning";
+
+      tagKeys.forEach(function (k) {
+        var row = document.createElement("div");
+        row.className = "flex justify-between py-1 border-b border-surface-container-highest/50";
+        row.innerHTML =
+          '<span class="text-on-surface-variant font-medium">' + k + ':</span>' +
+          '<span class="text-on-surface font-mono text-[11px] truncate max-w-[200px]">' + tags[k] + '</span>';
+        metadataTable.appendChild(row);
+      });
+    }
+  }
+
+  dropzone.addEventListener("click", function () {
+    fileInput.click();
+  });
+
+  btnUploadAnother.addEventListener("click", function () {
+    fileInput.click();
+  });
+
+  fileInput.addEventListener("change", function (e) {
+    if (e.target.files && e.target.files[0]) {
+      handleFile(e.target.files[0]);
+    }
+    fileInput.value = "";
+  });
+
+  dropzone.addEventListener("dragover", function (e) {
+    e.preventDefault();
+    dropzone.classList.add("border-primary");
+  });
+
+  dropzone.addEventListener("dragleave", function () {
+    dropzone.classList.remove("border-primary");
+  });
+
+  dropzone.addEventListener("drop", function (e) {
+    e.preventDefault();
+    dropzone.classList.remove("border-primary");
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      handleFile(e.dataTransfer.files[0]);
+    }
+  });
+
+  // Client-side canvas sanitizer
+  btnStripDownload.addEventListener("click", function () {
+    if (!currentFile) {
+      showToast("Please upload an image first.");
+      return;
+    }
+
+    btnStripDownload.disabled = true;
+    btnStripDownload.innerHTML = "<span>Sanitizing Image...</span>";
+
+    var img = new Image();
+    img.onload = function () {
+      var canvas = document.createElement("canvas");
+      canvas.width = img.naturalWidth;
+      canvas.height = img.naturalHeight;
+      var ctx = canvas.getContext("2d");
+      ctx.drawImage(img, 0, 0);
+
+      var mimeType = currentFile.type === "image/png" ? "image/png" : "image/jpeg";
+      canvas.toBlob(
+        function (blob) {
+          var cleanUrl = URL.createObjectURL(blob);
+          var a = document.createElement("a");
+          a.href = cleanUrl;
+          var nameParts = currentFile.name.split(".");
+          var ext = nameParts.length > 1 ? "." + nameParts.pop() : (mimeType === "image/png" ? ".png" : ".jpg");
+          a.download = "clean-" + nameParts.join(".") + ext;
+          document.body.appendChild(a);
+          a.click();
+          document.body.removeChild(a);
+
+          showToast("Metadata permanently stripped! Download started.");
+          btnStripDownload.disabled = false;
+          btnStripDownload.innerHTML =
+            '<svg class="size-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7"/></svg>' +
+            '<span>Photo Sanitized & Downloaded!</span>';
+        },
+        mimeType,
+        0.95
+      );
+    };
+    img.src = imagePreview.src;
+  });
+});
+</script>
