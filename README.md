@@ -65,6 +65,7 @@ All-in-one collections covering most daily dev utility needs.
 - [CSS px to rem Converter](https://webutil.tech/dev/px-to-rem) — Convert pixel values to rem units with reference table.
 - [Image Converter](https://webutil.tech/dev/image-converter) — Convert images between PNG, JPEG, WebP, GIF in your browser.
 - [Squoosh](https://squoosh.app) — Advanced image compression and conversion by Google.
+- [File Converter](https://fileontap.com/) — Convert and compress HEIC/WebP/PNG/JPG and handle image↔PDF locally in the browser; no upload or account.
 
 ## Text & Regex
 
