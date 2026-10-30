@@ -94,13 +94,37 @@ const relatedPosts = getBlogPostsForTool(tool.id);
     </div>
   </section>
 
-  <slot />
+  <div class="google-anno-skip">
+    <slot />
+  </div>
 
   {toolData?.content && (
-    <section class="container-main py-8">
-      <div class="max-w-4xl mx-auto">
-        <div class="prose prose-sm max-w-none text-on-surface-variant leading-relaxed">
-          {toolData.content.split("\n\n").map((p) => <p>{p}</p>)}
+    <section class="container-main py-12 border-t border-surface-container-highest/60 mt-12">
+      <div class="max-w-4xl mx-auto space-y-6">
+        <div class="flex items-center gap-2 mb-2">
+          <span class="inline-block size-2 rounded-full bg-primary"></span>
+          <span class="text-xs font-semibold tracking-wider text-primary uppercase">Technical Documentation & Standards</span>
+        </div>
+        <div class="prose prose-sm sm:prose max-w-none text-on-surface-variant leading-relaxed space-y-4">
+          {toolData.content.split("\n\n").map((block) => {
+            const trimmed = block.trim();
+            if (!trimmed) return null;
+            if (trimmed.startsWith("### ")) {
+              return <h3 class="text-lg font-semibold text-on-surface pt-4 pb-1">{trimmed.replace(/^###\s+/, "")}</h3>;
+            }
+            if (trimmed.startsWith("## ")) {
+              return <h2 class="text-xl font-bold text-on-surface pt-6 pb-2 border-b border-surface-container-highest">{trimmed.replace(/^##\s+/, "")}</h2>;
+            }
+            if (trimmed.startsWith("- ")) {
+              const items = trimmed.split("\n").filter((l) => l.trim().startsWith("- ")).map((l) => l.trim().replace(/^- \s*/, ""));
+              return (
+                <ul class="list-disc list-inside space-y-1.5 my-3 pl-2 text-on-surface-variant">
+                  {items.map((item) => <li>{item}</li>)}
+                </ul>
+              );
+            }
+            return <p class="text-sm sm:text-base leading-relaxed text-on-surface-variant">{trimmed}</p>;
+          })}
         </div>
       </div>
     </section>

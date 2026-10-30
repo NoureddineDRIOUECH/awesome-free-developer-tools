@@ -174,6 +174,15 @@
 
 [data-sponsored] { display: none !important; }
 
+/* AdSense Auto-Ads Protection: Never inject ads inside interactive tool widgets or empty input forms */
+.tool-card .google-auto-placed,
+.tool-card ins.adsbygoogle,
+.tool-card [data-google-query-id],
+.google-anno-skip ins.adsbygoogle,
+.google-anno-skip .google-auto-placed {
+  display: none !important;
+}
+
 .scrollbar-thin::-webkit-scrollbar {
   width: 6px;
   height: 6px;
