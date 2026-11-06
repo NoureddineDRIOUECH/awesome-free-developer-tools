@@ -36,6 +36,7 @@ All-in-one collections covering most daily dev utility needs.
 - [SQL Formatter](https://webutil.tech/dev/sql-formatter) — Beautify SQL queries with customizable indentation.
 - [jsonlint.com](https://jsonlint.com) — JSON validator and formatter with error line highlighting.
 - [CyberChef](https://gchq.github.io/CyberChef) — The "Cyber Swiss Army Knife" for data transformation.
+- [BestJSON JSON Diff](https://bestjson.com/json-diff) — Compare JSON structures and inspect added, removed or changed values by path without signing up.
 
 ## Encoding & Crypto
 
