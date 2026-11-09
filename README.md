@@ -73,6 +73,7 @@ All-in-one collections covering most daily dev utility needs.
 - [Regex Tester](https://webutil.tech/text/regex-tester) — Test regular expressions with match highlighting and group capture.
 - [Word & Character Counter](https://webutil.tech/text/word-counter) — Count words, characters, sentences, and reading time.
 - [Remove Duplicate Lines](https://webutil.tech/text/remove-duplicate-lines) — Deduplicate and sort text lines.
+- [PageUtil Regex Tester](https://pageutil.com/regex-tester/) — Test patterns locally across seven regex engines with reusable test cases and match, replace, extract and split modes.
 - [regex101.com](https://regex101.com) — Popular regex tester with detailed explanation of each match.
 
 ## Validators
