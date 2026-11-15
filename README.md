@@ -40,6 +40,7 @@ All-in-one collections covering most daily dev utility needs.
 ## Encoding & Crypto
 
 - [Base64 Encoder / Decoder](https://webutil.tech/dev/base64-encoder) — Encode and decode text and files to/from Base64.
+- [BinaryTranslator.app](https://binarytranslator.app) — Convert text to and from binary, octal, decimal, hexadecimal, and Base64 with UTF-8 and ASCII support. Conversion runs locally in the browser, with no signup required.
 - [URL Encoder / Decoder](https://webutil.tech/dev/url-encoder) — Encode and decode URLs and query parameters.
 - [HTML Entities](https://webutil.tech/dev/html-entities) — Convert special characters to HTML entities for safe rendering.
 - [Hash Generator](https://webutil.tech/dev/hash-generator) — Generate MD5, SHA-1, SHA-256, SHA-512 hashes.
