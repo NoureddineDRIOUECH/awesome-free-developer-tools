@@ -57,6 +57,7 @@ All-in-one collections covering most daily dev utility needs.
 - [QR Code Generator](https://webutil.tech/generate/qr-code-generator) — Create QR codes from text or URLs, download as SVG.
 - [Wi-Fi QR Code Generator](https://webutil.tech/generate/wi-fi-qr-code-generator) — QR code for instant Wi-Fi network access.
 - [Secure WPA2 Password Generator](https://webutil.tech/generate/secure-wpa2-password-generator) — Router-friendly passwords without ambiguous characters.
+- [Appy AASA and assetlinks.json Generator](https://appy.to/tools/aasa-assetlinks-generator) — Generate and download the association files for iOS Universal Links and Android App Links in your browser without an account.
 
 ## Converters
 
